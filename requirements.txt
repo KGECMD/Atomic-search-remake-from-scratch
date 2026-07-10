@@ -23,7 +23,7 @@ user-agents>=2.2.0
 # Data and serialization
 pydantic>=2.5.0
 pydantic-settings>=2.1.0
-orjson>=3.9.0
+orjson>=3.11.9
 marshmallow>=3.20.0
 
 # Database
