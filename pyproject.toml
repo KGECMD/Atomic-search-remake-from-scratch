@@ -98,7 +98,7 @@ postgres = ["psycopg2-binary>=2.9.0"]
 mysql = ["pymysql>=1.1.0"]
 redis = ["redis>=5.0.0"]
 server = [
-    "gunicorn>=21.2.0",
+    "gunicorn>=26.0.0",
     "gevent>=23.9.0",
     "eventlet>=0.34.0",
 ]
