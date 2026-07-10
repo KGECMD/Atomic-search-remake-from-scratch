@@ -34,7 +34,7 @@ aiosqlite>=0.19.0
 # Caching and background tasks
 redis>=5.0.0
 celery>=5.3.0
-APScheduler>=3.10.0
+APScheduler>=3.11.3
 
 # Security
 cryptography>=41.0.0
