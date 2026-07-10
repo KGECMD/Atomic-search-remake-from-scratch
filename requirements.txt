@@ -44,7 +44,7 @@ bleach-allowlist>=1.0.0
 # Utilities
 python-dateutil>=2.8.2
 pytz>=2024.1
-qrcode>=7.4.2
+qrcode>=8.2
 pillow>=10.0.0
 
 # GraphQL
