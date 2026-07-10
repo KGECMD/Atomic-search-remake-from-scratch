@@ -5,440 +5,244 @@
 {% block extra_head %}
 <style>
     .settings-page {
-        max-width: 900px;
+        max-width: 680px;
         margin: 0 auto;
-        padding: 40px 20px;
+        padding: 40px 24px 80px;
     }
 
-    .settings-header {
-        margin-bottom: 40px;
-        text-align: center;
-    }
-
-    .settings-header h1 {
-        font-size: 2.5em;
-        font-weight: 700;
-        margin-bottom: 10px;
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .settings-header p {
-        color: var(--text-secondary);
-        font-size: 1.1em;
-    }
-
-    .settings-tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 30px;
-        overflow-x: auto;
-        padding-bottom: 10px;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .settings-tab {
-        padding: 12px 24px;
-        background: transparent;
-        border: none;
-        border-radius: 12px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        font-size: 0.95em;
-        font-weight: 500;
-        white-space: nowrap;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .settings-tab:hover {
-        background: var(--bg-glass);
+    .settings-title {
+        font-size: 1.75rem;
+        font-weight: 600;
         color: var(--text-primary);
-    }
-
-    .settings-tab.active {
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-        color: white;
-    }
-
-    .settings-tab svg {
-        width: 18px;
-        height: 18px;
+        margin-bottom: 32px;
     }
 
     .settings-section {
-        display: none;
-        animation: fadeIn 0.3s ease;
+        margin-bottom: 36px;
     }
 
-    .settings-section.active {
-        display: block;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .settings-card {
-        background: var(--bg-glass);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 24px;
-    }
-
-    .settings-card-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 24px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .settings-card-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-    }
-
-    .settings-card-icon svg {
-        width: 22px;
-        height: 22px;
-        fill: white;
-    }
-
-    .settings-card-title {
-        font-size: 1.3em;
+    .settings-section-header {
+        font-size: 0.7rem;
         font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        padding: 0 4px;
     }
 
-    .setting-row {
+    .settings-list {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .settings-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 16px 0;
+        padding: 14px 16px;
         border-bottom: 1px solid var(--border);
+        transition: background 0.1s;
     }
 
-    .setting-row:last-child {
+    .settings-row:last-child {
         border-bottom: none;
     }
 
-    .setting-info {
-        flex: 1;
-        margin-right: 20px;
+    .settings-row:hover {
+        background: var(--bg-secondary);
     }
 
-    .setting-label {
-        font-weight: 500;
-        margin-bottom: 4px;
+    .settings-row-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .settings-row-label {
+        font-size: 0.95rem;
+        color: var(--text-primary);
+    }
+
+    .settings-row-desc {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .settings-row-control {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
     }
 
-    .setting-description {
-        color: var(--text-muted);
-        font-size: 0.9em;
-    }
-
-    .setting-control {
-        min-width: 200px;
-    }
-
-    .setting-control select,
-    .setting-control input[type="text"],
-    .setting-control input[type="number"] {
-        width: 100%;
-        padding: 10px 14px;
+    .settings-select {
+        padding: 7px 32px 7px 12px;
         background: var(--bg-primary);
         border: 1px solid var(--border);
-        border-radius: 10px;
+        border-radius: 6px;
         color: var(--text-primary);
-        font-size: 0.95em;
+        font-size: 0.875rem;
         cursor: pointer;
-        transition: all 0.2s ease;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        min-width: 130px;
     }
 
-    .setting-control select:hover,
-    .setting-control input:hover {
+    .settings-select:hover {
         border-color: var(--accent);
     }
 
-    .setting-control select:focus,
-    .setting-control input:focus {
+    .settings-select:focus {
         outline: none;
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
     }
 
-    .setting-control input[type="color"] {
-        width: 50px;
-        height: 40px;
-        padding: 4px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        cursor: pointer;
-        background: var(--bg-primary);
-    }
-
-    .toggle-switch {
+    .settings-toggle {
         position: relative;
-        width: 50px;
-        height: 28px;
+        width: 42px;
+        height: 24px;
+        flex-shrink: 0;
     }
 
-    .toggle-switch input {
+    .settings-toggle input {
         opacity: 0;
         width: 0;
         height: 0;
+        position: absolute;
     }
 
-    .toggle-slider {
+    .settings-toggle-track {
         position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        inset: 0;
         background: var(--bg-primary);
         border: 1px solid var(--border);
-        border-radius: 28px;
-        transition: 0.3s;
+        border-radius: 24px;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
     }
 
-    .toggle-slider:before {
-        position: absolute;
+    .settings-toggle-track::after {
         content: "";
-        height: 22px;
-        width: 22px;
+        position: absolute;
+        width: 18px;
+        height: 18px;
         left: 2px;
-        bottom: 2px;
+        top: 2px;
         background: var(--text-muted);
         border-radius: 50%;
-        transition: 0.3s;
+        transition: transform 0.2s, background 0.2s;
     }
 
-    .toggle-switch input:checked + .toggle-slider {
+    .settings-toggle input:checked + .settings-toggle-track {
         background: var(--accent);
         border-color: var(--accent);
     }
 
-    .toggle-switch input:checked + .toggle-slider:before {
-        transform: translateX(22px);
+    .settings-toggle input:checked + .settings-toggle-track::after {
+        transform: translateX(18px);
         background: white;
     }
 
-    .theme-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 16px;
-        margin-top: 16px;
-    }
-
-    .theme-card {
-        background: var(--bg-primary);
-        border: 2px solid var(--border);
-        border-radius: 14px;
-        padding: 12px;
+    .settings-color-input {
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        padding: 2px;
+        background: var(--bg-primary);
     }
 
-    .theme-card:hover {
-        border-color: var(--accent);
-        transform: translateY(-2px);
+    .settings-color-input::-webkit-color-swatch-wrapper {
+        padding: 0;
     }
 
-    .theme-card.active {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-    }
-
-    .theme-preview {
-        height: 60px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }
-
-    .theme-name {
-        font-size: 0.85em;
-        font-weight: 500;
-        text-align: center;
+    .settings-color-input::-webkit-color-swatch {
+        border: none;
+        border-radius: 4px;
     }
 
     .settings-actions {
         display: flex;
         gap: 12px;
-        margin-top: 30px;
-        justify-content: flex-end;
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
     }
 
     .btn {
-        padding: 14px 28px;
-        border: none;
-        border-radius: 12px;
-        font-size: 1em;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 0.9rem;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        transition: all 0.15s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+        background: var(--accent);
         color: white;
     }
 
     .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        filter: brightness(1.1);
     }
 
     .btn-secondary {
-        background: var(--bg-glass);
+        background: var(--bg-card);
         border: 1px solid var(--border);
         color: var(--text-secondary);
     }
 
     .btn-secondary:hover {
-        background: var(--bg-card);
+        background: var(--bg-secondary);
         color: var(--text-primary);
     }
 
-    .btn svg {
-        width: 18px;
-        height: 18px;
+    .settings-footer {
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.8rem;
     }
 
-    .color-picker-row {
-        display: flex;
-        gap: 16px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .color-presets {
-        display: flex;
-        gap: 8px;
-    }
-
-    .color-preset {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: all 0.2s ease;
-    }
-
-    .color-preset:hover {
-        transform: scale(1.1);
-    }
-
-    .color-preset.active {
-        border-color: white;
-        box-shadow: 0 0 0 2px var(--accent);
-    }
-
-    .quick-actions {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        margin-top: 16px;
-    }
-
-    .quick-action {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 16px;
-        background: var(--bg-primary);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s ease;
+    .settings-footer a {
+        color: var(--accent);
         text-decoration: none;
-        color: inherit;
     }
 
-    .quick-action:hover {
-        border-color: var(--accent);
-        background: var(--bg-glass);
+    .settings-footer a:hover {
+        text-decoration: underline;
     }
 
-    .quick-action svg {
-        width: 24px;
-        height: 24px;
-        fill: var(--accent);
-    }
-
-    .quick-action-text {
-        font-weight: 500;
-    }
-
-    .danger-zone {
-        border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    .danger-zone .settings-card-header .settings-card-icon {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    }
-
-    .btn-danger {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-    }
-
-    .btn-danger:hover {
-        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
-    }
-
-    @media (max-width: 768px) {
-        .settings-tabs {
-            gap: 4px;
+    @media (max-width: 540px) {
+        .settings-page {
+            padding: 24px 16px 60px;
         }
 
-        .settings-tab {
-            padding: 10px 16px;
-            font-size: 0.85em;
-        }
-
-        .settings-tab span {
-            display: none;
-        }
-
-        .setting-row {
+        .settings-row {
             flex-direction: column;
             align-items: flex-start;
             gap: 12px;
         }
 
-        .setting-control {
+        .settings-row-control {
             width: 100%;
+            justify-content: space-between;
         }
 
-        .settings-actions {
-            flex-direction: column;
-        }
-
-        .btn {
-            width: 100%;
-            justify-content: center;
+        .settings-select {
+            flex: 1;
         }
     }
 </style>
@@ -446,148 +250,60 @@
 
 {% block content %}
 <div class="settings-page">
-    <div class="settings-header">
-        <h1>⚙️ Settings</h1>
-        <p>Customize your search experience</p>
-    </div>
+    <h1 class="settings-title">Settings</h1>
 
-    <form method="POST" id="settings-form">
-        <div class="settings-tabs">
-            <button type="button" class="settings-tab active" data-tab="appearance">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                <span>Appearance</span>
-            </button>
-            <button type="button" class="settings-tab" data-tab="search">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <span>Search</span>
-            </button>
-            <button type="button" class="settings-tab" data-tab="privacy">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-                <span>Privacy</span>
-            </button>
-            <button type="button" class="settings-tab" data-tab="features">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                <span>Features</span>
-            </button>
-            <button type="button" class="settings-tab" data-tab="about">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                <span>About</span>
-            </button>
-        </div>
-
-        <!-- Appearance Section -->
-        <div class="settings-section active" id="appearance-section">
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg>
+    <form method="POST">
+        <div class="settings-section">
+            <div class="settings-section-header">Appearance</div>
+            <div class="settings-list">
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Theme</span>
+                        <span class="settings-row-desc">Choose your color scheme</span>
                     </div>
-                    <h3 class="settings-card-title">Theme</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Color Theme</div>
-                        <div class="setting-description">Choose your preferred color scheme</div>
-                    </div>
-                    <div class="setting-control">
-                        <select name="theme" id="theme-select">
-                            <option value="auto" {% if theme == 'auto' %}selected{% endif %}>Auto (System)</option>
+                    <div class="settings-row-control">
+                        <select name="theme" class="settings-select">
+                            <option value="auto" {% if theme == 'auto' %}selected{% endif %}>System</option>
                             <option value="light" {% if theme == 'light' %}selected{% endif %}>Light</option>
                             <option value="dark" {% if theme == 'dark' %}selected{% endif %}>Dark</option>
                         </select>
                     </div>
                 </div>
-
-                <div class="theme-grid" id="theme-grid">
-                    <div class="theme-card {% if theme == 'auto' %}active{% endif %}" data-theme="auto">
-                        <div class="theme-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                        <div class="theme-name">Auto</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Accent Color</span>
+                        <span class="settings-row-desc">Pick a color for buttons</span>
                     </div>
-                    <div class="theme-card {% if theme == 'light' %}active{% endif %}" data-theme="light">
-                        <div class="theme-preview" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);"></div>
-                        <div class="theme-name">Light</div>
-                    </div>
-                    <div class="theme-card {% if theme == 'dark' %}active{% endif %}" data-theme="dark">
-                        <div class="theme-preview" style="background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);"></div>
-                        <div class="theme-name">Dark</div>
-                    </div>
-                    <div class="theme-card" data-theme="nordic">
-                        <div class="theme-preview" style="background: linear-gradient(135deg, #2e3440 0%, #3b4252 100%);"></div>
-                        <div class="theme-name">Nordic</div>
-                    </div>
-                    <div class="theme-card" data-theme="synthwave">
-                        <div class="theme-preview" style="background: linear-gradient(135deg, #1a1a2e 0%, #e94560 100%);"></div>
-                        <div class="theme-name">Synthwave</div>
-                    </div>
-                    <div class="theme-card" data-theme="forest">
-                        <div class="theme-preview" style="background: linear-gradient(135deg, #1a2a1a 0%, #2d4a2d 100%);"></div>
-                        <div class="theme-name">Forest</div>
+                    <div class="settings-row-control">
+                        <input type="color" name="accent_color" class="settings-color-input" value="{{ accent_color }}">
                     </div>
                 </div>
-            </div>
-
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Compact Mode</span>
+                        <span class="settings-row-desc">Use a denser layout</span>
                     </div>
-                    <h3 class="settings-card-title">Accent Color</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Custom Accent Color</div>
-                        <div class="setting-description">Personalize your accent color</div>
-                    </div>
-                    <div class="setting-control">
-                        <div class="color-picker-row">
-                            <input type="color" name="accent_color" id="accent-color" value="{{ accent_color }}">
-                            <div class="color-presets">
-                                <div class="color-preset active" style="background: #6366f1;" data-color="#6366f1"></div>
-                                <div class="color-preset" style="background: #667eea;" data-color="#667eea"></div>
-                                <div class="color-preset" style="background: #ec4899;" data-color="#ec4899"></div>
-                                <div class="color-preset" style="background: #10b981;" data-color="#10b981"></div>
-                                <div class="color-preset" style="background: #f59e0b;" data-color="#f59e0b"></div>
-                                <div class="color-preset" style="background: #ef4444;" data-color="#ef4444"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Compact Mode</div>
-                        <div class="setting-description">Use a denser layout with smaller spacing</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="compact_mode" {% if compact_mode %}checked{% endif %}>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Search Section -->
-        <div class="settings-section" id="search-section">
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
+        <div class="settings-section">
+            <div class="settings-section-header">Search</div>
+            <div class="settings-list">
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Language</span>
+                        <span class="settings-row-desc">Language for results</span>
                     </div>
-                    <h3 class="settings-card-title">Language & Region</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Language</div>
-                        <div class="setting-description">Language for search results and interface</div>
-                    </div>
-                    <div class="setting-control">
-                        <select name="language">
-                            <option value="en" selected>English</option>
+                    <div class="settings-row-control">
+                        <select name="language" class="settings-select">
+                            <option value="en">English</option>
                             <option value="es">Español</option>
                             <option value="fr">Français</option>
                             <option value="de">Deutsch</option>
@@ -596,442 +312,161 @@
                             <option value="ru">Русский</option>
                             <option value="zh">中文</option>
                             <option value="ja">日本語</option>
-                            <option value="ko">한국어</option>
-                            <option value="ar">العربية</option>
-                            <option value="hi">हिन्दी</option>
                         </select>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Region</div>
-                        <div class="setting-description">Regional settings for localized results</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Region</span>
+                        <span class="settings-row-desc">Regional settings</span>
                     </div>
-                    <div class="setting-control">
-                        <select name="region">
-                            <option value="global">🌍 Global</option>
-                            <option value="us">🇺🇸 United States</option>
-                            <option value="gb">🇬🇧 United Kingdom</option>
-                            <option value="ca">🇨🇦 Canada</option>
-                            <option value="au">🇦🇺 Australia</option>
-                            <option value="de">🇩🇪 Germany</option>
-                            <option value="fr">🇫🇷 France</option>
-                            <option value="es">🇪🇸 Spain</option>
-                            <option value="it">🇮🇹 Italy</option>
-                            <option value="jp">🇯🇵 Japan</option>
-                            <option value="cn">🇨🇳 China</option>
-                            <option value="kr">🇰🇷 South Korea</option>
-                            <option value="in">🇮🇳 India</option>
-                            <option value="br">🇧🇷 Brazil</option>
-                            <option value="ru">🇷🇺 Russia</option>
+                    <div class="settings-row-control">
+                        <select name="region" class="settings-select">
+                            <option value="global">Global</option>
+                            <option value="us">United States</option>
+                            <option value="gb">United Kingdom</option>
+                            <option value="de">Germany</option>
+                            <option value="fr">France</option>
+                            <option value="jp">Japan</option>
+                            <option value="cn">China</option>
+                            <option value="in">India</option>
                         </select>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Safe Search</div>
-                        <div class="setting-description">Filter explicit content from results</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Safe Search</span>
+                        <span class="settings-row-desc">Filter explicit content</span>
                     </div>
-                    <div class="setting-control">
-                        <select name="safe_search">
+                    <div class="settings-row-control">
+                        <select name="safe_search" class="settings-select">
                             <option value="off">Off</option>
-                            <option value="moderate" selected>Moderate</option>
+                            <option value="moderate">Moderate</option>
                             <option value="strict">Strict</option>
                         </select>
                     </div>
                 </div>
             </div>
-
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-                    </div>
-                    <h3 class="settings-card-title">Search Results</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Results Per Page</div>
-                        <div class="setting-description">Number of results to display per page</div>
-                    </div>
-                    <div class="setting-control">
-                        <select name="results_per_page">
-                            <option value="10">10 results</option>
-                            <option value="20" selected>20 results</option>
-                            <option value="30">30 results</option>
-                            <option value="50">50 results</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Open Links in New Tab</div>
-                        <div class="setting-description">Open search results in a new browser tab</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="new_tab" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Privacy Section -->
-        <div class="settings-section" id="privacy-section">
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        <div class="settings-section">
+            <div class="settings-section-header">Privacy</div>
+            <div class="settings-list">
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Block Trackers</span>
+                        <span class="settings-row-desc">Prevent tracking scripts</span>
                     </div>
-                    <h3 class="settings-card-title">Privacy Protection</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Block Trackers</div>
-                        <div class="setting-description">Prevent tracking scripts from loading</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="block_trackers" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Block Advertisements</div>
-                        <div class="setting-description">Hide ads in search results</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Block Ads</span>
+                        <span class="settings-row-desc">Hide advertisements</span>
                     </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="block_ads" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Anonymous Mode</div>
-                        <div class="setting-description">Additional privacy measures for sensitive searches</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Anonymous Mode</span>
+                        <span class="settings-row-desc">Extra privacy</span>
                     </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="anonymous_mode">
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Minimal Logging</div>
-                        <div class="setting-description">Don't log your searches locally</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="minimal_logging" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                    </div>
-                    <h3 class="settings-card-title">Data Management</h3>
-                </div>
-                
-                <div class="quick-actions">
-                    <a href="/privacy" class="quick-action">
-                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                        <span class="quick-action-text">Privacy Policy</span>
-                    </a>
-                    <a href="/privacy/insane" class="quick-action">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        <span class="quick-action-text">Insane Privacy</span>
-                    </a>
-                    <a href="/terms" class="quick-action">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                        <span class="quick-action-text">Terms of Service</span>
-                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Features Section -->
-        <div class="settings-section" id="features-section">
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.88-.1-2.73 2.71-2.73 7.08 0 9.79s7.15 2.71 9.88 0C18.32 15.65 19 14.08 19 12.1h2c0 1.98-.88 4.55-2.64 6.29-3.51 3.48-9.21 3.48-12.72 0-3.5-3.47-3.53-9.11-.02-12.58s9.14-3.47 12.65 0L21 3v7.12z"/></svg>
+        <div class="settings-section">
+            <div class="settings-section-header">Features</div>
+            <div class="settings-list">
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">AI Summaries</span>
+                        <span class="settings-row-desc">Show AI summaries for results</span>
                     </div>
-                    <h3 class="settings-card-title">AI Features</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">AI Summaries</div>
-                        <div class="setting-description">Show AI-generated summaries for search results</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="ai_summaries" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">AI Chat Assistant</div>
-                        <div class="setting-description">Enable the AI-powered chat sidebar</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Reading Mode</span>
+                        <span class="settings-row-desc">Clean article view</span>
                     </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="ai_chat" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
-                    </div>
-                    <h3 class="settings-card-title">Tools & Features</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Reading Mode</div>
-                        <div class="setting-description">Clean article view for web pages</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="reading_mode" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Calculator</div>
-                        <div class="setting-description">Inline calculator in search bar</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Keyboard Shortcuts</span>
+                        <span class="settings-row-desc">Enable shortcuts</span>
                     </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="calculator" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Unit Converter</div>
-                        <div class="setting-description">Quick unit conversions</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="unit_converter" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Keyboard Shortcuts</div>
-                        <div class="setting-description">Enable keyboard navigation shortcuts</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="keyboard_shortcuts" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
-            </div>
-
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Voting</span>
+                        <span class="settings-row-desc">Upvote/downvote results</span>
                     </div>
-                    <h3 class="settings-card-title">Community</h3>
-                </div>
-                
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Voting System</div>
-                        <div class="setting-description">Upvote/downvote search results</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="voting" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
                     </div>
                 </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Bookmarks</div>
-                        <div class="setting-description">Save and organize your favorite results</div>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="settings-row-label">Bookmarks</span>
+                        <span class="settings-row-desc">Save favorite results</span>
                     </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
+                    <div class="settings-row-control">
+                        <label class="settings-toggle">
                             <input type="checkbox" name="bookmarks" checked>
-                            <span class="toggle-slider"></span>
+                            <span class="settings-toggle-track"></span>
                         </label>
-                    </div>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <div class="setting-label">Search History</div>
-                        <div class="setting-description">Keep track of your recent searches</div>
-                    </div>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="search_history">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- About Section -->
-        <div class="settings-section" id="about-section">
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    </div>
-                    <h3 class="settings-card-title">About {{ config.APP_NAME }}</h3>
-                </div>
-                
-                <div style="text-align: center; padding: 20px 0;">
-                    <div style="font-size: 4em; margin-bottom: 16px;">🔬</div>
-                    <h2 style="font-size: 1.8em; margin-bottom: 8px;">{{ config.APP_NAME }}</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 20px;">Version {{ config.APP_VERSION }}</p>
-                    <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 24px;">
-                        A privacy-first search engine with AI capabilities. No tracking, no ads, no cookies.
-                    </p>
-                    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-                        <a href="/about" class="btn btn-secondary">Learn More</a>
-                        <a href="https://github.com/atomic-search/atomic-search" target="_blank" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            View on GitHub
-                        </a>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 30px; text-align: center;">
-                    <div style="padding: 20px; background: var(--bg-primary); border-radius: 12px;">
-                        <div style="font-size: 1.5em; font-weight: 700; color: var(--accent);">100%</div>
-                        <div style="color: var(--text-muted); font-size: 0.9em;">Private</div>
-                    </div>
-                    <div style="padding: 20px; background: var(--bg-primary); border-radius: 12px;">
-                        <div style="font-size: 1.5em; font-weight: 700; color: var(--accent);">0</div>
-                        <div style="color: var(--text-muted); font-size: 0.9em;">Trackers</div>
-                    </div>
-                    <div style="padding: 20px; background: var(--bg-primary); border-radius: 12px;">
-                        <div style="font-size: 1.5em; font-weight: 700; color: var(--accent);">Open</div>
-                        <div style="color: var(--text-muted); font-size: 0.9em;">Source</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="settings-actions">
-            <a href="{{ url_for('main.index') }}" class="btn btn-secondary">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                Cancel
-            </a>
-            <button type="submit" class="btn btn-primary">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                Save Settings
-            </button>
+            <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
     </form>
+
+    <div class="settings-footer">
+        {{ config.APP_NAME }} v{{ config.APP_VERSION }} &middot; 
+        <a href="/about">About</a> &middot; 
+        <a href="https://github.com/atomic-search/atomic-search" target="_blank">GitHub</a>
+    </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Tab switching
-    const tabs = document.querySelectorAll('.settings-tab');
-    const sections = document.querySelectorAll('.settings-section');
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const targetId = this.dataset.tab;
-            
-            // Update tabs
-            tabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Update sections
-            sections.forEach(s => s.classList.remove('active'));
-            document.getElementById(targetId + '-section').classList.add('active');
-        });
-    });
-
-    // Theme grid selection
-    const themeCards = document.querySelectorAll('.theme-card');
-    themeCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const theme = this.dataset.theme;
-            themeCards.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-            document.getElementById('theme-select').value = theme;
-        });
-    });
-
-    // Color presets
-    const colorPresets = document.querySelectorAll('.color-preset');
-    colorPresets.forEach(preset => {
-        preset.addEventListener('click', function() {
-            const color = this.dataset.color;
-            document.getElementById('accent-color').value = color;
-            colorPresets.forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-
-    // Sync color picker with presets
-    document.getElementById('accent-color').addEventListener('input', function() {
-        colorPresets.forEach(p => {
-            if (p.dataset.color === this.value) {
-                p.classList.add('active');
-            } else {
-                p.classList.remove('active');
-            }
-        });
-    });
-
-    // Theme select sync with grid
-    document.getElementById('theme-select').addEventListener('change', function() {
-        themeCards.forEach(c => {
-            c.classList.toggle('active', c.dataset.theme === this.value);
-        });
-    });
-});
-</script>
 {% endblock %}

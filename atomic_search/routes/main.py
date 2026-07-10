@@ -89,6 +89,10 @@ def search():
     if not query:
         return redirect(url_for("main.index"))
 
+    # Check for Google easter egg
+    leaving_queries = ['google', 'bing', 'yahoo', 'duckduckgo', 'baidu', 'yandex', ' ecosia']
+    is_leaving = any(lq in query.lower() for lq in leaving_queries)
+
     # Validate search type
     try:
         search_type_enum = SearchType(search_type)
@@ -164,6 +168,7 @@ def search():
         vote_stats=vote_stats,
         user_votes=user_votes,
         vote_limit=voting_service.get_vote_count(ip_hash, session_id) if config.VOTING_ENABLED else None,
+        is_leaving=is_leaving,
     )
 
 

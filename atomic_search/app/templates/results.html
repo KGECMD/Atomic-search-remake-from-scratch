@@ -5,6 +5,32 @@
 {% block content %}
 <div class="container" style="max-width: 900px; margin: 0 auto; padding: 30px 20px;">
     
+    <!-- Leaving Easter Egg -->
+    {% if is_leaving %}
+    <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center; color: white;">
+        <div style="font-size: 2rem; margin-bottom: 8px;">😢</div>
+        <h2 style="font-size: 1.5rem; margin-bottom: 12px; color: white;">Oh no! Why are you leaving us?</h2>
+        <p style="margin-bottom: 16px; opacity: 0.95;">Wait! Before you go, here are 3 reasons why you should stay with us:</p>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 16px;">
+            <div style="background: rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; flex: 1; min-width: 180px;">
+                <div style="font-size: 1.5rem; margin-bottom: 8px;">🔒</div>
+                <strong>Privacy First</strong>
+                <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 4px;">We never track your searches or sell your data</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; flex: 1; min-width: 180px;">
+                <div style="font-size: 1.5rem; margin-bottom: 8px;">⚡</div>
+                <strong>Fast Results</strong>
+                <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 4px;">Get quality results without the bloat</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; flex: 1; min-width: 180px;">
+                <div style="font-size: 1.5rem; margin-bottom: 8px;">❤️</div>
+                <strong>No Ads</strong>
+                <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 4px;">Clean search experience, always</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Search Header -->
     <div style="margin-bottom: 30px;">
         <form action="/search" method="GET" class="search-form" style="max-width: 100%;">
