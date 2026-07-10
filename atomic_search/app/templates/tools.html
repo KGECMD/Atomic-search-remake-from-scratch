@@ -1,362 +1,226 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools - Atomic Search</title>
-    <style>
-        :root {
-            --bg-primary: #0a0a1a;
-            --bg-secondary: #12122a;
-            --bg-card: rgba(30,30,60,0.8);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0c0;
-            --accent: #667eea;
-            --accent-hover: #764ba2;
-            --border: rgba(255,255,255,0.1);
-        }
+{% extends "base.html" %}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+{% block title %}Tools - {{ config.APP_NAME }}{% endblock %}
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container { max-width: 1000px; margin: 0 auto; }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .header p { color: var(--text-secondary); }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .tool-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .tool-card h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: var(--accent);
-        }
-
-        .tool-card p {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            margin-bottom: 20px;
-        }
-
-        .tool-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-
-        .tool-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .tool-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: var(--accent);
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tool-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .result {
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            font-family: monospace;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .nav a:hover, .nav a.active {
-            background: var(--bg-card);
-            color: var(--accent);
-        }
-
-        .grid-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .select-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 1em;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <nav class="nav">
-            <a href="/">Search</a>
-            <a href="/ai">AI</a>
-            <a href="/tools" class="active">Tools</a>
-            <a href="/settings">Settings</a>
-        </nav>
-
-        <div class="header">
-            <h1>Privacy Tools</h1>
-            <p>Built-in tools to enhance your search experience</p>
-        </div>
-
-        <div class="tools-grid">
-            <!-- Calculator -->
-            <div class="tool-card">
-                <h3>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2v-2h2v2zm4 4h-2v-2h2v2zm0-4h-2v-2h2v2zm-8 4H6v-2h2v2zm0-4H6v-2h2v2zm8 0v2h-2v-2h2zm-4-6H8v-2h2v2zm0 4h-2v2h2v2H9v2h2v2H7v2h10v-2h-2v-2h2v-2h-2v-2h2V9h-2V7z"/>
-                    </svg>
-                    Calculator
-                </h3>
-                <p>Quick mathematical calculations</p>
-                <input type="text" id="calc-input" class="tool-input" placeholder="e.g., 2+2*3">
-                <button class="tool-btn" onclick="calculate()">Calculate</button>
-                <div class="result" id="calc-result">Result will appear here</div>
-            </div>
-
-            <!-- Unit Converter -->
-            <div class="tool-card">
-                <h3>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/>
-                    </svg>
-                    Unit Converter
-                </h3>
-                <p>Convert between different units</p>
-                <div class="grid-row">
-                    <input type="number" id="unit-value" class="tool-input" placeholder="Value" value="1">
-                    <select id="unit-type" class="select-input" onchange="updateUnitOptions()">
-                        <option value="length">Length</option>
-                        <option value="weight">Weight</option>
-                        <option value="temperature">Temperature</option>
-                    </select>
-                </div>
-                <div class="grid-row">
-                    <select id="unit-from" class="select-input"></select>
-                    <select id="unit-to" class="select-input"></select>
-                </div>
-                <button class="tool-btn" onclick="convert()">Convert</button>
-                <div class="result" id="unit-result">Result will appear here</div>
-            </div>
-
-            <!-- Currency Converter -->
-            <div class="tool-card">
-                <h3>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                    </svg>
-                    Currency
-                </h3>
-                <p>Convert between currencies</p>
-                <input type="number" id="currency-amount" class="tool-input" placeholder="Amount" value="100">
-                <div class="grid-row">
-                    <select id="currency-from" class="select-input">
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="JPY">JPY</option>
-                        <option value="CAD">CAD</option>
-                        <option value="AUD">AUD</option>
-                        <option value="CHF">CHF</option>
-                        <option value="CNY">CNY</option>
-                    </select>
-                    <select id="currency-to" class="select-input">
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="GBP">GBP</option>
-                        <option value="JPY">JPY</option>
-                        <option value="CAD">CAD</option>
-                        <option value="AUD">AUD</option>
-                        <option value="CHF">CHF</option>
-                        <option value="CNY">CNY</option>
-                    </select>
-                </div>
-                <button class="tool-btn" onclick="convertCurrency()">Convert</button>
-                <div class="result" id="currency-result">Result will appear here</div>
-            </div>
-
-            <!-- Text Tools -->
-            <div class="tool-card">
-                <h3>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M2.5 4v3h5v12h3V7h5V4h-13zm19 5h-9v3h3v7h3v-7h3V9z"/>
-                    </svg>
-                    Word Counter
-                </h3>
-                <p>Count words, characters, etc.</p>
-                <textarea id="text-input" class="tool-input" rows="4" placeholder="Paste your text here..."></textarea>
-                <button class="tool-btn" onclick="countText()">Count</button>
-                <div class="result" id="text-result">Words: 0 | Characters: 0 | Lines: 0</div>
-            </div>
-        </div>
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; padding: 40px 20px;">
+    <h1 style="font-size: 32px; font-weight: 400; margin-bottom: 8px;">Tools</h1>
+    <p style="color: var(--text2); margin-bottom: 32px;">30+ built-in tools for your searches</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+        
+        <a href="/tools/calculator?expr=2%2B2" class="tool-card">
+            <div class="tool-icon">🔢</div>
+            <div class="tool-name">Calculator</div>
+            <div class="tool-desc">Math expressions</div>
+        </a>
+        
+        <a href="/tools/unit-converter" class="tool-card">
+            <div class="tool-icon">📐</div>
+            <div class="tool-name">Unit Converter</div>
+            <div class="tool-desc">Length, weight, temp</div>
+        </a>
+        
+        <a href="/tools/currency?from=USD&to=EUR&amount=100" class="tool-card">
+            <div class="tool-icon">💰</div>
+            <div class="tool-name">Currency</div>
+            <div class="tool-desc">Real-time exchange</div>
+        </a>
+        
+        <a href="/tools/weather?city=London" class="tool-card">
+            <div class="tool-icon">🌤️</div>
+            <div class="tool-name">Weather</div>
+            <div class="tool-desc">Current conditions</div>
+        </a>
+        
+        <a href="/tools/recipe?ingredients=chicken,rice" class="tool-card">
+            <div class="tool-icon">🍳</div>
+            <div class="tool-name">Recipe Finder</div>
+            <div class="tool-desc">Find recipes by ingredients</div>
+        </a>
+        
+        <a href="/tools/translate?text=hello&to=es" class="tool-card">
+            <div class="tool-icon">🌍</div>
+            <div class="tool-name">Translator</div>
+            <div class="tool-desc">100+ languages</div>
+        </a>
+        
+        <a href="/tools/code?lang=python&code=print(%22Hello%22)" class="tool-card">
+            <div class="tool-icon">💻</div>
+            <div class="tool-name">Code Runner</div>
+            <div class="tool-desc">Execute code snippets</div>
+        </a>
+        
+        <a href="/tools/qrcode?text=https://example.com" class="tool-card">
+            <div class="tool-icon">📱</div>
+            <div class="tool-name">QR Code</div>
+            <div class="tool-desc">Generate QR codes</div>
+        </a>
+        
+        <a href="/tools/password" class="tool-card">
+            <div class="tool-icon">🔐</div>
+            <div class="tool-name">Password Gen</div>
+            <div class="tool-desc">Secure passwords</div>
+        </a>
+        
+        <a href="/tools/uuid" class="tool-card">
+            <div class="tool-icon">🆔</div>
+            <div class="tool-name">UUID Generator</div>
+            <div class="tool-desc">Unique identifiers</div>
+        </a>
+        
+        <a href="/tools/color?hex=%23666eea" class="tool-card">
+            <div class="tool-icon">🎨</div>
+            <div class="tool-name">Color Picker</div>
+            <div class="tool-desc">HEX, RGB, HSL</div>
+        </a>
+        
+        <a href="/tools/url-shorten?url=https://example.com" class="tool-card">
+            <div class="tool-icon">🔗</div>
+            <div class="tool-name">URL Shortener</div>
+            <div class="tool-desc">Shorten long URLs</div>
+        </a>
+        
+        <a href="/tools/image-search?q=cats" class="tool-card">
+            <div class="tool-icon">🖼️</div>
+            <div class="tool-name">Image Search</div>
+            <div class="tool-desc">Search images</div>
+        </a>
+        
+        <a href="/tools/news?q=tech" class="tool-card">
+            <div class="tool-icon">📰</div>
+            <div class="tool-name">News</div>
+            <div class="tool-desc">Latest headlines</div>
+        </a>
+        
+        <a href="/tools/define?word=search" class="tool-card">
+            <div class="tool-icon">📖</div>
+            <div class="tool-name">Dictionary</div>
+            <div class="tool-desc">Word definitions</div>
+        </a>
+        
+        <a href="/tools/spellcheck?text=teh%20quick%20brown%20fox" class="tool-card">
+            <div class="tool-icon">✏️</div>
+            <div class="tool-name">Spell Check</div>
+            <div class="tool-desc">Fix spelling</div>
+        </a>
+        
+        <a href="/tools/summarize?url=https://example.com/article" class="tool-card">
+            <div class="tool-icon">📝</div>
+            <div class="tool-name">Summarizer</div>
+            <div class="tool-desc">AI webpage summary</div>
+        </a>
+        
+        <a href="/tools/lyrics?artist=Taylor%20Swift&song=Shake%20It%20Off" class="tool-card">
+            <div class="tool-icon">🎵</div>
+            <div class="tool-name">Lyrics Finder</div>
+            <div class="tool-desc">Song lyrics</div>
+        </a>
+        
+        <a href="/tools/movie?q=Inception" class="tool-card">
+            <div class="tool-icon">🎬</div>
+            <div class="tool-name">Movie Info</div>
+            <div class="tool-desc">Movies & TV shows</div>
+        </a>
+        
+        <a href="/tools/isbn?number=9780141439518" class="tool-card">
+            <div class="tool-icon">📚</div>
+            <div class="tool-name">Book Lookup</div>
+            <div class="tool-desc">ISBN database</div>
+        </a>
+        
+        <a href="/tools/zipcode?zip=10001" class="tool-card">
+            <div class="tool-icon">🏠</div>
+            <div class="tool-name">ZIP Lookup</div>
+            <div class="tool-desc">ZIP code info</div>
+        </a>
+        
+        <a href="/tools/time?city=Tokyo" class="tool-card">
+            <div class="tool-icon">⏰</div>
+            <div class="tool-name">World Clock</div>
+            <div class="tool-desc">Time zones</div>
+        </a>
+        
+        <a href="/tools/nutrition?food=apple" class="tool-card">
+            <div class="tool-icon">🍎</div>
+            <div class="tool-name">Nutrition</div>
+            <div class="tool-desc">Food facts</div>
+        </a>
+        
+        <a href="/tools/stock?symbol=AAPL" class="tool-card">
+            <div class="tool-icon">📈</div>
+            <div class="tool-name">Stock Quote</div>
+            <div class="tool-desc">Stock prices</div>
+        </a>
+        
+        <a href="/tools/sudoku" class="tool-card">
+            <div class="tool-icon">🧩</div>
+            <div class="tool-name">Sudoku</div>
+            <div class="tool-desc">Puzzle generator</div>
+        </a>
+        
+        <a href="/tools/cryptogram" class="tool-card">
+            <div class="tool-icon">🔒</div>
+            <div class="tool-name">Cryptogram</div>
+            <div class="tool-desc">Cipher puzzle</div>
+        </a>
+        
+        <a href="/tools/wordle" class="tool-card">
+            <div class="tool-icon">📝</div>
+            <div class="tool-name">Wordle</div>
+            <div class="tool-desc">Daily word game</div>
+        </a>
+        
+        <a href="/tools/bmi?weight=70&height=175" class="tool-card">
+            <div class="tool-icon">🏃</div>
+            <div class="tool-name">BMI Calculator</div>
+            <div class="tool-desc">Health metrics</div>
+        </a>
+        
+        <a href="/tools/calendar?year=2024&month=12" class="tool-card">
+            <div class="tool-icon">📅</div>
+            <div class="tool-name">Calendar</div>
+            <div class="tool-desc">Monthly calendar</div>
+        </a>
+        
+        <a href="/tools/emoji?q=happy" class="tool-card">
+            <div class="tool-icon">😀</div>
+            <div class="tool-name">Emoji Search</div>
+            <div class="tool-desc">Find emojis</div>
+        </a>
+        
+        <a href="/tools/ascii?q=hello" class="tool-card">
+            <div class="tool-icon">🔤</div>
+            <div class="tool-name">ASCII Art</div>
+            <div class="tool-desc">Text to ASCII</div>
+        </a>
+        
+        <a href="/tools/binary?text=hello" class="tool-card">
+            <div class="tool-icon">0️⃣</div>
+            <div class="tool-name">Binary Encoder</div>
+            <div class="tool-desc">Text to binary</div>
+        </a>
+        
     </div>
+</div>
 
-    <script>
-        // Unit conversion data
-        const units = {
-            length: ['m', 'km', 'cm', 'mm', 'mi', 'yd', 'ft', 'in'],
-            weight: ['kg', 'g', 'mg', 'lb', 'oz', 'ton'],
-            temperature: ['c', 'f', 'k']
-        };
-
-        // Initialize unit options
-        function updateUnitOptions() {
-            const type = document.getElementById('unit-type').value;
-            const fromSelect = document.getElementById('unit-from');
-            const toSelect = document.getElementById('unit-to');
-            
-            const unitList = units[type] || units.length;
-            
-            fromSelect.innerHTML = '';
-            toSelect.innerHTML = '';
-            
-            unitList.forEach(unit => {
-                fromSelect.innerHTML += `<option value="${unit}">${unit.toUpperCase()}</option>`;
-                toSelect.innerHTML += `<option value="${unit}">${unit.toUpperCase()}</option>`;
-            });
-            
-            if (unitList.length > 1) {
-                toSelect.selectedIndex = 1;
-            }
-        }
-
-        // Initialize on load
-        updateUnitOptions();
-
-        async function calculate() {
-            const expression = document.getElementById('calc-input').value;
-            const resultEl = document.getElementById('calc-result');
-            
-            try {
-                const response = await fetch('/tools/calculate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ expression })
-                });
-                const data = await response.json();
-                resultEl.textContent = data.success ? `= ${data.result}` : `Error: ${data.error}`;
-            } catch (e) {
-                resultEl.textContent = 'Error: Network issue';
-            }
-        }
-
-        async function convert() {
-            const value = document.getElementById('unit-value').value;
-            const from = document.getElementById('unit-from').value;
-            const to = document.getElementById('unit-to').value;
-            const type = document.getElementById('unit-type').value;
-            const resultEl = document.getElementById('unit-result');
-            
-            try {
-                const response = await fetch('/tools/convert', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ value, from, to, type })
-                });
-                const data = await response.json();
-                resultEl.textContent = data.success ? `${value} ${from.toUpperCase()} = ${data.result} ${to.toUpperCase()}` : `Error: ${data.error}`;
-            } catch (e) {
-                resultEl.textContent = 'Error: Network issue';
-            }
-        }
-
-        async function convertCurrency() {
-            const amount = document.getElementById('currency-amount').value;
-            const from = document.getElementById('currency-from').value;
-            const to = document.getElementById('currency-to').value;
-            const resultEl = document.getElementById('currency-result');
-            
-            try {
-                const response = await fetch('/tools/currency', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount, from, to })
-                });
-                const data = await response.json();
-                resultEl.textContent = data.success ? `${amount} ${from} = ${data.result} ${to}` : `Error: ${data.error}`;
-            } catch (e) {
-                resultEl.textContent = 'Error: Network issue';
-            }
-        }
-
-        function countText() {
-            const text = document.getElementById('text-input').value;
-            const resultEl = document.getElementById('text-result');
-            
-            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-            const chars = text.length;
-            const lines = text.split('\n').length;
-            
-            resultEl.textContent = `Words: ${words} | Characters: ${chars} | Lines: ${lines}`;
-        }
-
-        // Allow Enter key to trigger calculation
-        document.getElementById('calc-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') calculate();
-        });
-    </script>
-</body>
-</html>
+<style>
+.tool-card {
+    display: block;
+    padding: 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.15s;
+    text-decoration: none !important;
+}
+.tool-card:hover {
+    background: var(--bg3);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+.tool-icon { font-size: 32px; margin-bottom: 8px; }
+.tool-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.tool-desc { font-size: 13px; color: var(--text3); }
+</style>
+{% endblock %}

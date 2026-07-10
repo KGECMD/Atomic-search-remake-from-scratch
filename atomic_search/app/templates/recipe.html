@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Recipe Finder - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+    <h1 style="font-size: 28px; font-weight: 400; margin-bottom: 8px;">🍳 Recipe Finder</h1>
+    <p style="color: var(--text2); margin-bottom: 32px;">Find delicious recipes by ingredients you have</p>
+    
+    <form method="POST" style="margin-bottom: 32px;">
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Ingredients (comma separated)</label>
+            <input type="text" name="ingredients" class="settings-textarea" style="min-height: 60px;" placeholder="chicken, rice, garlic, onion..." value="{{ ingredients }}">
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Cuisine</label>
+                <select name="cuisine" class="settings-select" style="width: 100%;">
+                    <option value="">Any</option>
+                    <option value="italian">Italian</option>
+                    <option value="mexican">Mexican</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="indian">Indian</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="american">American</option>
+                    <option value="thai">Thai</option>
+                    <option value="french">French</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Time</label>
+                <select name="time" class="settings-select" style="width: 100%;">
+                    <option value="">Any</option>
+                    <option value="15">Under 15 min</option>
+                    <option value="30">Under 30 min</option>
+                    <option value="60">Under 1 hour</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="margin-top: 16px; padding: 12px 24px;">
+            🔍 Find Recipes
+        </button>
+    </form>
+    
+    {% if recipes %}
+    <div style="margin-top: 32px;">
+        <h2 style="font-size: 20px; margin-bottom: 16px;">Found {{ recipes|length }} recipes</h2>
+        
+        {% for recipe in recipes %}
+        <div class="card" style="margin-bottom: 16px;">
+            <h3 style="margin-bottom: 8px;">{{ recipe.name }}</h3>
+            <p style="color: var(--text2); margin-bottom: 12px;">{{ recipe.description }}</p>
+            <div style="display: flex; gap: 16px; font-size: 13px; color: var(--text3);">
+                <span>⏱️ {{ recipe.time }}</span>
+                <span>🍽️ {{ recipe.servings }}</span>
+                <span>{{ recipe.cuisine }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

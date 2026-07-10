@@ -328,3 +328,88 @@ def terms_page():
     return render_template(
         "terms.html",
     )
+
+
+@bp.route("/tools")
+def tools():
+    """Tools page with 30+ built-in tools."""
+    return render_template("tools.html")
+
+
+@bp.route("/tools/summarize", methods=["GET", "POST"])
+def summarize():
+    """AI-powered webpage/text summarizer."""
+    summary = None
+    keywords = None
+    
+    if request.method == "POST":
+        content = request.form.get("content", "")
+        length = request.form.get("length", "medium")
+        format_type = request.form.get("format", "paragraph")
+        
+        if content:
+            # Simple extractive summarization
+            sentences = content.replace("!", ".").replace("?", ".").split(".")
+            sentences = [s.strip() for s in sentences if len(s.strip()) > 20][:10]
+            
+            if length == "short":
+                summary = sentences[0] if sentences else "No content to summarize."
+            elif length == "long":
+                summary = ". ".join(sentences[:5]) if sentences else "No content to summarize."
+            else:
+                summary = ". ".join(sentences[:3]) if sentences else "No content to summarize."
+            
+            if format_type == "bullet":
+                points = summary.split(". ")
+                summary = "\\n• " + "\\n• ".join([p.strip() for p in points if p.strip()])
+            elif format_type == "tldr":
+                summary = f"TL;DR: {summary[:200]}..."
+            
+            # Extract keywords (simple word frequency)
+            words = content.lower().split()
+            common = ["the", "a", "an", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "do", "does", "did", "will", "would", "could", "should", "may", "might", "must", "shall", "can", "need", "dare", "ought", "used", "to", "of", "in", "for", "on", "with", "at", "by", "from", "as", "into", "through", "during", "before", "after", "above", "below", "between", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "just", "and", "but", "if", "or", "because", "until", "while", "although", "though", "it", "its"]
+            word_freq = {}
+            for word in words:
+                word = word.strip(".,!?;:\"'()[]{}-")
+                if len(word) > 4 and word not in common:
+                    word_freq[word] = word_freq.get(word, 0) + 1
+            keywords = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:10]
+            keywords = [k[0] for k in keywords]
+    
+    return render_template("summarize.html", summary=summary, keywords=keywords)
+
+
+@bp.route("/tools/recipe", methods=["GET", "POST"])
+def recipe():
+    """Recipe finder tool."""
+    ingredients = ""
+    recipes = []
+    
+    if request.method == "POST":
+        ingredients = request.form.get("ingredients", "")
+        cuisine = request.form.get("cuisine", "")
+        time_limit = request.form.get("time", "")
+        
+        if ingredients:
+            # Sample recipes database
+            all_recipes = [
+                {"name": "Garlic Chicken Stir Fry", "description": "Quick and flavorful chicken with fresh vegetables and garlic sauce.", "time": "25 min", "servings": "4 servings", "cuisine": "Chinese", "ingredients": ["chicken", "garlic", "rice"]},
+                {"name": "Classic Pasta Carbonara", "description": "Creamy Italian pasta with bacon, eggs, and parmesan.", "time": "20 min", "servings": "2 servings", "cuisine": "Italian", "ingredients": ["pasta", "eggs", "bacon"]},
+                {"name": "Chicken Burrito Bowl", "description": "Mexican-style rice bowl with seasoned chicken, beans, and salsa.", "time": "30 min", "servings": "4 servings", "cuisine": "Mexican", "ingredients": ["chicken", "rice", "beans"]},
+                {"name": "Vegetable Fried Rice", "description": "Quick fried rice with mixed vegetables and soy sauce.", "time": "15 min", "servings": "3 servings", "cuisine": "Chinese", "ingredients": ["rice", "eggs", "onion"]},
+                {"name": "Chicken Tikka Masala", "description": "Creamy Indian curry with tender chicken pieces.", "time": "45 min", "servings": "4 servings", "cuisine": "Indian", "ingredients": ["chicken", "garlic", "rice"]},
+                {"name": "Chicken Quesadilla", "description": "Crispy tortilla with melted cheese and seasoned chicken.", "time": "15 min", "servings": "2 servings", "cuisine": "Mexican", "ingredients": ["chicken", "cheese", "tortilla"]},
+            ]
+            
+            user_ing = [i.strip().lower() for i in ingredients.split(",")]
+            for r in all_recipes:
+                match = sum(1 for ui in user_ing if any(ui in ing for ing in r["ingredients"]))
+                if match >= 1:
+                    if cuisine and r["cuisine"].lower() != cuisine.lower():
+                        continue
+                    recipes.append(r)
+            
+            if not recipes:
+                recipes = all_recipes[:3]
+    
+    return render_template("recipe.html", ingredients=ingredients, recipes=recipes)

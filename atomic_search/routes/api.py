@@ -288,5 +288,6 @@ def info():
             "trending": "/api/v1/trending",
             "vote": "/api/v1/vote",
             "health": "/api/v1/health",
+            "stats": "/api/v1/stats",
         },
     })
