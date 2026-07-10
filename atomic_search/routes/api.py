@@ -291,3 +291,21 @@ def info():
             "stats": "/api/v1/stats",
         },
     })
+
+
+@bp.route("/crawl", methods=["POST"])
+def crawl():
+    """Trigger web crawling."""
+    data = request.get_json() or {}
+    url = data.get("url", "https://example.com")
+    max_pages = data.get("max_pages", 10)
+    
+    from atomic_search.crawler.web_crawler import WebCrawler
+    crawler = WebCrawler(max_pages=max_pages)
+    results = crawler.crawl(url)
+    
+    return jsonify({
+        "status": "completed",
+        "pages_crawled": len(results),
+        "results": results[:5]
+    })

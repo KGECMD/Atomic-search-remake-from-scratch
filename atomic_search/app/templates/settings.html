@@ -2,203 +2,202 @@
 
 {% block title %}Settings - {{ config.APP_NAME }}{% endblock %}
 
+{% block extra_head %}
+<style>
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 16px;
+}
+.theme-swatch {
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+.theme-swatch:hover {
+    transform: scale(1.05);
+    border-color: var(--accent);
+}
+.theme-swatch.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent);
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="settings-wrap">
-    <h1 class="settings-header">Settings</h1>
-    
+<div style="max-width: 900px; margin: 0 auto; padding: 40px 20px;">
+    <h1 style="font-size: 2rem; font-weight: 600; margin-bottom: 8px;">Settings</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 32px;">Customize your search experience</p>
+
     <form method="POST">
-        <div class="settings-group">
-            <div class="settings-group-name">Theme</div>
+        <!-- Theme Selection -->
+        <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🎨 Theme (82 themes)</h2>
             
-            <div class="settings-item">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Color Theme</div>
-                    <div class="settings-item-sub">Choose from 67 themes (Dracula, Nord, Gruvbox, etc.)</div>
+            <div class="theme-grid">
+                <div class="theme-swatch selected" data-theme="dark" onclick="selectTheme(this)">
+                    <div style="background: #0a0a1a; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Dark</strong>
                 </div>
-                <div class="settings-item-ctrl">
-                    <select name="theme" class="settings-select" id="theme-select" onchange="previewTheme(this.value)">
-                        <option value="dark">Dark (Default)</option>
-                        <option value="light">Light</option>
-                        <option value="dracula">Dracula</option>
-                        <option value="nord">Nord</option>
-                        <option value="nord2">Nord 2</option>
-                        <option value="nord-light">Nord Light</option>
-                        <option value="monokai">Monokai</option>
-                        <option value="monokai2">Monokai 2</option>
-                        <option value="monokai-pro">Monokai Pro</option>
-                        <option value="gruvbox-dark">Gruvbox Dark</option>
-                        <option value="gruvbox-light">Gruvbox Light</option>
-                        <option value="gruvbox-medium">Gruvbox Medium</option>
-                        <option value="catppuccin">Catppuccin</option>
-                        <option value="tokyo-night">Tokyo Night</option>
-                        <option value="ayu-dark">Ayu Dark</option>
-                        <option value="ayu-light">Ayu Light</option>
-                        <option value="deep-ocean">Deep Ocean</option>
-                        <option value="carbon">Carbon</option>
-                        <option value="dracula-soft">Dracula Soft</option>
-                        <option value="dracula-official">Dracula Official</option>
-                        <option value="dracula2">Dracula 2</option>
-                        <option value="dracula-acid">Dracula Acid</option>
-                        <option value="rose-pine">Rose Pine</option>
-                        <option value="night-owl">Night Owl</option>
-                        <option value="shades-purple">Shades Purple</option>
-                        <option value="horizon-dark">Horizon Dark</option>
-                        <option value="palenight">Palenight</option>
-                        <option value="palenight2">Palenight 2</option>
-                        <option value="synthwave">Synthwave</option>
-                        <option value="cyberpunk">Cyberpunk</option>
-                        <option value="matrix">Matrix</option>
-                        <option value="forest">Forest</option>
-                        <option value="ocean-blue">Ocean Blue</option>
-                        <option value="sunset">Sunset</option>
-                        <option value="navy">Navy</option>
-                        <option value="rust">Rust</option>
-                        <option value="cobalt">Cobalt</option>
-                        <option value="vscode-dark">VS Code Dark</option>
-                        <option value="atom-dark">Atom Dark</option>
-                        <option value="zenburn">Zenburn</option>
-                        <option value="flatui-dark">FlatUI Dark</option>
-                        <option value="flatui-light">FlatUI Light</option>
-                        <option value="tomorrow-night">Tomorrow Night</option>
-                        <option value="hc-dark">High Contrast Dark</option>
-                        <option value="hc-light">High Contrast Light</option>
-                        <option value="ir-black">IR Black</option>
-                        <option value="spacegray">Spacegray</option>
-                        <option value="base16-ocean">Base16 Ocean</option>
-                        <option value="base16-tomorrow">Base16 Tomorrow</option>
-                        <option value="adobe-dark">Adobe Dark</option>
-                        <option value="adobe-light">Adobe Light</option>
-                        <option value="slack-dark">Slack Dark</option>
-                        <option value="slack-light">Slack Light</option>
-                        <option value="notion-dark">Notion Dark</option>
-                        <option value="notion-light">Notion Light</option>
-                        <option value="paper-dark">Paper Dark</option>
-                        <option value="github-dark">GitHub Dark</option>
-                        <option value="github-dimmed">GitHub Dimmed</option>
-                        <option value="github-light">GitHub Light</option>
-                        <option value="material-ocean">Material Ocean</option>
-                        <option value="one-dark">One Dark</option>
-                        <option value="one-light">One Light</option>
-                        <option value="snazzy">Snazzy</option>
-                        <option value="seti">Seti</option>
-                        <option value="solarized-dark">Solarized Dark</option>
-                        <option value="solarized-light">Solarized Light</option>
-                    </select>
+                <div class="theme-swatch" data-theme="light" onclick="selectTheme(this)">
+                    <div style="background: #ffffff; height: 40px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #ddd;"></div>
+                    <strong>Light</strong>
                 </div>
+                <div class="theme-swatch" data-theme="dracula" onclick="selectTheme(this)">
+                    <div style="background: #282a36; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Dracula</strong>
+                </div>
+                <div class="theme-swatch" data-theme="nord" onclick="selectTheme(this)">
+                    <div style="background: #2e3440; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Nord</strong>
+                </div>
+                <div class="theme-swatch" data-theme="monokai" onclick="selectTheme(this)">
+                    <div style="background: #272822; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Monokai</strong>
+                </div>
+                <div class="theme-swatch" data-theme="gruvbox-dark" onclick="selectTheme(this)">
+                    <div style="background: #282828; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Gruvbox</strong>
+                </div>
+                <div class="theme-swatch" data-theme="catppuccin" onclick="selectTheme(this)">
+                    <div style="background: #1e1e2e; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Catppuccin</strong>
+                </div>
+                <div class="theme-swatch" data-theme="tokyo-night" onclick="selectTheme(this)">
+                    <div style="background: #1a1b26; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Tokyo Night</strong>
+                </div>
+                <div class="theme-swatch" data-theme="synthwave" onclick="selectTheme(this)">
+                    <div style="background: linear-gradient(135deg, #1a0a2e, #ff6ec7); height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Synthwave</strong>
+                </div>
+                <div class="theme-swatch" data-theme="matrix" onclick="selectTheme(this)">
+                    <div style="background: #000000; height: 40px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #003300;"></div>
+                    <strong>Matrix</strong>
+                </div>
+                <div class="theme-swatch" data-theme="cyberpunk" onclick="selectTheme(this)">
+                    <div style="background: linear-gradient(135deg, #0d0221, #ff2a6d); height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Cyberpunk</strong>
+                </div>
+                <div class="theme-swatch" data-theme="forest" onclick="selectTheme(this)">
+                    <div style="background: #1a1f1a; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Forest</strong>
+                </div>
+                <div class="theme-swatch" data-theme="ocean-blue" onclick="selectTheme(this)">
+                    <div style="background: #0a1628; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Ocean Blue</strong>
+                </div>
+                <div class="theme-swatch" data-theme="sunset" onclick="selectTheme(this)">
+                    <div style="background: linear-gradient(135deg, #2d132c, #fd79a8); height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Sunset</strong>
+                </div>
+                <div class="theme-swatch" data-theme="galaxy" onclick="selectTheme(this)">
+                    <div style="background: linear-gradient(135deg, #0a0a1a, #8b5cf6); height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Galaxy</strong>
+                </div>
+                <div class="theme-swatch" data-theme="midnight" onclick="selectTheme(this)">
+                    <div style="background: #000010; height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Midnight</strong>
+                </div>
+                <div class="theme-swatch" data-theme="peach" onclick="selectTheme(this)">
+                    <div style="background: linear-gradient(135deg, #2d1b2e, #ff9f9f); height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Peach</strong>
+                </div>
+                <div class="theme-swatch" data-theme="lavender" onclick="selectTheme(this)">
+                    <div style="background: #e6e6fa; height: 40px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #dcd0ff;"></div>
+                    <strong>Lavender</strong>
+                </div>
+                <div class="theme-swatch" data-theme="mint" onclick="selectTheme(this)">
+                    <div style="background: #f0fff4; height: 40px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #d0ffee;"></div>
+                    <strong>Mint</strong>
+                </div>
+                <div class="theme-swatch" data-theme="rose-gold" onclick="selectTheme(this)">
+                    <div style="background: linear-gradient(135deg, #1a1412, #b76e79); height: 40px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <strong>Rose Gold</strong>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); margin-top: 16px; font-size: 13px;">
+                Plus 62 more themes: Ayu, Horizon, Palenight, Gruvbox Light, Solarized, GitHub, VS Code, Atom, Zenburn, FlatUI, Tomorrow Night, Night Owl, Shades Purple, Cobalt, Rust, Paper, Notion, Slack, Adobe, Spacegray, Base16, Snazzy, Seti, Berry, Spring, Honey, Coral, Teal, Arctic, Copper, Emerald, Crimson, Forest Night, Sunset Dark, HC Dark/Light, IR Black, Dracula Soft/Official/Acid, Nord 2/Light, Monokai Pro/2, One Dark/Light, Palenight 2, GitHub Dimmed/Light, Material Ocean, and more!
+            </p>
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🔒 Privacy</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <div>
+                    <strong>Block Trackers</strong>
+                    <p style="font-size: 13px; color: var(--text-muted);">Prevent tracking scripts</p>
+                </div>
+                <label class="switch"><input type="checkbox" name="block_trackers" checked><span class="slider"></span></label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <div>
+                    <strong>Block Ads</strong>
+                    <p style="font-size: 13px; color: var(--text-muted);">Hide advertisements in results</p>
+                </div>
+                <label class="switch"><input type="checkbox" name="block_ads" checked><span class="slider"></span></label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0;">
+                <div>
+                    <strong>Anonymous Mode</strong>
+                    <p style="font-size: 13px; color: var(--text-muted);">Extra privacy for sensitive searches</p>
+                </div>
+                <label class="switch"><input type="checkbox" name="anonymous"><span class="slider"></span></label>
             </div>
         </div>
-        
-        <div class="settings-group">
-            <div class="settings-group-name">Privacy & Security</div>
-            
-            <div class="settings-item">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Block trackers</div>
-                    <div class="settings-item-sub">Prevent tracking scripts</div>
-                </div>
-                <div class="settings-item-ctrl">
-                    <label class="settings-toggle">
-                        <input type="checkbox" name="block_trackers" checked>
-                        <span class="settings-toggle-track"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="settings-item">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Block ads</div>
-                    <div class="settings-item-sub">Hide advertisements in results</div>
-                </div>
-                <div class="settings-item-ctrl">
-                    <label class="settings-toggle">
-                        <input type="checkbox" name="block_ads" checked>
-                        <span class="settings-toggle-track"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="settings-item">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Anonymous mode</div>
-                    <div class="settings-item-sub">Extra privacy for sensitive searches</div>
-                </div>
-                <div class="settings-item-ctrl">
-                    <label class="settings-toggle">
-                        <input type="checkbox" name="anonymous_mode">
-                        <span class="settings-toggle-track"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-        
-        <div class="settings-group">
-            <div class="settings-group-name">Custom CSS</div>
-            
-            <div class="settings-item" style="flex-direction: column; align-items: stretch;">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Your custom styles</div>
-                    <div class="settings-item-sub">Add your own CSS to customize the look</div>
-                </div>
-                <div style="margin-top: 12px; width: 100%;">
-                    <textarea name="custom_css" class="settings-textarea" placeholder="/* Example: */
+
+        <!-- Custom CSS -->
+        <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🎨 Custom CSS</h2>
+            <textarea name="custom_css" class="search-input" style="width: 100%; min-height: 150px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-family: 'Monaco', 'Menlo', monospace;" placeholder="/* Your custom CSS here */
 body {
     font-family: 'Inter', sans-serif;
 }
 .search-input {
     border-radius: 24px;
 }"></textarea>
+        </div>
+
+        <!-- Own Server -->
+        <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🖥️ Own Server</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>Use own server</strong>
+                    <p style="font-size: 13px; color: var(--text-muted);">Connect to your own search instance</p>
                 </div>
+                <label class="switch"><input type="checkbox" name="use_own_server"><span class="slider"></span></label>
             </div>
         </div>
-        
-        <div class="settings-group">
-            <div class="settings-group-name">Own Server</div>
-            
-            <div class="settings-item">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Use own server</div>
-                    <div class="settings-item-sub">Connect to your own search instance</div>
-                </div>
-                <div class="settings-item-ctrl">
-                    <label class="settings-toggle">
-                        <input type="checkbox" name="use_own_server" id="use-own-server">
-                        <span class="settings-toggle-track"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="settings-item" id="server-config" style="display: none; flex-direction: column; align-items: stretch;">
-                <div class="settings-item-text">
-                    <div class="settings-item-name">Server URL</div>
-                    <div class="settings-item-sub">URL of your search server</div>
-                </div>
-                <div style="margin-top: 12px;">
-                    <input type="url" name="server_url" class="settings-select" style="width: 100%;" placeholder="https://search.example.com">
-                </div>
-            </div>
-        </div>
-        
-        <div class="settings-actions">
-            <a href="{{ url_for('main.index') }}" class="btn">Cancel</a>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+
+        <div style="display: flex; gap: 12px;">
+            <a href="/" class="btn" style="padding: 12px 24px;">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="padding: 12px 24px;">Save Changes</button>
         </div>
     </form>
 </div>
 
-<script>
-function previewTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-}
+<style>
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; inset: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 26px; transition: 0.3s; }
+.slider::before { content: ""; position: absolute; height: 20px; width: 20px; left: 2px; bottom: 2px; background: var(--text-muted); border-radius: 50%; transition: 0.3s; }
+input:checked + .slider { background: var(--accent); border-color: var(--accent); }
+input:checked + .slider::before { transform: translateX(24px); background: white; }
+</style>
 
-document.addEventListener('DOMContentLoaded', function() {
-    var useOwnServer = document.getElementById('use-own-server');
-    var serverConfig = document.getElementById('server-config');
-    
-    function toggleServerConfig() {
-        serverConfig.style.display = useOwnServer.checked ? 'flex' : 'none';
-    }
-    
-    useOwnServer.addEventListener('change', toggleServerConfig);
-});
+<script>
+function selectTheme(el) {
+    document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    const theme = el.dataset.theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    document.cookie = 'theme=' + theme + ';path=/;max-age=31536000';
+}
 </script>
 {% endblock %}

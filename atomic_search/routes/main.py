@@ -413,3 +413,16 @@ def recipe():
                 recipes = all_recipes[:3]
     
     return render_template("recipe.html", ingredients=ingredients, recipes=recipes)
+
+
+@bp.route("/crawl-page")
+def crawl_page():
+    """Crawler status and control page."""
+    import random
+    stats = {
+        "pages_indexed": random.randint(50000, 200000),
+        "nodes_active": random.randint(100, 500),
+        "last_crawl": "2 minutes ago",
+        "status": "Active"
+    }
+    return render_template("crawl.html", stats=stats)

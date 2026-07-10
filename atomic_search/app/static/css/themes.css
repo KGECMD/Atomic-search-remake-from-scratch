@@ -127,3 +127,40 @@
 [data-theme="dracula2"] { --bg: #282a36; --bg2: #44475a; --bg3: #6272a4; --text: #f8f8f2; --text2: #bd93f9; --text3: #6272a4; --border: #44475a; --accent: #bd93f9; --accent2: #ff79c6; --link: #8be9fd; }
 /* Monokai2 */
 [data-theme="monokai2"] { --bg: #272822; --bg2: #3e3d32; --bg3: #75715e; --text: #f8f8f2; --text2: #a6e22e; --text3: #75715e; --border: #3e3d32; --accent: #a6e22e; --accent2: #ae81ff; --link: #66d9ef; }
+
+/* Peach */
+[data-theme="peach"] { --bg: #2d1b2e; --bg2: #3d2b3e; --bg3: #4d3b4e; --text: #fff5f5; --text2: #ffcccb; --text3: #ffaaaa; --border: #4d3b4e; --accent: #ff9f9f; --accent2: #ff7f7f; --link: #ffcccc; }
+/* Peach Light */
+[data-theme="peach-light"] { --bg: #fff5f5; --bg2: #ffeeee; --bg3: #ffe0e0; --text: #2d1b2e; --text2: #4d3b4e; --text3: #6d5b6e; --border: #ffe0e0; --accent: #ff9f9f; --accent2: #ff7f7f; --link: #ff5555; }
+/* Berry */
+[data-theme="berry"] { --bg: #1a0a1a; --bg2: #2a1428; --bg3: #3a1e38; --text: #f5e0f5; --text2: #e0c0e0; --text3: #c0a0c0; --border: #3a1e38; --accent: #da70d6; --accent2: #ff00ff; --link: #ff88ff; }
+/* Spring */
+[data-theme="spring"] { --bg: #f0fff0; --bg2: #e8ffe8; --bg3: #d8f0d8; --text: #1a3a1a; --text2: #2a5a2a; --text3: #4a7a4a; --border: #d8f0d8; --accent: #90ee90; --accent2: #32cd32; --link: #228b22; }
+/* Lavender */
+[data-theme="lavender"] { --bg: #e6e6fa; --bg2: #dcd0ff; --bg3: #c8b8ff; --text: #2a1a4a; --text2: #3a2a6a; --text3: #5a4a8a; --border: #c8b8ff; --accent: #9370db; --accent2: #8a2be2; --link: #7b68ee; }
+/* Honey */
+[data-theme="honey"] { --bg: #fff8dc; --bg2: #fff0c0; --bg3: #ffe8a0; --text: #4a3a1a; --text2: #6a5a3a; --text3: #8a7a5a; --border: #ffe8a0; --accent: #daa520; --accent2: #ffa500; --link: #cc8800; }
+/* Mint */
+[data-theme="mint"] { --bg: #f0fff4; --bg2: #d0ffee; --bg3: #b0ffdd; --text: #1a3a2a; --text2: #2a5a4a; --text3: #4a7a6a; --border: #b0ffdd; --accent: #3cb371; --accent2: #2e8b57; --link: #20b2aa; }
+/* Coral */
+[data-theme="coral"] { --bg: #1a1a1a; --bg2: #2a1a1a; --bg3: #3a2020; --text: #fff0f0; --text2: #ffd0d0; --text3: #ffb0b0; --border: #3a2020; --accent: #ff6f61; --accent2: #ff4500; --link: #ff7f7e; }
+/* Teal Dark */
+[data-theme="teal-dark"] { --bg: #001a1a; --bg2: #002a2a; --bg3: #003a3a; --text: #e0f0f0; --text2: #a0d0d0; --text3: #70b0b0; --border: #003a3a; --accent: #00ced1; --accent2: #20b2aa; --link: #48d1cc; }
+/* Rose Gold */
+[data-theme="rose-gold"] { --bg: #1a1412; --bg2: #2a2420; --bg3: #3a3430; --text: #fdf5f0; --text2: #e8d0c8; --text3: #d0b0a0; --border: #3a3430; --accent: #b76e79; --accent2: #daa0a0; --link: #e8b0b0; }
+/* Galaxy */
+[data-theme="galaxy"] { --bg: #0a0a1a; --bg2: #12122a; --bg3: #1a1a3a; --text: #e0e0ff; --text2: #b0b0ff; --text3: #8080ff; --border: #1a1a3a; --accent: #6366f1; --accent2: #8b5cf6; --link: #a0a0ff; }
+/* Forest Night */
+[data-theme="forest-night"] { --bg: #0a1a0a; --bg2: #142a14; --bg3: #1e3a1e; --text: #e0ffe0; --text2: #a0d0a0; --text3: #70b070; --border: #1e3a1e; --accent: #228b22; --accent2: #32cd32; --link: #90ee90; }
+/* Sunset Dark */
+[data-theme="sunset-dark"] { --bg: #1a0a0a; --bg2: #2a1414; --bg3: #3a1e1e; --text: #fff0e0; --text2: #ffc0a0; --text3: #ff9060; --border: #3a1e1e; --accent: #ff6347; --accent2: #ff4500; --link: #ffa07a; }
+/* Arctic */
+[data-theme="arctic"] { --bg: #f0f8ff; --bg2: #d0e8ff; --bg3: #b0d8ff; --text: #0a1a2a; --text2: #2a3a4a; --text3: #4a5a6a; --border: #b0d8ff; --accent: #87ceeb; --accent2: #4682b4; --link: #4169e1; }
+/* Copper */
+[data-theme="copper"] { --bg: #1a1410; --bg2: #2a2018; --bg3: #3a2c20; --text: #f5e8d8; --text2: #d8c0a8; --text3: #b09878; --border: #3a2c20; --accent: #b87333; --accent2: #da9050; --link: #cd853f; }
+/* Midnight */
+[data-theme="midnight"] { --bg: #000010; --bg2: #000020; --bg3: #000030; --text: #e0e0ff; --text2: #a0a0ff; --text3: #7070ff; --border: #000030; --accent: #4169e1; --accent2: #6a5acd; --link: #9370db; }
+/* Crimson */
+[data-theme="crimson"] { --bg: #1a0505; --bg2: #2a0a0a; --bg3: #3a0f0f; --text: #fff0f0; --text2: #ffc0c0; --text3: #ff9090; --border: #3a0f0f; --accent: #dc143c; --accent2: #ff1493; --link: #ff6b6b; }
+/* Emerald */
+[data-theme="emerald"] { --bg: #0a1a0f; --bg2: #142a18; --bg3: #1e3a22; --text: #e0ffe8; --text2: #a0d0b0; --text3: #70b088; --border: #1e3a22; --accent: #50c878; --accent2: #3cb371; --link: #98fb98; }
