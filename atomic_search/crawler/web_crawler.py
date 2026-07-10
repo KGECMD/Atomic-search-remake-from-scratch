@@ -18,6 +18,7 @@ import ssl
 
 import aiohttp
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 logger = logging.getLogger(__name__)
 
@@ -39,9 +40,15 @@ class WebCrawler:
         self.max_pages = max_pages
         self.delay = delay
         self.timeout = timeout
-        self.user_agent = user_agent or (
-            "AtomicSearch/1.0 (Privacy-First Search Engine)"
-        )
+        
+        # Try to use fake-useragent for realistic User-Agent
+        try:
+            ua = UserAgent()
+            self.user_agent = user_agent or ua.random
+        except Exception:
+            self.user_agent = user_agent or (
+                "Mozilla/5.0 (compatible; AtomicSearchBot/1.0; +https://github.com/atomic-search)"
+            )
         
         self._lock = threading.Lock()
         self._crawled_urls: Set[str] = set()

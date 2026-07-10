@@ -31,32 +31,23 @@ class CLI:
         if args is None:
             args = sys.argv[1:]
 
-        parser = argparse.ArgumentParser(
-            description="Atomic Search CLI",
-            prog="atomic-search"
-        )
-
-        parser.add_argument(
-            "command",
-            choices=list(cls.COMMANDS.keys()) + ["help"],
-            help="Command to run"
-        )
-
-        parser.add_argument(
-            "args",
-            nargs="*",
-            help="Arguments for command"
-        )
-
-        parsed = parser.parse_args(args)
-
-        if parsed.command == "help":
+        if not args:
             cls.print_help()
             return
 
-        command = cls.COMMANDS.get(parsed.command)
+        command_name = args[0]
+        command_args = args[1:]
+
+        if command_name == "help":
+            cls.print_help()
+            return
+
+        command = cls.COMMANDS.get(command_name)
         if command:
-            command["func"](parsed.args)
+            command["func"](command_args)
+        else:
+            print(f"Unknown command: {command_name}")
+            cls.print_help()
 
     @classmethod
     def print_help(cls):
@@ -163,6 +154,92 @@ def cmd_version(args):
     """Show version."""
     from atomic_search.config import config
     print(f"Atomic Search v{config.version}")
+
+
+@CLI.command("crawl", "Crawl URLs for indexing")
+def cmd_crawl(args):
+    """Crawl URLs and index them."""
+    import asyncio
+    import shlex
+    from atomic_search.crawler.web_crawler import WebCrawler
+    
+    # Parse arguments manually
+    max_pages = 100
+    max_depth = 2
+    delay = 1.0
+    urls = []
+    
+    for arg in args:
+        if arg.startswith("--max-pages="):
+            max_pages = int(arg.split("=")[1])
+        elif arg.startswith("--max-depth="):
+            max_depth = int(arg.split("=")[1])
+        elif arg.startswith("--delay="):
+            delay = float(arg.split("=")[1])
+        elif arg.startswith("http"):
+            urls.append(arg)
+    
+    if not urls:
+        urls = ["https://example.com"]
+    
+    async def run_crawl():
+        crawler = WebCrawler(
+            max_pages=max_pages,
+            max_depth=max_depth,
+            delay=delay,
+        )
+        
+        print(f"Starting crawl of {len(urls)} URL(s)...")
+        print(f"Max pages: {max_pages}, Max depth: {max_depth}")
+        
+        try:
+            result = await crawler.crawl(urls)
+            print(f"\nCrawl completed!")
+            print(f"  Pages crawled: {result['crawled']}")
+            print(f"  URLs queued: {result.get('queued', 0)}")
+        except Exception as e:
+            print(f"Crawl error: {e}")
+        finally:
+            await crawler.close()
+    
+    asyncio.run(run_crawl())
+
+
+@CLI.command("crawl-stats", "Show crawler statistics")
+def cmd_crawl_stats(args):
+    """Show crawler statistics."""
+    from atomic_search.crawler.web_crawler import web_crawler
+    
+    stats = web_crawler.get_stats()
+    print("Crawler Statistics:")
+    print(f"  Total pages: {stats.get('total_pages', 0)}")
+    print(f"  Indexed words: {stats.get('indexed_words', 0)}")
+
+
+@CLI.command("search-index", "Search the crawl index")
+def cmd_search_index(args):
+    """Search the crawl index."""
+    import asyncio
+    from atomic_search.crawler.web_crawler import web_crawler
+    
+    if not args:
+        print("Usage: atomic-search search-index <query>")
+        return
+    
+    query = " ".join(args)
+    results = web_crawler.search_index(query)
+    
+    if not results:
+        print(f"No results found for '{query}'")
+        return
+    
+    print(f"Found {len(results)} result(s) for '{query}':\n")
+    for i, result in enumerate(results, 1):
+        print(f"{i}. {result['title']}")
+        print(f"   {result['url']}")
+        if result.get('description'):
+            print(f"   {result['description'][:100]}...")
+        print()
 
 
 @CLI.command("export-data", "Export user data")
