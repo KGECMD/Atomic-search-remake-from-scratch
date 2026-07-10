@@ -1,0 +1,17 @@
+# CODEOWNERS for Atomic Search
+
+# Default owners
+* @atomic-search/maintainers
+
+# Core modules
+/atomic_search/app/ @atomic-search/core-team
+/atomic_search/search/ @atomic-search/search-team
+/atomic_search/utils/ @atomic-search/core-team
+
+# Infrastructure
+/.github/workflows/ @atomic-search/devops
+/docker* @atomic-search/devops
+/kubernetes/ @atomic-search/devops
+
+# Security sensitive
+/atomic_search/app/routes/admin.py @atomic-search/security

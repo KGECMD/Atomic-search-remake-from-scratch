@@ -1,0 +1,45 @@
+# Default values for atomic-search.
+
+replicaCount: 2
+
+image:
+  repository: atomicsearch/atomic-search
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 5000
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: search.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: atomic-search-tls
+      hosts:
+        - search.example.com
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: "standard"
+
+config:
+  app_name: "Atomic Search"
+  theme: "dark"
+  enable_logging: false

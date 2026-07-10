@@ -1,0 +1,13 @@
+apiVersion: v2
+name: atomic-search
+description: Privacy-first search engine
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - search
+  - privacy
+  - privacy-first
+maintainers:
+  - name: Atomic Search Team
+    email: team@atomic-search.dev
