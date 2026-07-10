@@ -23,3 +23,5 @@
   warnings.warn(
 127.0.0.1 - - [10/Jul/2026 16:51:43] "GET /api/v1/search?q=python HTTP/1.1" 200 -
 127.0.0.1 - - [10/Jul/2026 16:51:43] "[32mGET /admin HTTP/1.1[0m" 308 -
+127.0.0.1 - - [10/Jul/2026 16:52:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 16:52:28] "GET /api/v1/search?q=test HTTP/1.1" 200 -

@@ -85,6 +85,15 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
                 response.headers[key] = value
         return response
 
+    # Health check endpoint
+    @app.route("/health")
+    def health_check():
+        return jsonify({
+            "status": "healthy",
+            "service": "atomic-search",
+            "version": "1.0.0"
+        })
+
     # Register blueprints
     from atomic_search.routes.main import bp as main_bp
     from atomic_search.routes.api import bp as api_bp
