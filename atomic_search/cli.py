@@ -153,7 +153,7 @@ def cmd_gen_key(args):
 def cmd_version(args):
     """Show version."""
     from atomic_search.config import config
-    print(f"Atomic Search v{config.version}")
+    print(f"Atomic Search v{config.APP_VERSION}")
 
 
 @CLI.command("crawl", "Crawl URLs for indexing")
