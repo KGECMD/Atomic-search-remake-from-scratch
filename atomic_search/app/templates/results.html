@@ -16,13 +16,13 @@
     transition: all 0.2s;
 }
 .result-card:hover { border-color: var(--accent); transform: translateX(4px); }
-.result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
 .result-favicon { width: 20px; height: 20px; border-radius: 4px; }
 .result-title { font-size: 1.1rem; font-weight: 500; color: var(--accent); text-decoration: none; }
 .result-title:hover { text-decoration: underline; }
 .result-url { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .result-snippet { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
-.result-meta { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted); }
+.result-meta { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
 .result-badge { background: var(--bg-card); padding: 4px 8px; border-radius: 4px; }
 .ai-result { border-left: 3px solid var(--accent); }
 .ai-badge { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
@@ -39,37 +39,31 @@
 {% block content %}
 <div class="results-container">
     <div class="query-header">
-        <h1>About {{ results|length }} results for: <strong>{{ query }}</strong></h1>
+        <h1>Search results for: <strong>{{ query }}</strong></h1>
     </div>
     
-    {% if results %}
-        {% for result in results %}
-        <div class="result-card {% if result.get('ai_summary') %}ai-result{% endif %}">
+    {% if results and results.results %}
+        {% for result in results.results %}
+        <div class="result-card">
             <div class="result-header">
                 <img src="https://www.google.com/s2/favicons?domain={{ result.url }}&sz=32" class="result-favicon" onerror="this.style.display='none'">
-                <a href="{{ result.url }}" class="result-title" target="_blank">{{ result.title }}</a>
-                {% if result.get('ai_summary') %}
-                <span class="ai-badge">🤖 AI</span>
-                {% endif %}
+                <a href="{{ result.url }}" class="result-title" target="_blank">{{ result.title|safe }}</a>
             </div>
             <div class="result-url">{{ result.url }}</div>
-            <div class="result-snippet">{{ result.snippet }}</div>
-            {% if result.get('ai_summary') %}
-            <div class="result-snippet" style="margin-top: 12px; padding: 12px; background: var(--bg-card); border-radius: 8px;">
-                <strong>AI Summary:</strong> {{ result.ai_summary }}
-            </div>
-            {% endif %}
+            <div class="result-snippet">{{ result.snippet|safe }}</div>
             <div class="result-meta">
-                {% if result.get('rating') %}
-                <span class="result-badge">⭐ {{ result.rating }}/5</span>
-                {% endif %}
-                {% if result.get('speed') %}
-                <span class="result-badge">⚡ {{ result.speed }}</span>
-                {% endif %}
-                {% if result.get('relevance') %}
-                <span class="result-badge">📊 {{ result.relevance }}% match</span>
-                {% endif %}
+                {% if result.source %}<span class="result-badge">📌 {{ result.source }}</span>{% endif %}
             </div>
+        </div>
+        {% endfor %}
+    {% elif results and results is iterable %}
+        {% for result in results %}
+        <div class="result-card">
+            <div class="result-header">
+                <a href="{{ result.url }}" class="result-title" target="_blank">{{ result.title|safe if result.title else 'Untitled' }}</a>
+            </div>
+            <div class="result-url">{{ result.url }}</div>
+            <div class="result-snippet">{{ result.snippet|safe if result.snippet else '' }}</div>
         </div>
         {% endfor %}
     {% else %}
