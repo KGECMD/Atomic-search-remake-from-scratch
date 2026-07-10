@@ -1,29 +1,39 @@
 # Atomic Search Dockerfile
-FROM python:3.12-slim
+# Multi-stage build for smaller image
+FROM python:3.12-slim as builder
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_NO_CACHE_DIR=1
 
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libffi-dev \
     libssl-dev \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install --target=/app/deps -r requirements.txt
+
+# Final stage
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Copy dependencies from builder
+COPY --from=builder /app/deps /app/deps
+ENV PYTHONPATH=/app/deps
 
 # Copy application
 COPY . .
@@ -32,15 +42,14 @@ COPY . .
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
 
-# Switch to non-root user
 USER appuser
 
-# Expose port (Railway will override with PORT env)
+# Expose port
 EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
-# Default command - can be overridden by Railway
-CMD ["gunicorn", "atomic_search.main:app", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "4", "--timeout", "120"]
+# Start command
+CMD ["gunicorn", "atomic_search.main:app", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "4"]

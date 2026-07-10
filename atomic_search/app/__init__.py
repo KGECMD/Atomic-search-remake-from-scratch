@@ -100,12 +100,17 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     from atomic_search.routes.admin import bp as admin_bp
     from atomic_search.routes.ai import bp as ai_bp
     from atomic_search.routes.static import bp as static_bp
+    from atomic_search.routes.tools import bp as tools_bp
     
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(ai_bp)
     app.register_blueprint(static_bp)
+    app.register_blueprint(tools_bp)
+    
+    # Exempt tools from CSRF for easier API access
+    csrf.exempt(tools_bp)
 
     # Error handlers
     @app.errorhandler(404)

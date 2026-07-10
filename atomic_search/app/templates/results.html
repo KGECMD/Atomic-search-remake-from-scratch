@@ -43,10 +43,12 @@
         </select>
 
         <!-- Vote Counter -->
-        <div class="vote-counter" style="margin-left: auto; color: var(--text-secondary); font-size: 0.9em;">
-            {% if vote_limit is not none %}
-            <span id="voteCount">{{ vote_limit }}</span> votes left today
-            {% endif %}
+        <div class="vote-counter" id="voteInfo" style="margin-left: auto; display: flex; align-items: center; gap: 15px; padding: 8px 15px; background: var(--bg-glass); border-radius: 20px;">
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+                <span id="voteCount">100</span>
+            </div>
+            <div style="font-size: 0.85em; color: var(--text-muted);">votes left</div>
         </div>
     </div>
 
@@ -284,6 +286,22 @@
 </style>
 
 <script>
+    // Fetch vote stats on page load
+    async function fetchVoteStats() {
+        try {
+            const response = await fetch('/api/v1/stats');
+            const data = await response.json();
+            if (data.votes_remaining !== undefined) {
+                const voteCount = document.getElementById('voteCount');
+                if (voteCount) {
+                    voteCount.textContent = data.votes_remaining;
+                }
+            }
+        } catch (error) {
+            console.log('Vote stats not available');
+        }
+    }
+    
     // Vote function
     async function vote(url, type, btn) {
         try {
@@ -319,10 +337,7 @@
                 }
 
                 // Update vote count
-                const voteCount = document.getElementById('voteCount');
-                if (voteCount && data.stats.votes_remaining !== undefined) {
-                    voteCount.textContent = data.stats.votes_remaining;
-                }
+                fetchVoteStats();
             } else {
                 alert(data.message || 'Failed to vote');
             }
@@ -330,6 +345,9 @@
             console.error('Vote error:', error);
         }
     }
+    
+    // Fetch stats on page load
+    document.addEventListener('DOMContentLoaded', fetchVoteStats);
 
     // Bookmark function
     function bookmark(url, title) {

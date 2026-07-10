@@ -17,8 +17,9 @@
 [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://10.2.31.142:5000
+ * Running on http://10.2.43.12:5000
 [33mPress CTRL+C to quit[0m
-127.0.0.1 - - [10/Jul/2026 17:30:30] "GET /api/v1/stats HTTP/1.1" 200 -
-127.0.0.1 - - [10/Jul/2026 17:30:33] "POST /api/v1/vote HTTP/1.1" 200 -
-127.0.0.1 - - [10/Jul/2026 17:30:33] "GET /api/v1/stats HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 18:58:21] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 18:58:25] "POST /tools/calculate HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 18:58:25] "GET /api/v1/stats HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 18:58:30] "POST /tools/convert HTTP/1.1" 200 -
