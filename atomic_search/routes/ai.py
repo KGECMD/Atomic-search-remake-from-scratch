@@ -10,7 +10,7 @@ Provides endpoints for AI-powered features:
 import asyncio
 import json
 import secrets
-from flask import Blueprint, Response, jsonify, request, stream_with_context, session
+from flask import Blueprint, Response, jsonify, request, stream_with_context, session, render_template
 
 from atomic_search.config import config
 from atomic_search.ai import ai_service, AIMessage
@@ -23,6 +23,12 @@ def get_conversation_id() -> str:
     if "ai_conversation_id" not in session:
         session["ai_conversation_id"] = secrets.token_hex(16)
     return session["ai_conversation_id"]
+
+
+@bp.route("/")
+def index():
+    """AI assistant page."""
+    return render_template("ai.html")
 
 
 @bp.route("/chat", methods=["POST"])
