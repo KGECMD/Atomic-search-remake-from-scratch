@@ -51,7 +51,6 @@ pillow>=10.0.0
 graphene>=3.4.3
 
 # Networking
-tor_requests>=0.4.0
 socksio>=1.0.0
 
 # Development and testing
