@@ -47,7 +47,6 @@ qrcode>=8.2
 pillow>=10.0.0
 
 # Networking
-# tor_requests removed - use PySocks instead
 socksio>=1.0.0
 
 # Development and testing

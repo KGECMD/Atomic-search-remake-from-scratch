@@ -45,12 +45,13 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     # Initialize extensions
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-    if config.CSRF_ENABLED:
-        csrf = CSRFProtect()
-        csrf.init_app(app)
-        # Exempt API routes from CSRF protection
-        from atomic_search.routes.api import bp as api_bp
-        csrf.exempt(api_bp)
+    # CSRF protection
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+    
+    # Exempt API routes from CSRF protection
+    from atomic_search.routes.api import bp as api_bp
+    csrf.exempt(api_bp)
 
     # Setup caching
     if config.CACHE_TYPE == "redis" and config.REDIS_ENABLED:
