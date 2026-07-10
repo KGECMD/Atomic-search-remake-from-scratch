@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Weather - {{ config.APP_NAME }}{% endblock %}
+{% block content %}
+<style>
+.weather-container { max-width: 600px; margin: 40px auto; padding: 20px; }
+.search-form { display: flex; gap: 12px; margin-bottom: 32px; }
+.search-form input { flex: 1; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-primary); color: var(--text-primary); font-size: 16px; }
+.search-form button { padding: 14px 24px; background: var(--accent); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 500; }
+.weather-card { background: var(--bg-secondary); border-radius: 20px; padding: 40px; text-align: center; }
+.weather-icon { font-size: 100px; margin-bottom: 20px; }
+.temp { font-size: 72px; font-weight: 700; }
+.location { font-size: 24px; color: var(--text-secondary); margin: 16px 0; }
+.details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+.detail { background: var(--bg-card); padding: 16px; border-radius: 12px; }
+.detail-label { font-size: 12px; color: var(--text-muted); }
+.detail-value { font-size: 20px; font-weight: 600; margin-top: 4px; }
+</style>
+
+<div class="weather-container">
+    <h1 style="text-align: center; margin-bottom: 24px;">🌤️ Weather</h1>
+    
+    <form class="search-form" action="/weather" method="GET">
+        <input type="text" name="q" placeholder="Enter city name..." value="{{ location or '' }}">
+        <button type="submit">Search</button>
+    </form>
+    
+    {% if weather %}
+        {% if weather.error %}
+            <div style="background: rgba(255,100,100,0.1); color: #ff6464; padding: 20px; border-radius: 12px; text-align: center;">{{ weather.error }}</div>
+        {% else %}
+            <div class="weather-card">
+                <div class="weather-icon">{{ weather.icon }}</div>
+                <div class="temp">{{ weather.temp }}°C</div>
+                <div class="location">{{ weather.location }}</div>
+                <div style="font-size: 18px; color: var(--text-secondary);">{{ weather.condition }}</div>
+                <div class="details">
+                    <div class="detail"><div class="detail-label">Humidity</div><div class="detail-value">{{ weather.humidity }}%</div></div>
+                    <div class="detail"><div class="detail-label">Wind</div><div class="detail-value">{{ weather.wind }} km/h</div></div>
+                    <div class="detail"><div class="detail-label">Source</div><div class="detail-value">Open-Meteo</div></div>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: var(--text-muted);">Enter a city name to see weather</div>
+    {% endif %}
+</div>
+{% endblock %}

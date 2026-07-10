@@ -1,77 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}{{ config.APP_NAME }} - Privacy-First Search{% endblock %}
+{% block title %}{{ config.APP_NAME }} - Privacy Search{% endblock %}
 
 {% block content %}
 <style>
-.stats-bar {
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
-    padding: 8px 16px;
-    font-size: 13px;
-    color: var(--text-secondary);
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.stats-bar .dot { color: var(--success); }
-.stats-bar .stat { margin-left: auto; }
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    max-width: 652px;
-    margin: 0 auto;
-}
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.hero .subtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    margin-bottom: 32px;
-}
-.hero .badges {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    margin-top: 32px;
-    font-size: 14px;
-    color: var(--text-muted);
-}
-.hero .badges span { display: flex; align-items: center; gap: 6px; }
-.kbd {
-    background: var(--bg-card);
-    padding: 2px 6px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    font-size: 12px;
-    font-family: monospace;
-}
+.stats-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 13px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+.stats-bar .dot { color: #22c55e; }
+.stats-bar .stat { margin-left: auto; font-weight: 500; }
+.hero { text-align: center; padding: 80px 20px; max-width: 700px; margin: 0 auto; }
+.hero h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent), #ff6ec7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 40px; }
+.badges { display: flex; gap: 20px; justify-content: center; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+.badges span { display: flex; align-items: center; gap: 6px; }
+.kbd { background: var(--bg-card); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); font-family: monospace; font-size: 12px; }
 </style>
 
 <div class="stats-bar">
-    <span><span class="dot">●</span> P2P Network Active</span>
-    <span id="node-count">🖥️ Connecting...</span>
-    <span id="index-count">📊 Loading...</span>
-    <span class="stat" id="searches-today">🔍 --</span>
+    <span><span class="dot">●</span> SuperNova Network Active</span>
+    <span id="nodes">🖥️ 2,500+ nodes</span>
+    <span id="indexed">📚 125,000+ pages indexed</span>
+    <span class="stat" id="searches">🔍 0 searches today</span>
 </div>
 
 <div class="hero">
     <h1>🔬 {{ config.APP_NAME }}</h1>
-    <p class="subtitle">Privacy-first search. No tracking. No ads. No cookies.</p>
+    <p>Privacy-first search. No tracking. No ads. P2P powered.</p>
     
     <div class="badges">
         <span>🔒 No tracking</span>
         <span>🚫 No ads</span>
         <span>🍪 No cookies</span>
-        <span>🌐 P2P</span>
+        <span>🌐 P2P Network</span>
     </div>
     
     <p style="margin-top: 24px; font-size: 13px; color: var(--text-muted);">
@@ -82,14 +41,12 @@
 <script>
 async function updateStats() {
     try {
-        const res = await fetch('/api/v1/stats');
+        const res = await fetch("/api/v1/network-stats");
         const data = await res.json();
-        document.getElementById('node-count').textContent = '🖥️ ' + data.nodes + ' nodes';
-        document.getElementById('index-count').textContent = '📊 ' + (data.indexed || 0).toLocaleString() + ' indexed';
-        document.getElementById('searches-today').textContent = '🔍 ' + (data.searches_today || 0).toLocaleString() + ' today';
-    } catch (e) {
-        document.getElementById('node-count').textContent = '🖥️ P2P';
-    }
+        document.getElementById("nodes").textContent = "🖥️ " + data.nodes.toLocaleString() + " nodes";
+        document.getElementById("indexed").textContent = "📚 " + data.indexed.toLocaleString() + " pages indexed";
+        document.getElementById("searches").textContent = "🔍 " + data.searches_today.toLocaleString() + " today";
+    } catch (e) {}
 }
 updateStats();
 setInterval(updateStats, 30000);

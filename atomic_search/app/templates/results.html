@@ -1,86 +1,79 @@
 {% extends "base.html" %}
-
 {% block title %}{{ query }} - {{ config.APP_NAME }}{% endblock %}
-
 {% block extra_head %}
 <style>
-.results-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-.query-header { margin-bottom: 24px; }
-.query-header h1 { font-size: 1.5rem; font-weight: 400; color: var(--text-secondary); margin-bottom: 8px; }
-.result-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    transition: all 0.2s;
-}
+.results-container { max-width: 850px; margin: 0 auto; padding: 20px; }
+.header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.header h1 { font-size: 1.3rem; font-weight: 400; color: var(--text-secondary); margin: 0; }
+.pill { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.result-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: all 0.2s; }
 .result-card:hover { border-color: var(--accent); transform: translateX(4px); }
-.result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
-.result-favicon { width: 20px; height: 20px; border-radius: 4px; }
-.result-title { font-size: 1.1rem; font-weight: 500; color: var(--accent); text-decoration: none; }
+.result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.result-title { font-size: 1.1rem; font-weight: 500; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
 .result-title:hover { text-decoration: underline; }
-.result-url { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.index-tag { background: linear-gradient(135deg, var(--accent), #ff6ec7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+.result-url { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; word-break: break-all; }
 .result-snippet { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
-.result-meta { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
-.result-badge { background: var(--bg-card); padding: 4px 8px; border-radius: 4px; }
-.ai-result { border-left: 3px solid var(--accent); }
-.ai-badge { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
-.related-searches { margin-top: 32px; }
-.related-title { font-size: 1rem; font-weight: 500; margin-bottom: 12px; color: var(--text-secondary); }
-.related-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.related-tag { background: var(--bg-card); padding: 8px 16px; border-radius: 20px; color: var(--accent); text-decoration: none; font-size: 13px; transition: all 0.2s; }
+.rank-badge { display: inline-block; background: var(--bg-card); padding: 4px 10px; border-radius: 4px; font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+.related { margin-top: 32px; }
+.related h3 { font-size: 1rem; margin-bottom: 12px; color: var(--text-secondary); }
+.related-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.related-tag { background: var(--bg-card); padding: 8px 16px; border-radius: 20px; color: var(--accent); text-decoration: none; font-size: 13px; }
 .related-tag:hover { background: var(--accent); color: white; }
-.no-results { text-align: center; padding: 60px 20px; }
-.no-results h2 { font-size: 1.5rem; margin-bottom: 16px; }
+.no-results { text-align: center; padding: 60px; background: var(--bg-secondary); border-radius: 12px; }
+.no-results h2 { margin-bottom: 12px; }
 </style>
 {% endblock %}
-
 {% block content %}
 <div class="results-container">
-    <div class="query-header">
-        <h1>Search results for: <strong>{{ query }}</strong></h1>
+    <div class="header">
+        <h1>Results for: <strong>{{ query }}</strong></h1>
+        <span class="pill">🔬 SuperNova Index</span>
     </div>
     
     {% if results and results.results %}
         {% for result in results.results %}
         <div class="result-card">
             <div class="result-header">
-                <img src="https://www.google.com/s2/favicons?domain={{ result.url }}&sz=32" class="result-favicon" onerror="this.style.display='none'">
-                <a href="{{ result.url }}" class="result-title" target="_blank">{{ result.title|safe }}</a>
+                <a href="{{ result.url }}" class="result-title" target="_blank">
+                    {{ result.title|safe if result.title else "Untitled" }}
+                    <span class="index-tag">⚡ SuperNova</span>
+                </a>
             </div>
-            <div class="result-url">{{ result.url }}</div>
-            <div class="result-snippet">{{ result.snippet|safe }}</div>
-            <div class="result-meta">
-                {% if result.source %}<span class="result-badge">📌 {{ result.source }}</span>{% endif %}
-            </div>
+            <div class="result-url">{{ result.url }} • <span style="color: var(--accent);">SuperNova Indexed</span></div>
+            <div class="result-snippet">{{ result.snippet|safe if result.snippet else "" }}</div>
+            <div class="rank-badge">📊 Rank #{{ loop.index }} • SuperNova Index</div>
         </div>
         {% endfor %}
     {% elif results and results is iterable %}
         {% for result in results %}
         <div class="result-card">
             <div class="result-header">
-                <a href="{{ result.url }}" class="result-title" target="_blank">{{ result.title|safe if result.title else 'Untitled' }}</a>
+                <a href="{{ result.url }}" class="result-title" target="_blank">
+                    {{ result.title|safe if result.title else "Untitled" }}
+                    <span class="index-tag">⚡ SuperNova</span>
+                </a>
             </div>
-            <div class="result-url">{{ result.url }}</div>
-            <div class="result-snippet">{{ result.snippet|safe if result.snippet else '' }}</div>
+            <div class="result-url">{{ result.url }} • <span style="color: var(--accent);">SuperNova Indexed</span></div>
+            <div class="result-snippet">{{ result.snippet|safe if result.snippet else "" }}</div>
+            <div class="rank-badge">📊 Rank #{{ loop.index }} • SuperNova Index</div>
         </div>
         {% endfor %}
     {% else %}
         <div class="no-results">
             <h2>No results found for "{{ query }}"</h2>
-            <p>Try different keywords or check your spelling.</p>
+            <p style="color: var(--text-muted);">Try different keywords or check your spelling.</p>
+            <p style="margin-top: 16px; color: var(--accent);">🔬 Results will be indexed by SuperNova</p>
         </div>
     {% endif %}
     
-    <div class="related-searches">
-        <div class="related-title">Related Searches</div>
-        <div class="related-grid">
+    <div class="related">
+        <h3>Related Searches</h3>
+        <div class="related-tags">
             <a href="?q={{ query }} tutorial" class="related-tag">{{ query }} tutorial</a>
             <a href="?q={{ query }} guide" class="related-tag">{{ query }} guide</a>
             <a href="?q={{ query }} examples" class="related-tag">{{ query }} examples</a>
             <a href="?q={{ query }} free" class="related-tag">{{ query }} free</a>
-            <a href="?q={{ query }} download" class="related-tag">{{ query }} download</a>
         </div>
     </div>
 </div>

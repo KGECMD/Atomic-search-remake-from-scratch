@@ -446,3 +446,52 @@ def compare():
 def hack():
     """Matrix/Hack mode easter egg."""
     return render_template("hack.html")
+
+
+@bp.route("/save-settings", methods=["POST"])
+def save_settings():
+    """Save user settings to cookies."""
+    response = make_response(redirect(url_for("main.index")))
+    
+    # Save theme
+    theme = request.form.get("theme", "dark")
+    response.set_cookie("theme", theme, max_age=31536000)
+    
+    # Save other settings
+    response.set_cookie("block_trackers", request.form.get("block_trackers", "on"), max_age=31536000)
+    response.set_cookie("block_ads", request.form.get("block_ads", "on"), max_age=31536000)
+    response.set_cookie("anonymous", request.form.get("anonymous", ""), max_age=31536000)
+    response.set_cookie("safe_search", request.form.get("safe_search", "on"), max_age=31536000)
+    response.set_cookie("custom_css", request.form.get("custom_css", ""), max_age=31536000)
+    
+    return response
+
+
+@bp.route("/weather")
+def weather():
+    """Weather tool page."""
+    location = request.args.get("q", "")
+    weather_data = None
+    if location:
+        try:
+            import requests
+            geo = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={location}&count=1", timeout=5).json()
+            if geo.get("results"):
+                lat, lon = geo["results"][0]["latitude"], geo["results"][0]["longitude"]
+                name = geo["results"][0]["name"]
+                w = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m", timeout=5).json()["current"]
+                codes = {0: ("☀️", "Clear"), 1: ("🌤️", "Mostly Clear"), 2: ("⛅", "Partly Cloudy"), 3: ("☁️", "Overcast"), 45: ("🌫️", "Foggy"), 61: ("🌧️", "Rain"), 63: ("🌧️", "Rain"), 71: ("🌨️", "Snow"), 95: ("⛈️", "Thunderstorm")}
+                icon, condition = codes.get(w["weather_code"], ("🌡️", "Unknown"))
+                weather_data = {"location": name, "temp": round(w["temperature_2m"]), "humidity": w["relative_humidity_2m"], "wind": round(w["wind_speed_10m"]), "condition": condition, "icon": icon, "unit": "°C"}
+        except:
+            weather_data = {"error": "Could not fetch weather data"}
+    return render_template("weather.html", location=location, weather=weather_data)
+
+
+# ========== TOOL ROUTES ==========
+
+@bp.route("/calculator")
+def calculator():
+    """Calculator tool."""
+    return render_template("calculator.html")
+

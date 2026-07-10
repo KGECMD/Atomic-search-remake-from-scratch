@@ -4,313 +4,87 @@
 
 {% block extra_head %}
 <style>
-.theme-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-    margin-top: 16px;
-}
-.theme-swatch {
-    padding: 12px 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.2s;
-    text-align: center;
-    background: var(--bg-card);
-}
-.theme-swatch:hover {
-    transform: scale(1.05);
-    border-color: var(--accent);
-}
-.theme-swatch.selected {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px var(--accent);
-}
-.theme-preview {
-    height: 40px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-}
-.theme-name {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-primary);
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 26px;
-}
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 26px;
-    transition: 0.3s;
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background: var(--text-muted);
-    border-radius: 50%;
-    transition: 0.3s;
-}
-input:checked + .slider {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-input:checked + .slider:before {
-    transform: translateX(22px);
-    background: white;
-}
-.save-btn {
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    color: white;
-    border: none;
-    padding: 12px 32px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-.save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-}
-.cancel-btn {
-    background: var(--bg-card);
-    color: var(--text-primary);
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.cancel-btn:hover {
-    background: var(--bg-secondary);
-}
+.theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+.theme-swatch { padding: 8px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; text-align: center; background: var(--bg-card); transition: all 0.2s; }
+.theme-swatch:hover { transform: scale(1.05); border-color: var(--accent); }
+.theme-swatch.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.theme-preview { height: 30px; border-radius: 4px; margin-bottom: 4px; }
+.theme-name { font-size: 10px; font-weight: 500; }
+.switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; inset: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 26px; transition: 0.3s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 2px; bottom: 2px; background: var(--text-muted); border-radius: 50%; transition: 0.3s; }
+input:checked + .slider { background: var(--accent); }
+input:checked + .slider:before { transform: translateX(22px); background: white; }
+.save-btn { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; border: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; }
+.save-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4); }
+.row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
-    <h1 style="font-size: 2rem; font-weight: 600; margin-bottom: 8px;">⚙️ Settings</h1>
-    <p style="color: var(--text-secondary); margin-bottom: 32px;">Customize your search experience</p>
+<div style="max-width: 700px; margin: 0 auto; padding: 40px 20px;">
+    <h1 style="font-size: 2rem; margin-bottom: 8px;">⚙️ Settings</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 32px;">Customize your experience</p>
 
-    <form method="POST">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <form action="/save-settings" method="POST">
+        <input type="hidden" name="theme" id="selected-theme" value="">
         
-        <!-- Theme Selection -->
-        <div class="card" style="padding: 24px; margin-bottom: 24px;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🎨 Theme (82 themes)</h2>
-            
+        <!-- Theme -->
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+            <h2 style="font-size: 1.1rem; margin-bottom: 12px;">🎨 Theme</h2>
             <div class="theme-grid">
-                <div class="theme-swatch selected" data-theme="dark" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #0a0a1a, #12122a);"></div>
-                    <div class="theme-name">Dark</div>
-                </div>
-                <div class="theme-swatch" data-theme="light" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #ffffff, #f8f9fa);"></div>
-                    <div class="theme-name">Light</div>
-                </div>
-                <div class="theme-swatch" data-theme="dracula" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #282a36, #44475a);"></div>
-                    <div class="theme-name">Dracula</div>
-                </div>
-                <div class="theme-swatch" data-theme="nord" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #2e3440, #3b4252);"></div>
-                    <div class="theme-name">Nord</div>
-                </div>
-                <div class="theme-swatch" data-theme="monokai" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #272822, #3e3d32);"></div>
-                    <div class="theme-name">Monokai</div>
-                </div>
-                <div class="theme-swatch" data-theme="gruvbox-dark" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #282828, #3c3836);"></div>
-                    <div class="theme-name">Gruvbox</div>
-                </div>
-                <div class="theme-swatch" data-theme="catppuccin" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #1e1e2e, #313244);"></div>
-                    <div class="theme-name">Catppuccin</div>
-                </div>
-                <div class="theme-swatch" data-theme="tokyo-night" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #1a1b26, #24283b);"></div>
-                    <div class="theme-name">Tokyo Night</div>
-                </div>
-                <div class="theme-swatch" data-theme="synthwave" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #1a0a2e, #ff6ec7);"></div>
-                    <div class="theme-name">Synthwave</div>
-                </div>
-                <div class="theme-swatch" data-theme="matrix" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: #000000; border: 1px solid #003300;"></div>
-                    <div class="theme-name">Matrix</div>
-                </div>
-                <div class="theme-swatch" data-theme="cyberpunk" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #0d0221, #ff2a6d);"></div>
-                    <div class="theme-name">Cyberpunk</div>
-                </div>
-                <div class="theme-swatch" data-theme="galaxy" onclick="selectTheme(this)">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #0a0a1a, #8b5cf6);"></div>
-                    <div class="theme-name">Galaxy</div>
-                </div>
+                <div class="theme-swatch selected" data-theme="dark" onclick="selectTheme(this)"><div class="theme-preview" style="background: linear-gradient(135deg, #0a0a1a, #12122a);"></div><div class="theme-name">Dark</div></div>
+                <div class="theme-swatch" data-theme="light" onclick="selectTheme(this)"><div class="theme-preview" style="background: #fff;"></div><div class="theme-name">Light</div></div>
+                <div class="theme-swatch" data-theme="dracula" onclick="selectTheme(this)"><div class="theme-preview" style="background: linear-gradient(135deg, #282a36, #44475a);"></div><div class="theme-name">Dracula</div></div>
+                <div class="theme-swatch" data-theme="nord" onclick="selectTheme(this)"><div class="theme-preview" style="background: linear-gradient(135deg, #2e3440, #3b4252);"></div><div class="theme-name">Nord</div></div>
+                <div class="theme-swatch" data-theme="monokai" onclick="selectTheme(this)"><div class="theme-preview" style="background: linear-gradient(135deg, #272822, #3e3d32);"></div><div class="theme-name">Monokai</div></div>
+                <div class="theme-swatch" data-theme="synthwave" onclick="selectTheme(this)"><div class="theme-preview" style="background: linear-gradient(135deg, #1a0a2e, #ff6ec7);"></div><div class="theme-name">Synth</div></div>
+                <div class="theme-swatch" data-theme="matrix" onclick="selectTheme(this)"><div class="theme-preview" style="background: #000; border: 1px solid #003300;"></div><div class="theme-name">Matrix</div></div>
+                <div class="theme-swatch" data-theme="galaxy" onclick="selectTheme(this)"><div class="theme-preview" style="background: linear-gradient(135deg, #0a0a1a, #8b5cf6);"></div><div class="theme-name">Galaxy</div></div>
             </div>
-            <p style="color: var(--text-muted); margin-top: 16px; font-size: 13px;">
-                Plus 70 more themes: Ayu, Horizon, Palenight, Solarized, GitHub, VS Code, Atom, Zenburn, Peach, Lavender, Mint, Rose Gold, and more!
-            </p>
         </div>
 
-        <!-- Privacy Settings -->
-        <div class="card" style="padding: 24px; margin-bottom: 24px;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🔒 Privacy & Security</h2>
-            
-            <div class="setting-row">
-                <div>
-                    <div style="font-weight: 500;">Block Trackers</div>
-                    <div style="font-size: 13px; color: var(--text-muted);">Prevent tracking scripts from loading</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" name="block_trackers" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            
-            <div class="setting-row">
-                <div>
-                    <div style="font-weight: 500;">Block Ads</div>
-                    <div style="font-size: 13px; color: var(--text-muted);">Hide advertisements in search results</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" name="block_ads" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            
-            <div class="setting-row">
-                <div>
-                    <div style="font-weight: 500;">Anonymous Mode</div>
-                    <div style="font-size: 13px; color: var(--text-muted);">Extra privacy for sensitive searches</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" name="anonymous">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            
-            <div class="setting-row">
-                <div>
-                    <div style="font-weight: 500;">Safe Search</div>
-                    <div style="font-size: 13px; color: var(--text-muted);">Filter explicit content</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" name="safe_search" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
+        <!-- Privacy -->
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+            <h2 style="font-size: 1.1rem; margin-bottom: 12px;">🔒 Privacy</h2>
+            <div class="row"><div><strong>Block Trackers</strong><div style="font-size:12px;color:var(--text-muted);">Prevent tracking</div></div><label class="switch"><input type="checkbox" name="block_trackers" checked><span class="slider"></span></label></div>
+            <div class="row"><div><strong>Block Ads</strong><div style="font-size:12px;color:var(--text-muted);">Hide advertisements</div></div><label class="switch"><input type="checkbox" name="block_ads" checked><span class="slider"></span></label></div>
+            <div class="row"><div><strong>Anonymous Mode</strong><div style="font-size:12px;color:var(--text-muted);">Extra privacy</div></div><label class="switch"><input type="checkbox" name="anonymous"><span class="slider"></span></label></div>
+        </div>
+
+        <!-- Voting -->
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+            <h2 style="font-size: 1.1rem; margin-bottom: 12px;">🗳️ Result Voting</h2>
+            <div class="row"><div><strong>Enable Voting</strong><div style="font-size:12px;color:var(--text-muted);">Vote on search results to improve ranking</div></div><label class="switch"><input type="checkbox" name="voting" checked><span class="slider"></span></label></div>
         </div>
 
         <!-- Custom CSS -->
-        <div class="card" style="padding: 24px; margin-bottom: 24px;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🎨 Custom CSS</h2>
-            <textarea name="custom_css" class="search-input" style="width: 100%; min-height: 150px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-family: 'Monaco', 'Menlo', monospace; resize: vertical;" placeholder="/* Your custom CSS here */
-body {
-    font-family: 'Inter', sans-serif;
-}"></textarea>
-            <p style="color: var(--text-muted); margin-top: 8px; font-size: 13px;">Add your own CSS to customize the look</p>
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+            <h2 style="font-size: 1.1rem; margin-bottom: 12px;">🎨 Custom CSS</h2>
+            <textarea name="custom_css" style="width:100%;min-height:100px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-primary);color:var(--text-primary);font-family:monospace;" placeholder="/* Your custom CSS */"></textarea>
         </div>
 
-        <!-- Own Server -->
-        <div class="card" style="padding: 24px; margin-bottom: 24px;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 16px;">🖥️ Own Server</h2>
-            
-            <div class="setting-row">
-                <div>
-                    <div style="font-weight: 500;">Use own server</div>
-                    <div style="font-size: 13px; color: var(--text-muted);">Connect to your own search instance</div>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" name="use_own_server" id="use-own-server" onchange="toggleServerConfig()">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            
-            <div id="server-config" style="display: none; margin-top: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Server URL</label>
-                <input type="url" name="server_url" class="search-input" style="width: 100%; padding: 12px;" placeholder="https://search.example.com">
-            </div>
-        </div>
-
-        <!-- Save Buttons -->
-        <div style="display: flex; gap: 12px; margin-top: 32px;">
-            <a href="/" class="cancel-btn">Cancel</a>
-            <button type="submit" class="save-btn">
-                💾 Save Changes
-            </button>
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <a href="/" style="padding:14px 24px;background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border);border-radius:8px;text-decoration:none;">Cancel</a>
+            <button type="submit" class="save-btn">💾 Save Changes</button>
         </div>
     </form>
 </div>
 
-<style>
-.setting-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
-}
-.setting-row:last-child { border-bottom: none; }
-</style>
-
 <script>
 function selectTheme(el) {
-    document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('selected'));
-    el.classList.add('selected');
-    const theme = el.dataset.theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    document.cookie = 'theme=' + theme + ';path=/;max-age=31536000';
-    // Also update hidden input
-    let themeInput = document.getElementById('selected-theme');
-    if (!themeInput) {
-        themeInput = document.createElement('input');
-        themeInput.type = 'hidden';
-        themeInput.name = 'theme';
-        themeInput.id = 'selected-theme';
-        document.querySelector('form').appendChild(themeInput);
-    }
-    themeInput.value = theme;
+    document.querySelectorAll(".theme-swatch").forEach(s => s.classList.remove("selected"));
+    el.classList.add("selected");
+    document.getElementById("selected-theme").value = el.dataset.theme;
+    document.cookie = "theme=" + el.dataset.theme + ";path=/;max-age=31536000";
+    document.documentElement.setAttribute("data-theme", el.dataset.theme);
 }
-
-function toggleServerConfig() {
-    const checked = document.getElementById('use-own-server').checked;
-    document.getElementById('server-config').style.display = checked ? 'block' : 'none';
-}
-
-// Load saved theme on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = document.cookie.match(/theme=(\w+)/);
-    if (savedTheme) {
-        const swatch = document.querySelector(`.theme-swatch[data-theme="${savedTheme[1]}"]`);
-        if (swatch) {
-            document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('selected'));
-            swatch.classList.add('selected');
-        }
+document.addEventListener("DOMContentLoaded", () => {
+    const m = document.cookie.match(/theme=(\w+)/);
+    if (m) {
+        const s = document.querySelector(".theme-swatch[data-theme=\"" + m[1] + "\"]");
+        if (s) { document.querySelectorAll(".theme-swatch").forEach(x => x.classList.remove("selected")); s.classList.add("selected"); document.getElementById("selected-theme").value = m[1]; }
     }
 });
 </script>

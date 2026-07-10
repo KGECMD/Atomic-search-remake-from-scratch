@@ -1,109 +1,37 @@
 {% extends "base.html" %}
-
 {% block title %}AI Chat - {{ config.APP_NAME }}{% endblock %}
-
 {% block content %}
 <style>
-.chat-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-    height: calc(100vh - 180px);
-    display: flex;
-    flex-direction: column;
-}
-.chat-header {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
-    border-radius: 16px 16px 0 0;
-    border-bottom: 1px solid var(--border);
-}
-.chat-header h1 { font-size: 1.5rem; margin-bottom: 8px; }
+.chat-container { max-width: 900px; margin: 0 auto; height: calc(100vh - 180px); display: flex; flex-direction: column; }
+.chat-header { padding: 20px; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary)); text-align: center; border-radius: 16px 16px 0 0; }
+.chat-header h1 { font-size: 1.5rem; margin-bottom: 4px; }
 .chat-header p { color: var(--text-secondary); font-size: 14px; }
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background: var(--bg-secondary);
-}
-.message {
-    max-width: 75%;
-    padding: 14px 18px;
-    border-radius: 18px;
-    margin-bottom: 14px;
-    line-height: 1.6;
-    font-size: 15px;
-    word-wrap: break-word;
-}
-.message.user {
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    color: white;
-    margin-left: auto;
-    border-bottom-right-radius: 4px;
-}
-.message.ai {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-}
-.message.ai .sender { font-size: 12px; color: var(--accent); margin-bottom: 6px; font-weight: 500; }
-.message pre {
-    background: var(--bg-primary);
-    padding: 12px;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-size: 13px;
-    margin: 8px 0;
-}
-.message code {
-    background: var(--bg-primary);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 13px;
-}
-.message ul, .message ol { margin: 8px 0; padding-left: 20px; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 20px; background: var(--bg-secondary); }
+.message { max-width: 75%; padding: 14px 18px; border-radius: 18px; margin-bottom: 14px; line-height: 1.6; }
+.message.user { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; margin-left: auto; border-bottom-right-radius: 4px; }
+.message.ai { background: var(--bg-card); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.message.ai .sender { font-size: 11px; color: var(--accent); margin-bottom: 6px; font-weight: 600; }
+.message pre { background: var(--bg-primary); padding: 12px; border-radius: 8px; overflow-x: auto; margin: 8px 0; }
+.message code { background: var(--bg-primary); padding: 2px 6px; border-radius: 4px; }
+.message ul { margin: 8px 0; padding-left: 20px; }
 .message li { margin: 4px 0; }
-.chat-input-area {
-    padding: 16px;
-    background: var(--bg-secondary);
-    border-radius: 0 0 16px 16px;
-    border-top: 1px solid var(--border);
-}
-.chat-input-row { display: flex; gap: 12px; align-items: center; }
-.chat-input {
-    flex: 1;
-    padding: 14px 18px;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    font-size: 15px;
-}
+.chat-input-area { padding: 16px; background: var(--bg-secondary); border-radius: 0 0 16px 16px; }
+.chat-input-row { display: flex; gap: 12px; }
+.chat-input { flex: 1; padding: 14px 18px; border: 1px solid var(--border); border-radius: 24px; background: var(--bg-primary); color: var(--text-primary); font-size: 15px; }
 .chat-input:focus { outline: none; border-color: var(--accent); }
-.send-btn {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    color: white;
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-.send-btn:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3); }
-.typing-indicator { display: flex; gap: 4px; padding: 14px 18px; }
-.typing-dot { width: 8px; height: 8px; background: var(--text-muted); border-radius: 50%; animation: bounce 1.4s infinite; }
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+.send-btn { padding: 12px 24px; background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; border: none; border-radius: 24px; cursor: pointer; font-weight: 500; }
+.send-btn:hover { transform: scale(1.02); }
+.typing { display: flex; gap: 6px; padding: 14px 18px; }
+.typing span { width: 8px; height: 8px; background: var(--text-muted); border-radius: 50%; animation: bounce 1.4s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
 </style>
 
 <div class="chat-container">
     <div class="chat-header">
         <h1>🤖 {{ config.APP_NAME }} AI Assistant</h1>
-        <p>Your intelligent search companion • Powered by advanced AI</p>
+        <p>Your intelligent search companion • Try asking me anything!</p>
     </div>
     
     <div class="chat-messages" id="chat-messages">
@@ -131,81 +59,69 @@
 </div>
 
 <script>
-const messages = document.getElementById('chat-messages');
-const input = document.getElementById('chat-input');
+const messages = document.getElementById("chat-messages");
+const input = document.getElementById("chat-input");
 
-const aiResponses = [
-    { trigger: ["hello", "hi", "hey"], responses: ["Hello! How can I help you today? 😊", "Hi there! What can I assist you with?", "Hey! Ready to help! What's on your mind?"] },
-    { trigger: ["code", "python", "javascript", "java", "programming"], responses: ["Here's a code example for you:
+const responses = {
+    "hello": ["Hello! How can I help you today? 😊", "Hi there! What can I assist you with?", "Hey! Ready to help!"],
+    "help": ["I can help with:
+• Answering questions
+• Writing code
+• Summarizing text
+• And more!", "Here's how I can assist you:", "Let me help with that!"],
+    "code": ["Here's an example:
 ```python
-# Your code here
 print('Hello, World!')
-```", "I can help with programming! What language are you using?", "Code coming right up! Let me write that for you."] },
-    { trigger: ["search", "find", "look"], responses: ["I can help you find information! What are you looking for?", "Let me help you search for that.", "I can assist with your search queries."] },
-    { trigger: ["help", "how"], responses: ["I'm here to help! Here's what I can do:
-• Answer questions
-• Write code
-• Explain concepts
-• Summarize text
-• And more!", "Here's how I can assist you:", "Let me help you with that!"] },
-    { trigger: ["thanks", "thank"], responses: ["You're welcome! 😊", "Happy to help!", "Anytime! 👍"] },
-    { trigger: ["bye", "goodbye"], responses: ["Goodbye! Have a great day! 👋", "See you later! 🚀", "Bye! Come back anytime! 😊"] },
-    { default: true }
-];
+```", "I can help with programming! What language?", "Code coming right up!"],
+    "search": ["I can help you find information!", "Let me assist with your search.", "What are you looking for?"],
+    "thanks": ["You're welcome! 😊", "Happy to help!", "Anytime!"],
+    "bye": ["Goodbye! Have a great day! 👋", "See you later! 🚀"],
+    "weather": ["You can check the weather using our Weather tool in the Tools menu! 🌤️", "Try searching for a city in our Weather tool!"],
+    "default": ["That's interesting! Tell me more about what you're looking for.", "I can help with searching, coding, or answering questions!", "Let me think about that... Here's what I know."]
+};
 
 function addMessage(content, isUser) {
-    const div = document.createElement('div');
-    div.className = 'message ' + (isUser ? 'user' : 'ai');
-    if (!isUser) {
-        div.innerHTML = '<div class="sender">🔬 {{ config.APP_NAME }} AI</div>' + content;
-    } else {
-        div.textContent = content;
-    }
+    const div = document.createElement("div");
+    div.className = "message " + (isUser ? "user" : "ai");
+    if (!isUser) div.innerHTML = "<div class="sender">🔬 {{ config.APP_NAME }} AI</div>" + content.replace(/\n/g, "<br>");
+    else div.textContent = content;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
 }
 
 function addTyping() {
-    const div = document.createElement('div');
-    div.className = 'message ai';
-    div.id = 'typing';
-    div.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+    const div = document.createElement("div");
+    div.className = "message ai";
+    div.id = "typing";
+    div.innerHTML = "<div class="typing"><span></span><span></span><span></span></div>";
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
 }
 
 function removeTyping() {
-    const t = document.getElementById('typing');
+    const t = document.getElementById("typing");
     if (t) t.remove();
 }
 
 function getResponse(msg) {
     const lower = msg.toLowerCase();
-    for (const rule of aiResponses) {
-        if (rule.default) {
-            return rule.responses[Math.floor(Math.random() * rule.responses.length)];
-        }
-        for (const t of rule.trigger) {
-            if (lower.includes(t)) {
-                return rule.responses[Math.floor(Math.random() * rule.responses.length)];
-            }
+    for (const [key, value] of Object.entries(responses)) {
+        if (key !== "default" && lower.includes(key)) {
+            return value[Math.floor(Math.random() * value.length)];
         }
     }
-    return "That's interesting! Tell me more about what you're looking for. I can help with searching, coding, or answering questions!";
+    return responses.default[Math.floor(Math.random() * responses.default.length)];
 }
 
-async function sendMessage() {
+function sendMessage() {
     const msg = input.value.trim();
     if (!msg) return;
-    
     addMessage(msg, true);
-    input.value = '';
+    input.value = "";
     addTyping();
-    
     setTimeout(() => {
         removeTyping();
-        const response = getResponse(msg);
-        addMessage(response, false);
+        addMessage(getResponse(msg), false);
     }, 800 + Math.random() * 700);
 }
 

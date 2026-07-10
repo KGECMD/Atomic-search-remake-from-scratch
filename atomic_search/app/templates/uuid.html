@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}UUID Generator - {{ config.APP_NAME }}{% endblock %}
+{% block content %}
+<style>
+.uuid-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+.uuid-list { background: var(--bg-secondary); border-radius: 12px; padding: 24px; }
+.uuid-item { font-family: monospace; font-size: 16px; padding: 12px; background: var(--bg-card); border-radius: 8px; margin-bottom: 8px; word-break: break-all; }
+</style>
+
+<div class="uuid-container">
+    <h1 style="text-align: center; margin-bottom: 32px;">🆔 UUID Generator</h1>
+    <div class="uuid-list">
+        {% for u in uuids %}
+        <div class="uuid-item">{{ u }}</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
