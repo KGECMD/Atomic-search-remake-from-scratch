@@ -108,6 +108,34 @@ class SearchService:
         except Exception:
             pass
 
+        # Register Brave Search backend
+        try:
+            from atomic_search.search.backends.brave import brave_search
+            backend_manager.register("brave", brave_search)
+        except Exception:
+            pass
+
+        # Register Ecosia backend
+        try:
+            from atomic_search.search.backends.ecosia import ecosia_search
+            backend_manager.register("ecosia", ecosia_search)
+        except Exception:
+            pass
+
+        # Register Mojeek backend
+        try:
+            from atomic_search.search.backends.mojeek import mojeek_search
+            backend_manager.register("mojeek", mojeek_search)
+        except Exception:
+            pass
+
+        # Register Swisscows backend
+        try:
+            from atomic_search.search.backends.swisscows import swisscows_search
+            backend_manager.register("swisscows", swisscows_search)
+        except Exception:
+            pass
+
         self._backends_initialized = True
 
     async def initialize(self) -> None:

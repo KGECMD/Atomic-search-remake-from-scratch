@@ -122,6 +122,25 @@ def trending():
     ])
 
 
+@bp.route("/stats", methods=["GET"])
+def stats():
+    """Get voting statistics for the current user."""
+    from atomic_search.utils.security import hash_ip
+    from atomic_search.services.voting import voting_service
+    
+    ip_hash = hash_ip(request.remote_addr or "0.0.0.0")
+    session_id = request.headers.get("X-Session-ID", "")
+    
+    vote_stats = voting_service.get_vote_count(ip_hash, session_id)
+    
+    return jsonify({
+        "votes_today": vote_stats.get("votes_today", 0),
+        "votes_remaining": vote_stats.get("votes_remaining", 100),
+        "in_cooldown": vote_stats.get("in_cooldown", False),
+        "max_votes_per_day": config.MAX_VOTES_PER_DAY,
+    })
+
+
 @bp.route("/vote", methods=["POST"])
 def vote():
     """API endpoint for voting."""
