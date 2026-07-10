@@ -238,3 +238,105 @@
     --accent-hover: #a3d8e8;
     --border: rgba(232, 236, 242, 0.1);
 }
+
+/* Gruvbox Dark */
+[data-theme="gruvbox-dark"] { --bg: #282828; --bg2: #3c3836; --bg3: #504945; --text: #ebdbb2; --text2: #d5c4a1; --text3: #a89984; --border: #504945; --accent: #fb4934; --accent2: #cc241d; --link: #83a598; }
+/* Gruvbox Light */
+[data-theme="gruvbox-light"] { --bg: #fbf1c7; --bg2: #f9f5d7; --bg3: #f5f0d7; --text: #3c3836; --text2: #504945; --text3: #665c54; --border: #d5c4a1; --accent: #fb4934; --accent2: #cc241d; --link: #076678; }
+/* Catppuccin */
+[data-theme="catppuccin"] { --bg: #1e1e2e; --bg2: #313244; --bg3: #45475a; --text: #cdd6f4; --text2: #a6adc8; --text3: #6c7086; --border: #45475a; --accent: #cba6f7; --accent2: #f5c2e7; --link: #89b4fa; }
+/* Tokyo Night */
+[data-theme="tokyo-night"] { --bg: #1a1b26; --bg2: #24283b; --bg3: #414868; --text: #c0caf5; --text2: #7aa2f7; --text3: #565f89; --border: #414868; --accent: #7aa2f7; --accent2: #bb9af7; --link: #7dcfff; }
+/* Ayu Dark */
+[data-theme="ayu-dark"] { --bg: #0a0a0f; --bg2: #0e1016; --bg3: #111318; --text: #e6e1cf; --text2: #959595; --text3: #6e6e6e; --border: #243444; --accent: #ff6a00; --accent2: #ffb539; --link: #39bae6; }
+/* Ayu Light */
+[data-theme="ayu-light"] { --bg: #faf6f1; --bg2: #f5f0eb; --bg3: #eee8e2; --text: #5c5c5c; --text2: #6e6e6e; --text3: #8a8a8a; --border: #d9d3cc; --accent: #ff6a00; --accent2: #ffb539; --link: #0098d4; }
+/* Deep Ocean */
+[data-theme="deep-ocean"] { --bg: #0d1b2a; --bg2: #1b263b; --bg3: #415a77; --text: #e0e1dd; --text2: #778da9; --text3: #415a77; --border: #1b263b; --accent: #00b4d8; --accent2: #48cae4; --link: #90e0ef; }
+/* Carbon */
+[data-theme="carbon"] { --bg: #161616; --bg2: #262626; --bg3: #393939; --text: #f4f4f4; --text2: #c6c6c6; --text3: #6f6f6f; --border: #393939; --accent: #0f62fe; --accent2: #4589ff; --link: #78a9ff; }
+/* Dracula Soft */
+[data-theme="dracula-soft"] { --bg: #26242a; --bg2: #312b3a; --bg3: #3b3546; --text: #f8f8f2; --text2: #d8deea; --text3: #6e6a86; --border: #3b3546; --accent: #c89bfa; --accent2: #dda0f5; --link: #8be9fd; }
+/* Rose Pine */
+[data-theme="rose-pine"] { --bg: #191724; --bg2: #1f1d2b; --bg3: #2a2640; --text: #e0def4; --text2: #908caa; --text3: #6e6a86; --border: #2a2640; --accent: #c4a7e7; --accent2: #ebbcba; --link: #9ccfd8; }
+/* Night Owl */
+[data-theme="night-owl"] { --bg: #011627; --bg2: #022851; --bg3: #12406a; --text: #d6deeb; --text2: #7fdbff; --text3: #5f7d95; --border: #12406a; --accent: #7fdbff; --accent2: #82cfff; --link: #add7ff; }
+/* Shades Purple */
+[data-theme="shades-purple"] { --bg: #1e1e3f; --bg2: #2d2d5a; --bg3: #3d3d7a; --text: #ffffff; --text2: #ffc701; --text3: #b2a2f7; --border: #3d3d7a; --accent: #ff79c6; --accent2: #ff6b9d; --link: #b4a2f7; }
+/* Horizon Dark */
+[data-theme="horizon-dark"] { --bg: #1c1e26; --bg2: #232530; --bg3: #2d303e; --text: #e0e0e0; --text2: #f0948a; --text3: #fab387; --border: #2d303e; --accent: #da105e; --accent2: #e53f71; --link: #27c9da; }
+/* Palenight */
+[data-theme="palenight"] { --bg: #292d3e; --bg2: #303446; --bg3: #3b4160; --text: #d0d6f5; --text2: #a6adc8; --text3: #6e7191; --border: #3b4160; --accent: #c792ea; --accent2: #82aaff; --link: #82aaff; }
+/* Synthwave */
+[data-theme="synthwave"] { --bg: #1a0a2e; --bg2: #2d1b4e; --bg3: #3d2666; --text: #f9f9f9; --text2: #ff6ec7; --text3: #ff9a8b; --border: #3d2666; --accent: #ff6ec7; --accent2: #ff9a8b; --link: #00f5ff; }
+/* Cyberpunk */
+[data-theme="cyberpunk"] { --bg: #0d0221; --bg2: #1a0533; --bg3: #2a0872; --text: #ff2a6d; --text2: #05d9e8; --text3: #d1f7ff; --border: #2a0872; --accent: #ff2a6d; --accent2: #05d9e8; --link: #05d9e8; }
+/* Matrix */
+[data-theme="matrix"] { --bg: #000000; --bg2: #001100; --bg3: #003300; --text: #00ff00; --text2: #00cc00; --text3: #009900; --border: #003300; --accent: #00ff00; --accent2: #00ff00; --link: #00ff00; }
+/* Forest */
+[data-theme="forest"] { --bg: #1a1f1a; --bg2: #243024; --bg3: #2e4230; --text: #d0e8d0; --text2: #a8c8a8; --text3: #789878; --border: #2e4230; --accent: #4a8; --accent2: #6c9; --link: #8b5; }
+/* Ocean Blue */
+[data-theme="ocean-blue"] { --bg: #0a1628; --bg2: #112240; --bg3: #1d3557; --text: #ccd6f6; --text2: #a8b2d8; --text3: #8892b0; --border: #1d3557; --accent: #64ffda; --accent2: #9aecdb; --link: #64ffda; }
+/* Sunset */
+[data-theme="sunset"] { --bg: #2d132c; --bg2: #3d1f38; --bg3: #4d2a44; --text: #ffeaa7; --text2: #fd79a8; --text3: #a29bfe; --border: #4d2a44; --accent: #fd79a8; --accent2: #e84393; --link: #74b9ff; }
+/* Navy */
+[data-theme="navy"] { --bg: #001f3f; --bg2: #003366; --bg3: #004488; --text: #ffffff; --text2: #7fdbff; --text3: #39cccc; --border: #004488; --accent: #7fdbff; --accent2: #01ff70; --link: #7fdbff; }
+/* Rust */
+[data-theme="rust"] { --bg: #1a1410; --bg2: #2a2018; --bg3: #3a2c20; --text: #e8d8c8; --text2: #d4a574; --text3: #a88060; --border: #3a2c20; --accent: #e25822; --accent2: #ff6b35; --link: #f4a460; }
+/* Cobalt */
+[data-theme="cobalt"] { --bg: #0d1d2d; --bg2: #142538; --bg3: #1a3348; --text: #ffffff; --text2: #ffc5c5; --text3: #7c9ab8; --border: #1a3348; --accent: #ffc107; --accent2: #ff9800; --link: #ffe082; }
+/* Monokai Pro */
+[data-theme="monokai-pro"] { --bg: #2d2a2e; --bg2: #3d3a3e; --bg3: #4d4a4e; --text: #f7f1ff; --text2: #c1c0c0; --text3: #989594; --border: #4d4a4e; --accent: #a6e22e; --accent2: #afd433; --link: #66d9ef; }
+/* VS Code Dark */
+[data-theme="vscode-dark"] { --bg: #1e1e1e; --bg2: #252526; --bg3: #2d2d2d; --text: #d4d4d4; --text2: #9cdcfe; --text3: #6a9955; --border: #2d2d2d; --accent: #569cd6; --accent2: #4ec9b0; --link: #9cdcfe; }
+/* Atom Dark */
+[data-theme="atom-dark"] { --bg: #282c34; --bg2: #353a45; --bg3: #3d4450; --text: #abb2bf; --text2: #56b6c2; --text3: #5c6370; --border: #3d4450; --accent: #61afef; --accent2: #98c379; --link: #61afef; }
+/* Zenburn */
+[data-theme="zenburn"] { --bg: #3f3f3f; --bg2: #4f4f4f; --bg3: #5f5f5f; --text: #dcdccc; --text2: #cc9393; --text3: #7f7f7f; --border: #5f5f5f; --accent: #dcdcaa; --accent2: #f0efaf; --link: #8cd0d3; }
+/* FlatUI Dark */
+[data-theme="flatui-dark"] { --bg: #2c3e50; --bg2: #34495e; --bg3: #3d566e; --text: #ecf0f1; --text2: #3498db; --text3: #95a5a6; --border: #3d566e; --accent: #3498db; --accent2: #2980b9; --link: #3498db; }
+/* FlatUI Light */
+[data-theme="flatui-light"] { --bg: #ecf0f1; --bg2: #ffffff; --bg3: #bdc3c7; --text: #2c3e50; --text2: #2c3e50; --text3: #7f8c8d; --border: #bdc3c7; --accent: #3498db; --accent2: #2980b9; --link: #3498db; }
+/* Tomorrow Night */
+[data-theme="tomorrow-night"] { --bg: #1d1f21; --bg2: #252a2c; --bg3: #373b41; --text: #c5c8c6; --text2: #81a2c7; --text3: #969896; --border: #373b41; --accent: #81a2c7; --accent2: #b294bb; --link: #81a2c7; }
+/* HC Dark */
+[data-theme="hc-dark"] { --bg: #000000; --bg2: #1a1a1a; --bg3: #2a2a2a; --text: #ffffff; --text2: #ffff00; --text3: #cccccc; --border: #ffffff; --accent: #00ff00; --accent2: #00ffff; --link: #00ffff; }
+/* HC Light */
+[data-theme="hc-light"] { --bg: #ffffff; --bg2: #f5f5f5; --bg3: #e8e8e8; --text: #000000; --text2: #0000ee; --text3: #333333; --border: #000000; --accent: #0000ee; --accent2: #551a8b; --link: #0000ee; }
+/* Ir Black */
+[data-theme="ir-black"] { --bg: #000000; --bg2: #0a0a0a; --bg3: #141414; --text: #f6f3e8; --text2: #d6d2c4; --text3: #808080; --border: #141414; --accent: #a4a4a4; --accent2: #c4c4c4; --link: #a4a4a4; }
+/* Spacegray */
+[data-theme="spacegray"] { --bg: #1c1c1c; --bg2: #282828; --bg3: #383838; --text: #b3b3b3; --text2: #8b8b8b; --text3: #5e5e5e; --border: #383838; --accent: #599cab; --accent2: #7fcac5; --link: #89b4f8; }
+/* Base16 Ocean */
+[data-theme="base16-ocean"] { --bg: #2b303b; --bg2: #343d4a; --bg3: #3f4a56; --text: #c0c5ce; --text2: #a7adba; --text3: #5c6e7e; --border: #3f4a56; --accent: #8fa1b3; --accent2: #96b5b4; --link: #8fa1b3; }
+/* Base16 Tomorrow */
+[data-theme="base16-tomorrow"] { --bg: #ffffff; --bg2: #f5f5f5; --bg3: #e8e8e8; --text: #1d1f21; --text2: #5c5c5c; --text3: #8b8b8b; --border: #e8e8e8; --accent: #3f7f7f; --accent2: #4a7c7c; --link: #3f7f7f; }
+/* Adobe Dark */
+[data-theme="adobe-dark"] { --bg: #2d2d2d; --bg2: #3d3d3d; --bg3: #4d4d4d; --text: #dcdcdc; --text2: #bbbcb6; --text3: #9b9b9b; --border: #4d4d4d; --accent: #ff3c00; --accent2: #ff6a00; --link: #4a90d9; }
+/* Adobe Light */
+[data-theme="adobe-light"] { --bg: #f5f5f5; --bg2: #ffffff; --bg3: #e8e8e8; --text: #2c2c2c; --text2: #4c4c4c; --text3: #8c8c8c; --border: #e8e8e8; --accent: #ff3c00; --accent2: #ff6a00; --link: #1473e6; }
+/* Slack Dark */
+[data-theme="slack-dark"] { --bg: #222529; --bg2: #2d3038; --bg3: #383e47; --text: #d4d4d4; --text2: #ab9ba9; --text3: #6e6e79; --border: #383e47; --accent: #4a154b; --accent2: #611f69; --link: #36c5f0; }
+/* Slack Light */
+[data-theme="slack-light"] { --bg: #ffffff; --bg2: #f8f8f8; --bg3: #eeeeee; --text: #1d1c1d; --text2: #616061; --text3: #868686; --border: #eeeeee; --accent: #4a154b; --accent2: #611f69; --link: #36c5f0; }
+/* Notion Dark */
+[data-theme="notion-dark"] { --bg: #191919; --bg2: #242424; --bg3: #2e2e2e; --text: #ffffff; --text2: #c9c9c9; --text3: #878787; --border: #2e2e2e; --accent: #2383e2; --accent2: #1b73e8; --link: #2383e2; }
+/* Notion Light */
+[data-theme="notion-light"] { --bg: #ffffff; --bg2: #f7f6f3; --bg3: #efefef; --text: #37352f; --text2: #6b6b6b; --text3: #9b9b9b; --border: #efefef; --accent: #2383e2; --accent2: #1b73e8; --link: #2383e2; }
+/* Paper Dark */
+[data-theme="paper-dark"] { --bg: #1a1a1a; --bg2: #2a2a2a; --bg3: #3a3a3a; --text: #e0e0e0; --text2: #b0b0b0; --text3: #808080; --border: #3a3a3a; --accent: #ff6b6b; --accent2: #ffa502; --link: #4ecdc4; }
+/* Palenight */
+[data-theme="palenight2"] { --bg: #292d3e; --bg2: #303446; --bg3: #3b4160; --text: #d0d6f5; --text2: #a6adc8; --text3: #6e7191; --border: #3b4160; --accent: #c792ea; --accent2: #82aaff; --link: #82aaff; }
+
+/* GitHub Dark Dimmed */
+[data-theme="github-dimmed"] { --bg: #1d2125; --bg2: #25282e; --bg3: #30363d; --text: #adbac7; --text2: #768390; --text3: #545d68; --border: #30363d; --accent: #539bf5; --accent2: #6cb6ff; --link: #539bf5; }
+/* Material Deep Ocean */
+[data-theme="material-ocean"] { --bg: #263238; --bg2: #37474f; --bg3: #455a64; --text: #eceff1; --text2: #b0bec5; --text3: #78909c; --border: #455a64; --accent: #00acc1; --accent2: #26c6da; --link: #80cbc4; }
+/* Dracula Official */
+[data-theme="dracula-official"] { --bg: #282a36; --bg2: #44475a; --bg3: #6272a4; --text: #f8f8f2; --text2: #ff79c6; --text3: #6272a4; --border: #44475a; --accent: #bd93f9; --accent2: #ff79c6; --link: #8be9fd; }
+/* Nord Light */
+[data-theme="nord-light"] { --bg: #eceff4; --bg2: #e5e9f0; --bg3: #d8dee9; --text: #2e3440; --text2: #4c566a; --text3: #8fbcbb; --border: #d8dee9; --accent: #88c0d0; --accent2: #81a1c1; --link: #5e81ac; }
+/* GitHub Light */
+[data-theme="github-light"] { --bg: #ffffff; --bg2: #f6f8fa; --bg3: #eaeef2; --text: #1f2328; --text2: #656d76; --text3: #8c959f; --border: #d0d7de; --accent: #0969da; --accent2: #0550ae; --link: #0969da; }
+/* One Light */
+[data-theme="one-light"] { --bg: #fafafa; --bg2: #f0f0f0; --bg3: #e0e0e0; --text: #383a42; --text2: #6f6f6f; --text3: #9a9a9a; --border: #e0e0e0; --accent: #4078f2; --accent2: #4078f2; --link: #4078f2; }

@@ -1,442 +1,287 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Atomic Search - Privacy-first search engine with AI capabilities">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="{{ config.APP_NAME }} - Privacy-first search. No tracking, no ads, no cookies.">
     <title>{% block title %}{{ config.APP_NAME }} - Privacy-First Search{% endblock %}</title>
     
-    <!-- Preload critical resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
     
-    <!-- External CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/themes.css') }}">
     
     <style>
         :root {
-            --bg-primary: #0a0a1a;
-            --bg-secondary: #12122a;
-            --bg-card: rgba(30, 30, 60, 0.8);
-            --bg-glass: rgba(255, 255, 255, 0.05);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0c0;
-            --text-muted: #606080;
+            --bg: #0f0f0f;
+            --bg2: #1a1a1a;
+            --bg3: #242424;
+            --text: #e8e8e8;
+            --text2: #9aa0a6;
+            --text3: #70757a;
+            --border: #3c4043;
             --accent: #667eea;
-            --accent-hover: #764ba2;
-            --success: #10b981;
-            --error: #ef4444;
-            --border: rgba(255, 255, 255, 0.1);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent2: #8b5cf6;
+            --link: #8ab4f8;
+            --green: #34a853;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         [data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #f1f5f9;
-            --bg-card: rgba(255, 255, 255, 0.9);
-            --bg-glass: rgba(255, 255, 255, 0.7);
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --border: rgba(0, 0, 0, 0.1);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --bg: #ffffff;
+            --bg2: #f8f9fa;
+            --bg3: #f1f3f4;
+            --text: #202124;
+            --text2: #5f6368;
+            --text3: #80868b;
+            --border: #dadce0;
+            --accent: #4285f4;
+            --accent2: #6366f1;
+            --link: #1a73e8;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* Animated background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
 
         /* Header */
-        .header {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .hdr {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            gap: 16px;
             border-bottom: 1px solid var(--border);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
 
-        .header-content {
-            max-width: 1200px;
+        .hdr-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .hdr-logo:hover { text-decoration: none; }
+
+        .hdr-logo span { font-size: 28px; }
+
+        .hdr-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hdr-link {
+            padding: 8px 12px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .hdr-link:hover { text-decoration: none; }
+
+        /* Nav */
+        .nav {
+            display: flex;
+            padding: 8px 16px 0;
+            gap: 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .nav a {
+            padding: 12px 4px;
+            color: var(--text2);
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav a:hover { text-decoration: none; color: var(--text); }
+        .nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* Search */
+        .search-wrap {
+            max-width: 652px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 40px 16px;
+        }
+
+        .search-box {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 1.4em;
-        }
-
-        .logo-icon {
-            font-size: 1.8em;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Search form */
-        .search-container {
-            flex: 1;
-            max-width: 700px;
-        }
-
-        .search-form {
-            display: flex;
-            align-items: center;
-            background: var(--bg-card);
+            background: var(--bg2);
             border: 1px solid var(--border);
-            border-radius: 50px;
-            padding: 5px;
-            transition: var(--transition);
+            border-radius: 24px;
+            padding: 8px 16px;
+            gap: 12px;
+            transition: box-shadow 0.2s;
         }
 
-        .search-form:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        .search-box:focus-within {
+            background: var(--bg);
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
         }
+
+        .search-box svg { color: var(--text3); flex-shrink: 0; }
 
         .search-input {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 12px 20px;
-            font-size: 1em;
-            color: var(--text-primary);
             outline: none;
+            font-size: 16px;
+            color: var(--text);
         }
 
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
+        .search-input::placeholder { color: var(--text3); }
 
-        .search-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-            border: none;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: flex;
+        /* Buttons */
+        .btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .search-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .search-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        /* Navigation */
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
             padding: 8px 16px;
-            border-radius: 8px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-link:hover {
-            color: var(--text-primary);
-            background: var(--bg-glass);
-        }
-
-        .nav-link svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Theme toggle */
-        .theme-toggle {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .theme-toggle:hover {
-            background: var(--bg-glass);
-            transform: rotate(15deg);
-        }
-
-        .theme-toggle svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-secondary);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* Glass card */
-        .glass-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 30px;
-            transition: var(--transition);
+            background: var(--bg2);
+            color: var(--text);
+            transition: all 0.15s;
         }
 
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+        .btn:hover { background: var(--bg3); }
+        .btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+        .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg2);
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .tabs a {
+            padding: 6px 12px;
+            border-radius: 16px;
+            color: var(--text2);
+        }
+
+        .tabs a:hover { color: var(--text); }
+        .tabs a.active { background: var(--bg3); color: var(--text); }
+
+        /* Card */
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
         }
 
         /* Footer */
-        .footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
+        .ftr {
+            margin-top: auto;
+            padding: 16px;
             border-top: 1px solid var(--border);
-            margin-top: 60px;
+            font-size: 13px;
+            color: var(--text3);
         }
 
-        .footer-links {
+        .ftr a { color: var(--text3); }
+        .ftr a:hover { color: var(--text2); }
+
+        .ftr-top {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Utilities */
-        .text-center { text-align: center; }
-        .text-gradient {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* SVG Icon styles */
-        .icon {
-            width: 1.2em;
-            height: 1.2em;
-            vertical-align: middle;
-            fill: currentColor;
-        }
-        .icon-lg {
-            width: 2.5em;
-            height: 2.5em;
-        }
-
-        /* Theme Selector */
-        .theme-selector {
-            display: flex;
-            gap: 8px;
+            gap: 24px;
             flex-wrap: wrap;
-            padding: 15px;
-            justify-content: center;
-        }
-        .theme-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .theme-btn:hover {
-            transform: scale(1.2);
-            border-color: white;
-        }
-        .theme-btn.active {
-            border-color: white;
-            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            margin-bottom: 16px;
         }
 
-        /* Additional themes are loaded from themes.css for better performance */
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-wrap: wrap;
-            }
-            
-            .search-container {
-                order: 3;
-                width: 100%;
-                max-width: none;
-                margin-top: 15px;
-            }
-            
-            .nav {
-                gap: 10px;
-            }
-            
-            .nav-link span {
-                display: none;
-            }
+        .ftr-bot {
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
         }
+
+        /* Stats bar */
+        .stats-bar {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text2);
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stats-bar span { display: flex; align-items: center; gap: 6px; }
+        .stats-bar .dot { color: var(--green); }
+
+        /* Custom CSS injection */
+        {% if custom_css %}{{ custom_css | safe }}{% endif %}
     </style>
     
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="/" class="logo">
-                <svg class="icon logo-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <span>{{ config.APP_NAME }}</span>
-            </a>
-            
-            <div class="search-container">
-                <form action="/search" method="GET" class="search-form">
-                    <input type="text" name="q" class="search-input" placeholder="Search the web privately..." autocomplete="off">
-                    <button type="submit" class="search-btn">
-                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    </button>
-                </form>
-            </div>
-            
-            <nav class="nav">
-                <a href="/settings" class="nav-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-                    <span>Settings</span>
-                </a>
-                
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-                    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
-                </button>
-            </nav>
+    <header class="hdr">
+        <a href="/" class="hdr-logo">
+            <span>🔬</span>
+            {{ config.APP_NAME }}
+        </a>
+        <div class="hdr-right">
+            <a href="/settings" class="hdr-link">Settings</a>
+            <a href="/about" class="hdr-link">About</a>
         </div>
     </header>
 
-    <!-- Main content -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+    {% block content %}{% endblock %}
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-links">
+    <footer class="ftr">
+        <div class="ftr-top">
             <a href="/about">About</a>
             <a href="/privacy">Privacy</a>
-            <a href="/privacy/insane">Insane Privacy</a>
             <a href="/terms">Terms</a>
             <a href="https://github.com/atomic-search/atomic-search" target="_blank">GitHub</a>
         </div>
-        <p>{{ config.APP_NAME }} v{{ config.VERSION }} - Privacy-first search</p>
-        <p>No tracking. No ads. No cookies.</p>
-	        <p style="margin-top: 12px; font-size: 0.75rem; opacity: 0.7;">
-	            Designed & Made by <strong>Kayan Erkama</strong> for the <strong>UCXP Project</strong> - Built for privacy-conscious users
-	        </p>
+        <div class="ftr-bot">
+            <p>{{ config.APP_NAME }} v{{ config.APP_VERSION }} - No tracking. No ads. No cookies.</p>
+            <p style="margin-top: 8px; opacity: 0.7;">
+                Designed & Made by <strong>Kayan Erkama</strong> for the <strong>UCXP Project</strong>
+            </p>
+        </div>
     </footer>
 
     <script>
         // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            document.cookie = `theme=${newTheme};path=/;max-age=31536000`;
-            
-            // Update icon
-            const sunIcon = document.querySelector('.sun-icon');
-            if (newTheme === 'light') {
-                sunIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
-            } else {
-                sunIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
-            }
+            const theme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', theme);
+            document.cookie = 'theme=' + theme + ';path=/;max-age=31536000';
         }
 
-        // Load saved theme
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = document.cookie.match(/theme=(\w+)/)?.[1] || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        });
+        // Load theme from cookie
+        const theme = document.cookie.match(/theme=(\w+)/);
+        if (theme) document.documentElement.setAttribute('data-theme', theme[1]);
     </script>
 </body>
 </html>
