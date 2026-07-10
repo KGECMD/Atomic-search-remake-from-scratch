@@ -24,4 +24,4 @@ RUN mkdir -p /tmp/atomic_search && chmod 777 /tmp/atomic_search
 EXPOSE 8080
 
 # Run - Railway sets PORT env var
-CMD ["sh", "-c", "gunicorn 'atomic_search.main:app' --bind '0.0.0.0:${PORT:-8080}' --workers 2 --threads 4"]
+CMD ["sh", "-c", "python -m gunicorn atomic_search.main:app --bind 0.0.0.0:${PORT:-8080} --workers 2 --threads 4"]
