@@ -103,6 +103,7 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     app.register_blueprint(user_features_bp)
     
     # Exempt API and tools from CSRF
+    csrf.exempt(main_bp)
     csrf.exempt(api_bp)
     csrf.exempt(tools_bp)
     csrf.exempt(search_enhance_bp)
