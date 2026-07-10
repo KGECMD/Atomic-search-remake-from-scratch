@@ -71,4 +71,4 @@ gevent>=23.9.0
 # Security scanning
 safety>=3.0.0
 bandit>=1.7.0
-pip-audit>=1.0.0
+pip-audit>=2.10.1
