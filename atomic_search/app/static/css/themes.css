@@ -1,0 +1,240 @@
+/* Atomic Search - Additional Themes */
+/* These themes are loaded on demand to reduce initial page size */
+
+/* Dracula */
+[data-theme="dracula"] {
+    --bg-primary: #282a36;
+    --bg-secondary: #383a59;
+    --bg-card: rgba(68, 71, 90, 0.9);
+    --bg-glass: rgba(40, 42, 54, 0.7);
+    --text-primary: #f8f8f2;
+    --text-secondary: #bd93f9;
+    --text-muted: #6272a4;
+    --accent: #bd93f9;
+    --accent-hover: #ff79c6;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+/* Nord */
+[data-theme="nord"] {
+    --bg-primary: #2e3440;
+    --bg-secondary: #3b4252;
+    --bg-card: rgba(59, 66, 82, 0.9);
+    --bg-glass: rgba(46, 52, 64, 0.7);
+    --text-primary: #eceff4;
+    --text-secondary: #d8dee9;
+    --text-muted: #4c566a;
+    --accent: #88c0d0;
+    --accent-hover: #81a1c1;
+    --border: rgba(236, 239, 244, 0.1);
+}
+
+/* Monokai */
+[data-theme="monokai"] {
+    --bg-primary: #272822;
+    --bg-secondary: #3e3d32;
+    --bg-card: rgba(62, 61, 50, 0.9);
+    --bg-glass: rgba(39, 40, 34, 0.7);
+    --text-primary: #f8f8f2;
+    --text-secondary: #a6e22e;
+    --text-muted: #75715e;
+    --accent: #a6e22e;
+    --accent-hover: #ae81ff;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+/* Solarized Dark */
+[data-theme="solarized-dark"] {
+    --bg-primary: #002b36;
+    --bg-secondary: #073642;
+    --bg-card: rgba(7, 54, 66, 0.9);
+    --bg-glass: rgba(0, 43, 54, 0.7);
+    --text-primary: #fdf6e3;
+    --text-secondary: #839496;
+    --text-muted: #586e75;
+    --accent: #268bd2;
+    --accent-hover: #2aa198;
+    --border: rgba(253, 246, 227, 0.1);
+}
+
+/* Solarized Light */
+[data-theme="solarized-light"] {
+    --bg-primary: #fdf6e3;
+    --bg-secondary: #eee8d5;
+    --bg-card: rgba(238, 232, 213, 0.9);
+    --bg-glass: rgba(253, 246, 227, 0.7);
+    --text-primary: #002b36;
+    --text-secondary: #586e75;
+    --text-muted: #93a1a1;
+    --accent: #268bd2;
+    --accent-hover: #2aa198;
+    --border: rgba(0, 43, 54, 0.1);
+}
+
+/* GitHub Dark */
+[data-theme="github-dark"] {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: rgba(22, 27, 34, 0.9);
+    --bg-glass: rgba(13, 17, 23, 0.7);
+    --text-primary: #c9d1d9;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent: #58a6ff;
+    --accent-hover: #388bfd;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+/* One Dark */
+[data-theme="one-dark"] {
+    --bg-primary: #1e2127;
+    --bg-secondary: #282c34;
+    --bg-card: rgba(40, 44, 52, 0.9);
+    --bg-glass: rgba(30, 33, 39, 0.7);
+    --text-primary: #abb2bf;
+    --text-secondary: #7f848e;
+    --text-muted: #5c6370;
+    --accent: #61afef;
+    --accent-hover: #56b6c2;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+/* Dracula Classic */
+[data-theme="dracula-classic"] {
+    --bg-primary: #1a1b26;
+    --bg-secondary: #24283b;
+    --bg-card: rgba(36, 40, 59, 0.9);
+    --bg-glass: rgba(26, 27, 38, 0.7);
+    --text-primary: #c0caf5;
+    --text-secondary: #7aa2f7;
+    --text-muted: #565f89;
+    --accent: #7aa2f7;
+    --accent-hover: #bb9af7;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+/* Rose Pine */
+[data-theme="rose-pine"] {
+    --bg-primary: #191724;
+    --bg-secondary: #1f1d2b;
+    --bg-card: rgba(31, 29, 43, 0.9);
+    --bg-glass: rgba(25, 23, 36, 0.7);
+    --text-primary: #e0def4;
+    --text-secondary: #908caa;
+    --text-muted: #6e6a86;
+    --accent: #c4a7e7;
+    --accent-hover: #ebbcba;
+    --border: rgba(224, 222, 244, 0.1);
+}
+
+/* Rose Pine Dawn */
+[data-theme="rose-pine-dawn"] {
+    --bg-primary: #faf4ed;
+    --bg-secondary: #fffaf3;
+    --bg-card: rgba(255, 250, 243, 0.95);
+    --bg-glass: rgba(175, 153, 174, 0.15);
+    --text-primary: #5f5a6e;
+    --text-secondary: #797593;
+    --text-muted: #9691a8;
+    --accent: #b4637a;
+    --accent-hover: #d7827e;
+    --border: rgba(180, 99, 122, 0.25);
+}
+
+/* Kanagawa */
+[data-theme="kanagawa"] {
+    --bg-primary: #1f1b24;
+    --bg-secondary: #2a2730;
+    --bg-card: rgba(42, 39, 48, 0.9);
+    --bg-glass: rgba(118, 212, 212, 0.15);
+    --text-primary: #dcd7be;
+    --text-secondary: #a6a69b;
+    --text-muted: #727169;
+    --accent: #7e9cd8;
+    --accent-hover: #98bb6d;
+    --border: rgba(126, 156, 216, 0.3);
+}
+
+/* Kanagawa Light */
+[data-theme="kanagawa-light"] {
+    --bg-primary: #f2ede8;
+    --bg-secondary: #fff8f3;
+    --bg-card: rgba(255, 248, 243, 0.95);
+    --bg-glass: rgba(118, 212, 212, 0.1);
+    --text-primary: #3d3b38;
+    --text-secondary: #5c5854;
+    --text-muted: #7a7872;
+    --accent: #769468;
+    --accent-hover: #d06c2c;
+    --border: rgba(118, 212, 212, 0.25);
+}
+
+/* Catppuccin Frappe */
+[data-theme="catppuccin-frappe"] {
+    --bg-primary: #232193;
+    --bg-secondary: #292c3c;
+    --bg-card: rgba(41, 44, 60, 0.9);
+    --bg-glass: rgba(205, 214, 244, 0.12);
+    --text-primary: #c6d0f4;
+    --text-secondary: #a5adcb;
+    --text-muted: #838ba7;
+    --accent: #8caa;
+    --accent-hover: #ca9ee6;
+    --border: rgba(140, 170, 238, 0.3);
+}
+
+/* Gruvbox Material */
+[data-theme="gruvbox-material"] {
+    --bg-primary: #282828;
+    --bg-secondary: #32302f;
+    --bg-card: rgba(50, 48, 47, 0.9);
+    --bg-glass: rgba(213, 196, 161, 0.12);
+    --text-primary: #dfbf8e;
+    --text-secondary: #a9b19b;
+    --text-muted: #8a8a78;
+    --accent: #83c07c;
+    --accent-hover: #e6b466;
+    --border: rgba(131, 192, 124, 0.3);
+}
+
+/* Synthwave */
+[data-theme="synthwave"] {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: rgba(22, 33, 62, 0.9);
+    --bg-glass: rgba(26, 26, 46, 0.7);
+    --text-primary: #f8f8f2;
+    --text-secondary: #ff79c6;
+    --text-muted: #6272a4;
+    --accent: #ff79c6;
+    --accent-hover: #ff92d0;
+    --border: rgba(255, 121, 198, 0.2);
+}
+
+/* Forest */
+[data-theme="forest"] {
+    --bg-primary: #1a2a1a;
+    --bg-secondary: #243024;
+    --bg-card: rgba(36, 48, 36, 0.9);
+    --bg-glass: rgba(26, 42, 26, 0.7);
+    --text-primary: #d4e8d4;
+    --text-secondary: #9dc49d;
+    --text-muted: #6b8f6b;
+    --accent: #4caf50;
+    --accent-hover: #81c784;
+    --border: rgba(212, 232, 212, 0.15);
+}
+
+/* Nordic */
+[data-theme="nordic"] {
+    --bg-primary: #2d3a4f;
+    --bg-secondary: #3d4f6f;
+    --bg-card: rgba(61, 79, 111, 0.9);
+    --bg-glass: rgba(45, 58, 79, 0.7);
+    --text-primary: #e8ecf2;
+    --text-secondary: #a8c0d8;
+    --text-muted: #7890a8;
+    --accent: #88c0d0;
+    --accent-hover: #a3d8e8;
+    --border: rgba(232, 236, 242, 0.1);
+}
