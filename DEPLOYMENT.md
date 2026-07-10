@@ -222,4 +222,5 @@ gunicorn 'atomic_search.main:app' --bind 0.0.0.0:8080 --log-level debug
 ## 📞 Support
 
 - **GitHub Issues:** https://github.com/KGECMD/Atomic-search-remake-from-scratch/issues
+- **Matrix Room:** [#supernovabyucxpproject:matrix.org](https://matrix.to/#/#supernovabyucxpproject:matrix.org)
 - **Documentation:** See README.md
