@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Collections - {{ config.app_name }}{% endblock %}
+
+{% block content %}
+<div class="collections-container">
+    <div class="collections-header">
+        <h1>Your Collections</h1>
+        <button class="btn btn-primary" id="new-collection-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            New Collection
+        </button>
+    </div>
+    
+    <div class="collections-grid">
+        <div class="collection-card create-new">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>Create a collection</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

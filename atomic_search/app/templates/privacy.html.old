@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - {{ config.app_name }}{% endblock %}
+
+{% block content %}
+<div class="privacy-container">
+    <h1>Privacy Policy</h1>
+    
+    <div class="last-updated">
+        Last updated: January 2024
+    </div>
+    
+    <section class="policy-section">
+        <h2>Our Privacy Commitment</h2>
+        <p>
+            At {{ config.app_name }}, we believe privacy is a fundamental right. This privacy 
+            policy explains how we handle your data. Spoiler: we don't collect much of it.
+        </p>
+    </section>
+    
+    <section class="policy-section">
+        <h2>What We DON'T Collect</h2>
+        <ul class="privacy-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>No Personal Information</strong>
+                    <p>We don't collect names, emails, phone numbers, or any personally identifiable information.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>No Search History</strong>
+                    <p>Your searches are not stored, tracked, or associated with you in any way.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>No Analytics</strong>
+                    <p>We don't use Google Analytics, Mixpanel, or any other tracking services.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>No Cookies (by default)</strong>
+                    <p>We don't use cookies unless you explicitly enable optional features.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>No Fingerprinting</strong>
+                    <p>We don't use browser fingerprinting techniques to track users.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>No Telemetry</strong>
+                    <p>No usage data, crash reports, or anonymous statistics are sent anywhere.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <section class="policy-section">
+        <h2>What We Collect (Minimal)</h2>
+        <p>To provide our service, we collect only what's absolutely necessary:</p>
+        <ul class="privacy-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <div>
+                    <strong>Search Queries</strong>
+                    <p>Temporarily processed to generate results, then discarded. Not stored long-term.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <div>
+                    <strong>Community Votes</strong>
+                    <p>Stored anonymously without IP or identifying information.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <section class="policy-section">
+        <h2>Security Measures</h2>
+        <ul class="privacy-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <div>
+                    <strong>Encrypted Connections</strong>
+                    <p>HTTPS enforced, secure headers, HSTS support.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <div>
+                    <strong>Input Sanitization</strong>
+                    <p>All inputs are validated and sanitized to prevent attacks.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <div>
+                    <strong>Rate Limiting</strong>
+                    <p>Protection against abuse and brute-force attacks.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <section class="policy-section">
+        <h2>Third-Party Services</h2>
+        <p>
+            We use third-party search providers (DuckDuckGo, Bing) to generate search results. 
+            These providers may have their own privacy policies. However, your queries are 
+            anonymized before being sent, and we don't share any personal information with them.
+        </p>
+        <p>
+            If you enable AI features, your queries may be processed by AI providers 
+            (OpenAI, Anthropic, etc.) in accordance with their privacy policies.
+        </p>
+    </section>
+    
+    <section class="policy-section">
+        <h2>Your Rights</h2>
+        <p>Because we don't collect personal data, there's not much to request. But you have:</p>
+        <ul class="privacy-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>Right to Privacy</strong>
+                    <p>Your searches remain private and untracked.</p>
+                </div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <div>
+                    <strong>Right to Self-Host</strong>
+                    <p>Run your own instance with full control over your data.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <section class="policy-section">
+        <h2>Changes to This Policy</h2>
+        <p>
+            If we make any changes to this privacy policy, we will update it here. 
+            Since we don't collect data, changes will be rare and minimal.
+        </p>
+    </section>
+    
+    <section class="policy-section">
+        <h2>Contact</h2>
+        <p>
+            If you have any questions about this privacy policy, please open an issue 
+            on our GitHub repository or contact us at contact@atomicsearch.dev
+        </p>
+    </section>
+    
+    <div class="privacy-footer">
+        <p>
+            In summary: We don't track you. Your searches are private. Your data stays yours.
+        </p>
+    </div>
+</div>
+{% endblock %}

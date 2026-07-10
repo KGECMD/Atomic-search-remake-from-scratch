@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+    <div class="glass-card" style="padding: 40px;">
+        <h1 style="font-size: 2.5em; margin-bottom: 10px;">📜 Terms of Service</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Last updated: January 2025</p>
+
+        <div class="terms-content" style="color: var(--text-secondary); line-height: 1.8;">
+            
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Acceptance of Terms</h2>
+            <p>
+                By using {{ config.APP_NAME }}, you agree to these terms. If you don't agree, please don't use our service.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Description of Service</h2>
+            <p>
+                {{ config.APP_NAME }} provides a privacy-focused search engine that allows users to search the web. We aggregate results from various search providers while removing trackers and protecting your privacy.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Acceptable Use</h2>
+            <p>You agree NOT to:</p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li style="margin-bottom: 8px;">🔒 Use the service for illegal purposes</li>
+                <li style="margin-bottom: 8px;">🔒 Attempt to gain unauthorized access</li>
+                <li style="margin-bottom: 8px;">🔒 Overload or damage our systems</li>
+                <li style="margin-bottom: 8px;">🔒 Use automated bots without permission</li>
+                <li style="margin-bottom: 8px;">🔒 Interfere with other users' access</li>
+            </ul>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Intellectual Property</h2>
+            <p>
+                The {{ config.APP_NAME }} name, logo, and design are trademarks. The source code is licensed under open source licenses. Search results belong to their respective providers and are subject to their terms.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Third-Party Services</h2>
+            <p>
+                We use third-party search providers. Their services are subject to their own terms and privacy policies.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Disclaimer</h2>
+            <p>
+                <strong style="color: var(--accent);">The service is provided "as is".</strong> We don't guarantee uninterrupted access or error-free results. We reserve the right to modify or discontinue the service.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Limitation of Liability</h2>
+            <p>
+                We are not liable for any damages arising from your use of the service.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Changes to Terms</h2>
+            <p>
+                We may update these terms. Continued use after changes means you accept the new terms.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">Contact</h2>
+            <p>
+                Questions? Open an issue on <a href="https://github.com/atomic-search/atomic-search" style="color: var(--accent);">GitHub</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

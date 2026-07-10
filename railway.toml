@@ -1,0 +1,18 @@
+[railway]
+name = "atomic-search"
+runtime = "python"
+
+[build]
+builder = "PYTHON"
+pythonVersion = "3.11"
+
+[deploy]
+healthCheckPath = "/"
+startCommand = "gunicorn --bind 0.0.0.0:$PORT atomic_search.app:app --workers 2 --threads 4"
+
+[deploy.volumes]
+data = "/data"
+
+[environment]
+PORT = "8080"
+FLASK_ENV = "production"

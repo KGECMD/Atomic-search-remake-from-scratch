@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}{{ query }} - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 0 auto; padding: 30px 20px;">
+    
+    <!-- Search Header -->
+    <div style="margin-bottom: 30px;">
+        <form action="/search" method="GET" class="search-form" style="max-width: 100%;">
+            <input type="text" name="q" class="search-input" value="{{ query }}" placeholder="Search the web privately..." autocomplete="off">
+            <input type="hidden" name="type" value="{{ search_type }}">
+            <button type="submit" class="search-btn">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </button>
+        </form>
+    </div>
+
+    <!-- Search Tabs & Filters -->
+    <div class="filters" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; align-items: center;">
+        <!-- Search Type Tabs -->
+        <div style="display: flex; gap: 5px; background: var(--bg-glass); padding: 5px; border-radius: 25px;">
+            <a href="/search?q={{ query }}&type=web" class="tab {% if search_type == 'web' %}active{% endif %}">All</a>
+            <a href="/search?q={{ query }}&type=images" class="tab {% if search_type == 'images' %}active{% endif %}">Images</a>
+            <a href="/search?q={{ query }}&type=videos" class="tab {% if search_type == 'videos' %}active{% endif %}">Videos</a>
+            <a href="/search?q={{ query }}&type=news" class="tab {% if search_type == 'news' %}active{% endif %}">News</a>
+            <a href="/search?q={{ query }}&type=shopping" class="tab {% if search_type == 'shopping' %}active{% endif %}">Shopping</a>
+        </div>
+
+        <!-- Filters -->
+        <select name="time" class="filter-select" onchange="this.form.submit()">
+            <option value="">Any time</option>
+            <option value="d">Past 24 hours</option>
+            <option value="w">Past week</option>
+            <option value="m">Past month</option>
+            <option value="y">Past year</option>
+        </select>
+
+        <select name="safe" class="filter-select" onchange="this.form.submit()">
+            <option value="moderate">Safe: Moderate</option>
+            <option value="off">Safe: Off</option>
+            <option value="strict">Safe: Strict</option>
+        </select>
+
+        <!-- Vote Counter -->
+        <div class="vote-counter" style="margin-left: auto; color: var(--text-secondary); font-size: 0.9em;">
+            {% if vote_limit is not none %}
+            <span id="voteCount">{{ vote_limit }}</span> votes left today
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Results Count & Time -->
+    <div style="color: var(--text-secondary); margin-bottom: 20px;">
+        <span>About {{ results.total_results }} results</span>
+        <span style="margin-left: 10px;">({{ "%.2f"|format(results.response_time) }}s)</span>
+    </div>
+
+    <!-- Instant Answer -->
+    {% if results.instant_answer %}
+    <div class="instant-answer glass-card" style="margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));">
+        <div style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 8px;">✨ Instant Answer</div>
+        <p style="color: var(--text-primary); font-size: 1.05em; line-height: 1.6;">{{ results.instant_answer }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Search Results -->
+    <div class="results-list">
+        {% for result in results.results %}
+        <div class="result-item glass-card" style="margin-bottom: 15px; padding: 20px;" data-url="{{ result.url }}">
+            
+            <!-- Vote Buttons -->
+            <div class="vote-section" style="float: right; display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 15px;">
+                <button class="vote-btn upvote {% if user_votes.get(result.url) == 1 %}active{% endif %}" 
+                        onclick="vote('{{ result.url }}', 1, this)" title="Upvote">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+                </button>
+                
+                <span class="vote-score" style="font-weight: 600; color: var(--text-primary);">
+                    {{ result.votes if result.votes else 0 }}
+                </span>
+                
+                <button class="vote-btn downvote {% if user_votes.get(result.url) == -1 %}active{% endif %}" 
+                        onclick="vote('{{ result.url }}', -1, this)" title="Downvote">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 20l8-8h-6V4h-4v8H4z"/></svg>
+                </button>
+            </div>
+
+            <!-- Result Content -->
+            <div class="result-content">
+                <a href="{{ result.url }}" target="_blank" rel="noopener" class="result-title" style="color: #667eea; text-decoration: none; font-size: 1.2em; font-weight: 500;">
+                    {{ result.title }}
+                </a>
+                
+                <div class="result-meta" style="display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 0.9em;">
+                    <span style="color: var(--text-muted);">{{ result.source }}</span>
+                    {% if result.published_date %}
+                    <span style="color: var(--text-muted);">• {{ result.published_date }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if result.snippet %}
+                <p class="result-snippet" style="color: var(--text-secondary); line-height: 1.6;">
+                    {{ result.snippet }}
+                </p>
+                {% endif %}
+
+                <!-- Actions -->
+                <div class="result-actions" style="display: flex; gap: 10px; margin-top: 12px;">
+                    <button class="action-btn" onclick="bookmark('{{ result.url }}', '{{ result.title }}')" title="Bookmark">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                    </button>
+                    <button class="action-btn" onclick="copyLink('{{ result.url }}')" title="Copy link">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    </button>
+                    <button class="action-btn" onclick="openReadingMode('{{ result.url }}')" title="Reading mode">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if results.total_pages > 1 %}
+    <div class="pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+        {% if page > 1 %}
+        <a href="/search?q={{ query }}&type={{ search_type }}&page={{ page - 1 }}" class="page-btn">Previous</a>
+        {% endif %}
+        
+        {% for p in range(1, (results.total_pages + 1)) %}
+            {% if p >= page - 2 and p <= page + 2 %}
+            <a href="/search?q={{ query }}&type={{ search_type }}&page={{ p }}" 
+               class="page-btn {% if p == page %}active{% endif %}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if page < results.total_pages %}
+        <a href="/search?q={{ query }}&type={{ search_type }}&page={{ page + 1 }}" class="page-btn">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Suggestions -->
+    {% if results.suggestions %}
+    <div class="suggestions glass-card" style="margin-top: 30px; padding: 20px;">
+        <h3 style="margin-bottom: 15px; color: var(--text-primary);">Search Suggestions</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            {% for suggestion in results.suggestions[:8] %}
+            <a href="/search?q={{ suggestion }}" class="suggestion-chip">{{ suggestion }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .tab {
+        padding: 8px 16px;
+        border-radius: 20px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.9em;
+    }
+
+    .tab:hover {
+        color: var(--text-primary);
+    }
+
+    .tab.active {
+        background: var(--accent);
+        color: white;
+    }
+
+    .filter-select {
+        padding: 8px 15px;
+        background: var(--bg-glass);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-size: 0.9em;
+        cursor: pointer;
+    }
+
+    .filter-select option {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+
+    .result-item {
+        transition: all 0.3s ease;
+    }
+
+    .result-item:hover {
+        transform: translateX(5px);
+    }
+
+    .result-title:hover {
+        text-decoration: underline !important;
+    }
+
+    .vote-btn {
+        background: transparent;
+        border: none;
+        padding: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+    }
+
+    .vote-btn:hover {
+        background: var(--bg-glass);
+        color: var(--accent);
+    }
+
+    .vote-btn.upvote.active {
+        color: #10b981;
+    }
+
+    .vote-btn.downvote.active {
+        color: #ef4444;
+    }
+
+    .action-btn {
+        background: transparent;
+        border: 1px solid var(--border);
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .action-btn:hover {
+        background: var(--bg-glass);
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+
+    .page-btn {
+        padding: 10px 18px;
+        background: var(--bg-glass);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .page-btn:hover {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+    }
+
+    .page-btn.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+    }
+
+    .suggestion-chip {
+        padding: 8px 16px;
+        background: var(--bg-glass);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9em;
+        transition: all 0.2s ease;
+    }
+
+    .suggestion-chip:hover {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+    }
+</style>
+
+<script>
+    // Vote function
+    async function vote(url, type, btn) {
+        try {
+            const response = await fetch('/api/v1/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    url: url,
+                    type: type
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update vote display
+                const scoreSpan = btn.closest('.vote-section').querySelector('.vote-score');
+                scoreSpan.textContent = data.stats.votes;
+                
+                // Update button states
+                const upvoteBtn = btn.closest('.vote-section').querySelector('.upvote');
+                const downvoteBtn = btn.closest('.vote-section').querySelector('.downvote');
+                
+                upvoteBtn.classList.remove('active');
+                downvoteBtn.classList.remove('active');
+                
+                if (type === 1) {
+                    upvoteBtn.classList.add('active');
+                } else {
+                    downvoteBtn.classList.add('active');
+                }
+
+                // Update vote count
+                const voteCount = document.getElementById('voteCount');
+                if (voteCount && data.stats.votes_remaining !== undefined) {
+                    voteCount.textContent = data.stats.votes_remaining;
+                }
+            } else {
+                alert(data.message || 'Failed to vote');
+            }
+        } catch (error) {
+            console.error('Vote error:', error);
+        }
+    }
+
+    // Bookmark function
+    function bookmark(url, title) {
+        const bookmark = { url, title, date: new Date().toISOString() };
+        let bookmarks = JSON.parse(localStorage.getItem('atomicBookmarks') || '[]');
+        
+        // Check if already bookmarked
+        if (bookmarks.some(b => b.url === url)) {
+            alert('Already bookmarked!');
+            return;
+        }
+        
+        bookmarks.push(bookmark);
+        localStorage.setItem('atomicBookmarks', JSON.stringify(bookmarks));
+        alert('Bookmarked!');
+    }
+
+    // Copy link function
+    function copyLink(url) {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied!');
+        });
+    }
+
+    // Reading mode function
+    function openReadingMode(url) {
+        window.location.href = '/reading-mode?url=' + encodeURIComponent(url);
+    }
+</script>
+{% endblock %}

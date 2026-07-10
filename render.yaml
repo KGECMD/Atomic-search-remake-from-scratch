@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: atomic-search
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn atomic_search.app:app --bind 0.0.0.0:$PORT --workers 2
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+    autoDeploy:
+      enabled: true
+    disk:
+      name: search-index
+      mountPath: /data
+      sizeGB: 1
+
+disks:
+  - name: search-index
+    mountPath: /data
+    sizeGB: 1

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - {{ config.app_name }}{% endblock %}
+
+{% block content %}
+<div class="terms-container">
+    <h1>Terms of Service</h1>
+    
+    <div class="last-updated">Last updated: January 2024</div>
+    
+    <section class="terms-section">
+        <h2>Acceptance of Terms</h2>
+        <p>
+            By using {{ config.app_name }}, you agree to these terms. If you don't agree, 
+            please don't use our service.
+        </p>
+    </section>
+    
+    <section class="terms-section">
+        <h2>Use of Service</h2>
+        <p>You agree to:</p>
+        <ul>
+            <li>Use the service for lawful purposes only</li>
+            <li>Not attempt to gain unauthorized access</li>
+            <li>Not overload or disrupt our services</li>
+            <li>Not use automated bots without permission</li>
+        </ul>
+    </section>
+    
+    <section class="terms-section">
+        <h2>Availability</h2>
+        <p>
+            We strive for 99.9% uptime but don't guarantee uninterrupted service. 
+            We may perform maintenance at any time.
+        </p>
+    </section>
+    
+    <section class="terms-section">
+        <h2>Intellectual Property</h2>
+        <p>
+            The {{ config.app_name }} code is open source under the MIT license. 
+            Search results belong to their respective owners.
+        </p>
+    </section>
+    
+    <section class="terms-section">
+        <h2>Disclaimer</h2>
+        <p>
+            {{ config.app_name }} is provided "as is" without warranties. 
+            We don't guarantee accuracy of search results.
+        </p>
+    </section>
+    
+    <section class="terms-section">
+        <h2>Changes</h2>
+        <p>
+            We may update these terms at any time. Continued use constitutes acceptance.
+        </p>
+    </section>
+    
+    <section class="terms-section">
+        <h2>Contact</h2>
+        <p>
+            Questions? Contact us at contact@atomicsearch.dev or open a GitHub issue.
+        </p>
+    </section>
+</div>
+{% endblock %}

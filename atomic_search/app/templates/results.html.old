@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block title %}{{ query }} - {{ config.app_name }}{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <!-- Search Header -->
+    <div class="results-header">
+        <form action="{{ url_for('main.search') }}" method="GET" class="results-search-form">
+            <input type="hidden" name="type" value="{{ search_type }}">
+            <input type="hidden" name="lang" value="{{ language }}">
+            <input type="hidden" name="region" value="{{ region }}">
+            <input type="hidden" name="safe" value="{{ safe_search }}">
+            <input type="hidden" name="time" value="{{ time_period }}">
+            <div class="results-search-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input type="text" name="q" value="{{ query }}" class="results-search-input" id="results-search-input" autocomplete="off">
+                <button type="submit" class="results-search-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+        
+        <!-- Search Filters -->
+        <div class="search-filters">
+            <div class="filter-tabs">
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type=web" 
+                   class="filter-tab {% if search_type == 'web' %}active{% endif %}">All</a>
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type=images" 
+                   class="filter-tab {% if search_type == 'images' %}active{% endif %}">Images</a>
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type=videos" 
+                   class="filter-tab {% if search_type == 'videos' %}active{% endif %}">Videos</a>
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type=news" 
+                   class="filter-tab {% if search_type == 'news' %}active{% endif %}">News</a>
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type=shopping" 
+                   class="filter-tab {% if search_type == 'shopping' %}active{% endif %}">Shopping</a>
+            </div>
+            
+            <div class="filter-options">
+                <select name="time" class="filter-select" onchange="updateFilters()">
+                    <option value="">Any time</option>
+                    <option value="day" {% if time_period == 'day' %}selected{% endif %}>Past 24 hours</option>
+                    <option value="week" {% if time_period == 'week' %}selected{% endif %}>Past week</option>
+                    <option value="month" {% if time_period == 'month' %}selected{% endif %}>Past month</option>
+                    <option value="year" {% if time_period == 'year' %}selected{% endif %}>Past year</option>
+                </select>
+                
+                <select name="safe" class="filter-select" onchange="updateFilters()">
+                    <option value="off" {% if safe_search == 'off' %}selected{% endif %}>Safe: Off</option>
+                    <option value="moderate" {% if safe_search == 'moderate' %}selected{% endif %}>Safe: Moderate</option>
+                    <option value="strict" {% if safe_search == 'strict' %}selected{% endif %}>Safe: Strict</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="results-body">
+        <!-- Main Results -->
+        <div class="results-main">
+            {% if results.error %}
+            <div class="error-message">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <p>{{ results.error }}</p>
+            </div>
+            {% else %}
+            
+            <!-- Stats Bar -->
+            <div class="results-stats">
+                <span class="results-count">
+                    About {{ results.total_results or results.results|length * 10 }} results
+                </span>
+                <span class="results-time">
+                    ({{ "%.2f"|format(results.response_time) }}s)
+                </span>
+                {% if vote_limit and config.voting_enabled %}
+                <span class="vote-quota" title="Daily vote quota">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                    </svg>
+                    {{ vote_limit.votes_remaining }} votes left today
+                </span>
+                {% endif %}
+            </div>
+            
+            <!-- Results List -->
+            <div class="results-list">
+                {% for result in results.results %}
+                <article class="result-item" data-url="{{ result.url }}">
+                    <!-- Voting Controls -->
+                    {% if config.voting_enabled %}
+                    <div class="result-voting">
+                        <button class="vote-btn vote-up {% if user_votes.get(result.url) == 1 %}active{% endif %}" 
+                                data-url="{{ result.url }}" data-type="1" title="Upvote">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                            </svg>
+                        </button>
+                        <span class="vote-score" id="vote-score-{{ loop.index }}">
+                            {{ result.votes or 0 }}
+                        </span>
+                        <button class="vote-btn vote-down {% if user_votes.get(result.url) == -1 %}active{% endif %}" 
+                                data-url="{{ result.url }}" data-type="-1" title="Downvote">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="result-content">
+                        {% if result.thumbnail %}
+                        <div class="result-thumbnail">
+                            <img src="{{ result.thumbnail }}" alt="" loading="lazy" onerror="this.style.display='none'">
+                        </div>
+                        {% endif %}
+                        
+                        <div class="result-text">
+                            <h3 class="result-title">
+                                <a href="{{ result.url }}" target="_blank" rel="noopener">{{ result.title|safe }}</a>
+                            </h3>
+                            <div class="result-meta">
+                                {% if result.source %}
+                                <span class="result-source">{{ result.source }}</span>
+                                {% endif %}
+                                {% if result.published_date %}
+                                <span class="result-date">{{ result.published_date }}</span>
+                                {% endif %}
+                                {% if result.duration %}
+                                <span class="result-duration">{{ result.duration }}</span>
+                                {% endif %}
+                            </div>
+                            <p class="result-snippet">{{ result.snippet|safe }}</p>
+                            <div class="result-actions">
+                                <button class="result-action bookmark-btn" data-url="{{ result.url }}" 
+                                        data-title="{{ result.title }}" title="Bookmark">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                </button>
+                                <button class="result-action share-btn" data-url="{{ result.url }}" title="Share">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="18" cy="5" r="3"/>
+                                        <circle cx="6" cy="12" r="3"/>
+                                        <circle cx="18" cy="19" r="3"/>
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                                    </svg>
+                                </button>
+                                <button class="result-action read-btn" data-url="{{ result.url }}" title="Reading Mode">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if results.total_pages > 1 %}
+            <nav class="pagination">
+                {% if page > 1 %}
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type={{ search_type }}&page={{ page - 1 }}" class="pagination-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    Previous
+                </a>
+                {% endif %}
+                
+                <div class="pagination-pages">
+                    {% set max_pages = [results.total_pages, 10]|min %}
+                    {% for p in range(1, max_pages + 1) %}
+                    <a href="{{ url_for('main.search') }}?q={{ query }}&type={{ search_type }}&page={{ p }}" 
+                       class="pagination-page {% if p == page %}active{% endif %}">{{ p }}</a>
+                    {% endfor %}
+                </div>
+                
+                {% if page < results.total_pages %}
+                <a href="{{ url_for('main.search') }}?q={{ query }}&type={{ search_type }}&page={{ page + 1 }}" class="pagination-btn">
+                    Next
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+                {% endif %}
+            </nav>
+            {% endif %}
+            
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <aside class="results-sidebar">
+            <!-- AI Summary -->
+            {% if config.ai_enabled and config.ai_summaries_enabled %}
+            <div class="sidebar-card ai-summary-card" id="ai-summary-card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12c0-1.85.5-3.58 1.38-5.08"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                    AI Summary
+                </h3>
+                <div class="ai-summary-content" id="ai-summary-content">
+                    <p class="ai-summary-loading">Analyzing results...</p>
+                </div>
+                <button class="ai-summary-toggle" id="ai-summary-toggle" data-expanded="false">
+                    <span>Show more</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+            </div>
+            {% endif %}
+            
+            <!-- Knowledge Panel -->
+            <div class="sidebar-card knowledge-panel">
+                <h3>Related Topics</h3>
+                <div class="related-topics">
+                    {% for related in results.related_queries[:5] %}
+                    <a href="{{ url_for('main.search') }}?q={{ related }}" class="topic-tag">{{ related }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Tools -->
+            <div class="sidebar-card tools-panel">
+                <h3>Quick Tools</h3>
+                <div class="tools-list">
+                    {% if config.calculator_enabled %}
+                    <div class="tool-item">
+                        <button class="tool-btn" id="calculator-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="4" y="2" width="16" height="20" rx="2"/>
+                                <line x1="8" y1="6" x2="16" y2="6"/>
+                                <line x1="8" y1="10" x2="8" y2="10.01"/>
+                                <line x1="12" y1="10" x2="12" y2="10.01"/>
+                                <line x1="16" y1="10" x2="16" y2="10.01"/>
+                                <line x1="8" y1="14" x2="8" y2="14.01"/>
+                                <line x1="12" y1="14" x2="12" y2="14.01"/>
+                                <line x1="16" y1="14" x2="16" y2="14.01"/>
+                                <line x1="8" y1="18" x2="8" y2="18.01"/>
+                                <line x1="12" y1="18" x2="12" y2="18.01"/>
+                                <line x1="16" y1="18" x2="16" y2="18.01"/>
+                            </svg>
+                            Calculator
+                        </button>
+                    </div>
+                    {% endif %}
+                    
+                    {% if config.translation_enabled %}
+                    <div class="tool-item">
+                        <button class="tool-btn" id="translate-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                            Translate
+                        </button>
+                    </div>
+                    {% endif %}
+                    
+                    {% if config.unit_converter_enabled %}
+                    <div class="tool-item">
+                        <button class="tool-btn" id="convert-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="17 1 21 5 17 9"/>
+                                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                <polyline points="7 23 3 19 7 15"/>
+                                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                            </svg>
+                            Convert
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Trending -->
+            <div class="sidebar-card trending-panel">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                        <polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                    Trending
+                </h3>
+                <div class="trending-list" id="trending-list">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Voting functionality
+document.querySelectorAll('.vote-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        const url = this.dataset.url;
+        const type = parseInt(this.dataset.type);
+        
+        try {
+            const response = await fetch('/vote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, type })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update vote display
+                const resultItem = this.closest('.result-item');
+                const scoreEl = resultItem.querySelector('.vote-score');
+                if (scoreEl) {
+                    scoreEl.textContent = data.stats.votes;
+                }
+                
+                // Update button states
+                const upBtn = resultItem.querySelector('.vote-up');
+                const downBtn = resultItem.querySelector('.vote-down');
+                upBtn.classList.toggle('active', data.stats.votes > 0);
+                downBtn.classList.toggle('active', data.stats.votes < 0);
+            } else {
+                alert(data.error);
+            }
+        } catch (e) {
+            console.error('Vote error:', e);
+        }
+    });
+});
+
+// Bookmark functionality
+document.querySelectorAll('.bookmark-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const url = this.dataset.url;
+        const title = this.dataset.title;
+        // Would save bookmark in production
+        console.log('Bookmark:', url, title);
+    });
+});
+
+// AI Summary
+{% if config.ai_enabled and config.ai_summaries_enabled %}
+async function loadAISummary() {
+    const results = {{ results.results[:10]|tojson }};
+    const query = "{{ query }}";
+    
+    try {
+        const response = await fetch('/ai/summarize/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, results })
+        });
+        
+        const data = await response.json();
+        
+        const contentEl = document.getElementById('ai-summary-content');
+        if (contentEl && data.summary) {
+            contentEl.innerHTML = `<p>${data.summary}</p>`;
+        }
+    } catch (e) {
+        const contentEl = document.getElementById('ai-summary-content');
+        if (contentEl) {
+            contentEl.innerHTML = '<p>AI summary unavailable</p>';
+        }
+    }
+}
+
+loadAISummary();
+
+// Toggle AI summary
+document.getElementById('ai-summary-toggle')?.addEventListener('click', function() {
+    const content = document.getElementById('ai-summary-content');
+    const isExpanded = this.dataset.expanded === 'true';
+    
+    content.classList.toggle('expanded', !isExpanded);
+    this.dataset.expanded = !isExpanded;
+    this.querySelector('span').textContent = isExpanded ? 'Show more' : 'Show less';
+});
+{% endif %}
+
+// Filter update
+function updateFilters() {
+    const form = document.querySelector('.results-search-form');
+    const timeSelect = document.querySelector('select[name="time"]');
+    const safeSelect = document.querySelector('select[name="safe"]');
+    
+    // Update hidden fields
+    let timeInput = form.querySelector('input[name="time"]');
+    if (!timeInput) {
+        timeInput = document.createElement('input');
+        timeInput.type = 'hidden';
+        timeInput.name = 'time';
+        form.appendChild(timeInput);
+    }
+    timeInput.value = timeSelect.value;
+    
+    let safeInput = form.querySelector('input[name="safe"]');
+    if (!safeInput) {
+        safeInput = document.createElement('input');
+        safeInput.type = 'hidden';
+        safeInput.name = 'safe';
+        form.appendChild(safeInput);
+    }
+    safeInput.value = safeSelect.value;
+    
+    form.submit();
+}
+
+// Load trending
+async function loadTrending() {
+    try {
+        const response = await fetch('/api/v1/trending?limit=5');
+        const trending = await response.json();
+        
+        const container = document.getElementById('trending-list');
+        if (container && trending.length > 0) {
+            container.innerHTML = trending.map((item, i) => `
+                <a href="${item.url}" class="trending-item">
+                    <span class="trending-rank">${i + 1}</span>
+                    <span class="trending-title">${item.title || item.url}</span>
+                    <span class="trending-votes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        ${item.votes}
+                    </span>
+                </a>
+            `).join('');
+        }
+    } catch (e) {
+        console.error('Failed to load trending:', e);
+    }
+}
+
+loadTrending();
+</script>
+{% endblock %}

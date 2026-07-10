@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}{{ config.app_name }} - Privacy-First Search{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <div class="logo-large">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <h1 class="hero-title">Search Privately</h1>
+        <p class="hero-subtitle">
+            Experience the web without tracking, ads, or algorithmic bias. 
+            Your searches stay yours.
+        </p>
+        
+        <form action="{{ url_for('main.search') }}" method="GET" class="hero-search-form" id="hero-search-form">
+            <div class="hero-search-wrapper">
+                <svg class="hero-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input type="text" name="q" placeholder="Search the web privately..." 
+                       autocomplete="off" id="hero-search-input" class="hero-search-input"
+                       autofocus required>
+                <button type="button" class="hero-voice-btn" title="Voice search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </button>
+                <button type="submit" class="hero-search-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+        
+        <!-- Search Suggestions -->
+        <div class="suggestions-container" id="suggestions-container"></div>
+        
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <button class="quick-link" data-type="images">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                Images
+            </button>
+            <button class="quick-link" data-type="videos">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+                Videos
+            </button>
+            <button class="quick-link" data-type="news">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm0 0V4a2 2 0 0 0-2-2H4"/>
+                    <path d="M18 14h-8"/>
+                    <path d="M15 18h-5"/>
+                    <path d="M10 6h8v4h-8V6z"/>
+                </svg>
+                News
+            </button>
+            <button class="quick-link" data-type="shopping">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                Shopping
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="features-container">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            </div>
+            <h3>Zero Tracking</h3>
+            <p>No cookies, no analytics, no fingerprinting. Your search history stays private.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <h3>Secure</h3>
+            <p>Built with security in mind. HTTPS, secure headers, and privacy-first defaults.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+            </div>
+            <h3>Community-Driven</h3>
+            <p>Vote on search results to improve quality. Help others find better content.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12c0-1.85.5-3.58 1.38-5.08"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+            </div>
+            <h3>AI-Powered</h3>
+            <p>Get instant summaries, ask follow-up questions, and get answers powered by AI.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+            </div>
+            <h3>Global Search</h3>
+            <p>Search in your language, from your region. Results tailored to you.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6"/>
+                    <polyline points="8 6 2 12 8 18"/>
+                </svg>
+            </div>
+            <h3>Open Source</h3>
+            <p>Free, transparent, and community-maintained. Audit the code yourself.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-value">100%</span>
+            <span class="stat-label">Private</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Trackers</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">24/7</span>
+            <span class="stat-label">Available</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">∞</span>
+            <span class="stat-label">Free</span>
+        </div>
+    </div>
+</section>
+
+<!-- Privacy Banner -->
+<section class="privacy-banner">
+    <div class="privacy-banner-content">
+        <h2>Your Privacy Matters</h2>
+        <p>
+            {{ config.app_name }} doesn't collect personal data, track your searches, 
+            or sell your information to advertisers. We believe the internet should 
+            be searchable without surveillance.
+        </p>
+        <a href="{{ url_for('main.privacy') }}" class="privacy-learn-more">Learn More</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-submit form with search type
+document.querySelectorAll('.quick-link').forEach(link => {
+    link.addEventListener('click', function() {
+        const type = this.dataset.type;
+        const input = document.getElementById('hero-search-input');
+        if (input.value.trim()) {
+            document.getElementById('hero-search-form').action = '{{ url_for("main.search") }}?type=' + type;
+        }
+        document.getElementById('hero-search-form').submit();
+    });
+});
+
+// Search suggestions
+const searchInput = document.getElementById('hero-search-input');
+const suggestionsContainer = document.getElementById('suggestions-container');
+let suggestionsTimeout;
+
+searchInput?.addEventListener('input', function() {
+    clearTimeout(suggestionsTimeout);
+    suggestionsTimeout = setTimeout(async () => {
+        const query = this.value.trim();
+        if (query.length < 2) {
+            suggestionsContainer.innerHTML = '';
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/suggestions?q=' + encodeURIComponent(query));
+            const suggestions = await response.json();
+            
+            if (suggestions.length > 0) {
+                suggestionsContainer.innerHTML = suggestions.map(s => 
+                    `<a href="/search?q=${encodeURIComponent(s)}" class="suggestion-item">${s}</a>`
+                ).join('');
+            } else {
+                suggestionsContainer.innerHTML = '';
+            }
+        } catch (e) {
+            suggestionsContainer.innerHTML = '';
+        }
+    }, 300);
+});
+
+// Clear suggestions when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.hero-search-wrapper') && !e.target.closest('.suggestions-container')) {
+        suggestionsContainer.innerHTML = '';
+    }
+});
+
+// Keyboard navigation for suggestions
+searchInput?.addEventListener('keydown', function(e) {
+    const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+    if (items.length === 0) return;
+    
+    const currentIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+    
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (currentIndex < items.length - 1) {
+            items[currentIndex]?.classList.remove('active');
+            items[currentIndex + 1]?.classList.add('active');
+        } else {
+            items[currentIndex]?.classList.remove('active');
+            items[0]?.classList.add('active');
+        }
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (currentIndex > 0) {
+            items[currentIndex]?.classList.remove('active');
+            items[currentIndex - 1]?.classList.add('active');
+        } else {
+            items[currentIndex]?.classList.remove('active');
+            items[items.length - 1]?.classList.add('active');
+        }
+    } else if (e.key === 'Enter' && currentIndex >= 0) {
+        e.preventDefault();
+        items[currentIndex].click();
+    }
+});
+</script>
+{% endblock %}

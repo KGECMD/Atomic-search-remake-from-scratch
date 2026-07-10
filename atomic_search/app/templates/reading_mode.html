@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Reading Mode - {{ config.app_name }}{% endblock %}
+
+{% block content %}
+<div class="reading-mode-container">
+    <div class="reading-mode-header">
+        <a href="{{ url_for('main.index') }}" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Back to Search
+        </a>
+        <div class="reading-controls">
+            <button class="control-btn" id="decrease-font" title="Decrease font size">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+            </button>
+            <span id="font-size-display">16px</span>
+            <button class="control-btn" id="increase-font" title="Increase font size">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <article class="reading-article">
+        <header class="reading-header">
+            <h1>{{ title }}</h1>
+            <a href="{{ url }}" class="source-link" target="_blank" rel="noopener">{{ url }}</a>
+        </header>
+        
+        <div class="reading-content" id="reading-content">
+            {{ content|safe }}
+        </div>
+    </article>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let fontSize = 16;
+    
+    document.getElementById('decrease-font')?.addEventListener('click', () => {
+        if (fontSize > 12) {
+            fontSize -= 2;
+            updateFontSize();
+        }
+    });
+    
+    document.getElementById('increase-font')?.addEventListener('click', () => {
+        if (fontSize < 24) {
+            fontSize += 2;
+            updateFontSize();
+        }
+    });
+    
+    function updateFontSize() {
+        const content = document.getElementById('reading-content');
+        const display = document.getElementById('font-size-display');
+        if (content) {
+            content.style.fontSize = fontSize + 'px';
+        }
+        if (display) {
+            display.textContent = fontSize + 'px';
+        }
+    }
+</script>
+{% endblock %}

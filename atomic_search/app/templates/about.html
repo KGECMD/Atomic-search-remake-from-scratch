@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}About - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+    <div class="glass-card" style="padding: 40px; text-align: center;">
+        <div class="logo-icon" style="font-size: 4em; margin-bottom: 20px;">🔬</div>
+        <h1 style="font-size: 2.5em; margin-bottom: 10px;">About {{ config.APP_NAME }}</h1>
+        <p style="color: var(--accent); font-size: 1.2em; margin-bottom: 30px;">Privacy-First Search Engine</p>
+
+        <div style="text-align: left; color: var(--text-secondary); line-height: 1.8;">
+            
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🚀 What is {{ config.APP_NAME }}?</h2>
+            <p>
+                {{ config.APP_NAME }} is an open-source, privacy-focused search engine inspired by Whoogle. We believe the internet should be searchable without surveillance, tracking, or algorithmic manipulation.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🎯 Our Mission</h2>
+            <p>
+                To provide a private, secure, and user-controlled search experience. We don't track you, sell your data, or show you ads. Your searches stay yours.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">✨ Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong>🛡️ Zero Tracking</strong>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong>🔒 Secure</strong>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong>🤖 AI-Powered</strong>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong>👥 Community</strong>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong>🌍 Multi-Language</strong>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong>💯 Ad-Free</strong>
+                </div>
+            </div>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">💻 Open Source</h2>
+            <p>
+                {{ config.APP_NAME }} is completely open source. You can audit the code, contribute improvements, or host your own instance.
+            </p>
+            <p style="margin-top: 15px;">
+                <a href="https://github.com/atomic-search/atomic-search" class="btn-primary" style="display: inline-block; padding: 12px 25px; background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; text-decoration: none; border-radius: 25px;">
+                    View on GitHub
+                </a>
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🏗️ Tech Stack</h2>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li style="margin-bottom: 8px;">Python 3.13+</li>
+                <li style="margin-bottom: 8px;">Flask Web Framework</li>
+                <li style="margin-bottom: 8px;">SQLAlchemy (Async)</li>
+                <li style="margin-bottom: 8px;">Modern CSS/HTML5/JavaScript</li>
+                <li style="margin-bottom: 8px;">Docker & Kubernetes Ready</li>
+            </ul>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🤝 Contributing</h2>
+            <p>
+                We welcome contributions! Whether it's bug fixes, new features, or documentation improvements, everyone can help.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">📞 Contact</h2>
+            <p>
+                Have questions or suggestions? Open an issue on GitHub or reach out to the community.
+            </p>
+
+            <div style="margin-top: 40px; padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2)); border-radius: 15px;">
+                <p style="font-size: 1.1em; color: var(--text-primary);">
+                    🔬 <strong>Built with ❤️ for privacy</strong><br>
+                    <span style="color: var(--text-secondary);">{{ config.APP_NAME }} v{{ config.VERSION }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

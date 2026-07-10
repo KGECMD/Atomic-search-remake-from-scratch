@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+    <div class="glass-card" style="padding: 40px;">
+        <h1 style="font-size: 2.5em; margin-bottom: 10px;">🔒 Privacy Policy</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Last updated: January 2025</p>
+
+        <div class="privacy-content" style="color: var(--text-secondary); line-height: 1.8;">
+            
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">What is {{ config.APP_NAME }}?</h2>
+            <p>
+                {{ config.APP_NAME }} is a <strong style="color: var(--accent);">privacy-focused search engine</strong> that allows you to search the web without being tracked, profiled, or monitored. Unlike traditional search engines, we don't collect your personal data, sell your information, or show you targeted ads based on your search history.
+            </p>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">✨ Key Privacy Features</h2>
+            
+            <div class="feature-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong style="color: var(--accent);">🛡️ Zero Tracking</strong>
+                    <p style="margin-top: 8px; font-size: 0.9em;">We don't use cookies, analytics, or tracking pixels.</p>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong style="color: var(--accent);">📊 No Profiling</strong>
+                    <p style="margin-top: 8px; font-size: 0.9em;">We don't build profiles based on your searches.</p>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong style="color: var(--accent);">🔐 Encrypted</strong>
+                    <p style="margin-top: 8px; font-size: 0.9em;">All connections use HTTPS with secure headers.</p>
+                </div>
+                <div style="background: var(--bg-glass); padding: 15px; border-radius: 10px;">
+                    <strong style="color: var(--accent);">🚫 No Ads</strong>
+                    <p style="margin-top: 8px; font-size: 0.9em;">We don't show ads or sell your attention.</p>
+                </div>
+            </div>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">📋 What We Collect</h2>
+            <p><strong>Nothing.</strong> That's the short answer. Here's the detailed explanation:</p>
+            
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li style="margin-bottom: 10px;">❌ <strong>We don't collect IP addresses</strong> - Your IP is never logged or stored.</li>
+                <li style="margin-bottom: 10px;">❌ <strong>We don't store search queries</strong> - Your searches are not recorded.</li>
+                <li style="margin-bottom: 10px;">❌ <strong>We don't use cookies</strong> - Unless you explicitly enable optional features.</li>
+                <li style="margin-bottom: 10px;">❌ <strong>We don't track clicks</strong> - We don't know which results you click.</li>
+                <li style="margin-bottom: 10px;">❌ <strong>We don't analyze behavior</strong> - No patterns, no profiles, nothing.</li>
+            </ul>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🔍 How Search Works</h2>
+            <p>
+                When you search on {{ config.APP_NAME }}:
+            </p>
+            <ol style="margin: 15px 0; padding-left: 20px;">
+                <li style="margin-bottom: 10px;">Your search query is sent to our server.</li>
+                <li style="margin-bottom: 10px;">We query our search backend providers.</li>
+                <li style="margin-bottom: 10px;">Results are returned to you with ads/trackers stripped.</li>
+                <li style="margin-bottom: 10px;">The connection is closed. No logs are kept.</li>
+            </ol>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🛠️ Optional Features</h2>
+            <p>
+                Some features require minimal data storage:
+            </p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li style="margin-bottom: 8px;"><strong>Bookmarks</strong> - Stored locally in your browser only</li>
+                <li style="margin-bottom: 8px;"><strong>Voting</strong> - Anonymized vote counts (no personal data)</li>
+                <li style="margin-bottom: 8px;"><strong>Settings</strong> - Stored locally or encrypted</li>
+            </ul>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">🔐 Security</h2>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li style="margin-bottom: 8px;">✅ HTTPS-only connections</li>
+                <li style="margin-bottom: 8px;">✅ Strict Content Security Policy</li>
+                <li style="margin-bottom: 8px;">✅ XSS and CSRF protection</li>
+                <li style="margin-bottom: 8px;">✅ Rate limiting to prevent abuse</li>
+            </ul>
+
+            <h2 style="color: var(--text-primary); margin-top: 30px; margin-bottom: 15px;">👥 Data Sharing</h2>
+            <p>
+                <strong style="color: var(--accent);">We don't share your data with anyone.</strong> Period. No advertisers, no partners, no third parties.
+            </p>
+
+            <div style="margin-top: 40px; padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2)); border-radius: 15px; text-align: center;">
+                <p style="font-size: 1.1em; color: var(--text-primary);">
+                    🛡️ <strong>Your privacy is our mission.</strong><br>
+                    <span style="color: var(--text-secondary);">With {{ config.APP_NAME }}, what you search is yours alone.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

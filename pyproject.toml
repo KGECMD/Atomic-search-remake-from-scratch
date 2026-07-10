@@ -1,0 +1,200 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools_scm[toml]>=7.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atomic-search"
+version = "1.0.0"
+description = "A privacy-focused, open-source search engine with AI capabilities"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Atomic Search Team", email = "contact@atomicsearch.dev"}
+]
+keywords = ["search", "privacy", "search-engine", "ai", "privacy-first"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Indexing",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "flask>=3.0.0",
+    "flask-cors>=4.0.0",
+    "flask-limiter>=3.5.0",
+    "flask-caching>=2.1.0",
+    "flask-session>=0.5.0",
+    "flask-wtf>=1.2.0",
+    "wtforms>=3.1.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "html2text>=2020.1.16",
+    "python-dateutil>=2.8.2",
+    "pytz>=2024.1",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "cryptography>=41.0.0",
+    "redis>=5.0.0",
+    "celery>=5.3.0",
+    " APScheduler>=3.10.0",
+    "bleach>=6.1.0",
+    "bleach-allowlist>=1.0.0",
+    "email-validator>=2.1.0",
+    "qrcode>=7.4.2",
+    "pillow>=10.0.0",
+    "orjson>=3.9.0",
+    "httpx>=0.26.0",
+    "fake-useragent>=1.4.0",
+    "user-agents>=2.2.0",
+    "tor_requests>=0.4.0",
+    "socksio>=1.0.0",
+    "graphene>=3.3.0",
+    "flask-graphql>=2.0.1",
+    "marshmallow>=3.20.0",
+    "alembic>=1.13.0",
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.19.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-flake8>=1.1.1",
+    "flake8>=6.1.0",
+    "black>=23.12.0",
+    "isort>=5.13.0",
+    "mypy>=1.7.0",
+    "types-requests>=2.31.0",
+    "types-beautifulsoup4>=4.12.0",
+    "pre-commit>=3.5.0",
+    "safety>=3.0.0",
+    "bandit>=1.7.0",
+    "pip-audit>=1.0.0",
+]
+openai = ["openai>=1.0.0"]
+anthropic = ["anthropic>=0.8.0"]
+gemini = ["google-generativeai>=0.3.0"]
+ollama = ["ollama>=0.1.0"]
+all-ai = [
+    "openai>=1.0.0",
+    "anthropic>=0.8.0",
+    "google-generativeai>=0.3.0",
+    "ollama>=0.1.0",
+]
+postgres = ["psycopg2-binary>=2.9.0"]
+mysql = ["pymysql>=1.1.0"]
+redis = ["redis>=5.0.0"]
+server = [
+    "gunicorn>=21.2.0",
+    "gevent>=23.9.0",
+    "eventlet>=0.34.0",
+]
+docs = [
+    "sphinx>=7.2.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autoapi>=3.0.0",
+]
+docker = [
+    "docker>=7.0.0",
+    "docker-compose>=1.29.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/atomic-search/atomic-search"
+Documentation = "https://docs.atomicsearch.dev"
+Repository = "https://github.com/atomic-search/atomic-search"
+Issues = "https://github.com/atomic-search/atomic-search/issues"
+Changelog = "https://github.com/atomic-search/atomic-search/releases"
+
+[project.scripts]
+atomic-search = "atomic_search:main"
+atomic-search-admin = "atomic_search.admin:cli"
+
+[tool.setuptools]
+packages = ["atomic_search"]
+
+[tool.setuptools.package-data]
+atomic_search = ["py.typed"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  | \.git
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = [".git", ".venv", "build", "dist"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_calls = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+warn_unreachable = true
+show_error_codes = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+    "security: marks tests as security tests",
+    "unit: marks tests as unit tests",
+]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["atomic_search"]
+omit = ["*/tests/*", "*/migrations/*"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "@abc.abstractmethod",
+]

@@ -1,0 +1,8 @@
+/* Theme-specific CSS - Auto/Default */
+:root {
+    /* Will be overridden by JS based on system preference */
+}
+
+[data-theme="auto"] {
+    color-scheme: light dark;
+}
