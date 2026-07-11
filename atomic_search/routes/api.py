@@ -417,3 +417,61 @@ def index_search():
         return jsonify({"query": query, "results": results, "count": len(results)})
     except Exception as e:
         return jsonify({"error": str(e), "results": []})
+
+@bp.route("/index-stats")
+def index_stats():
+    """Get detailed index statistics."""
+    import os, sqlite3
+    db_path = os.environ.get("DATABASE_PATH", "/workspace/project/Atomic-search-remake-from-scratch/data/supernova_index.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("SELECT COUNT(*), domain FROM pages GROUP BY domain ORDER BY COUNT(*) DESC LIMIT 20")
+        top_domains = [{"domain": r[1], "count": r[0]} for r in c.fetchall()]
+        c.execute("SELECT COUNT(*) FROM pages")
+        total = c.fetchone()[0]
+        conn.close()
+        return jsonify({"total": total, "top_domains": top_domains})
+    except Exception as e:
+        return jsonify({"total": 0, "top_domains": [], "error": str(e)})
+
+@bp.route("/random-url")
+def random_url():
+    """Get a random indexed URL."""
+    import os, sqlite3, random
+    db_path = os.environ.get("DATABASE_PATH", "/workspace/project/Atomic-search-remake-from-scratch/data/supernova_index.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("SELECT url, title, domain FROM pages ORDER BY RANDOM() LIMIT 1")
+        row = c.fetchone()
+        conn.close()
+        if row:
+            return jsonify({"url": row[0], "title": row[1], "domain": row[2]})
+        return jsonify({"error": "No URLs in database"})
+    except:
+        return jsonify({"error": "Database unavailable"})
+
+@bp.route("/quick-search")
+def quick_search():
+    """Fast prefix-based search."""
+    import os, sqlite3
+    query = request.args.get("q", "").lower()
+    limit = int(request.args.get("limit", 10))
+    if len(query) < 2:
+        return jsonify({"results": []})
+    
+    db_path = os.environ.get("DATABASE_PATH", "/workspace/project/Atomic-search-remake-from-scratch/data/supernova_index.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("""
+            SELECT url, title, domain FROM pages 
+            WHERE LOWER(url) LIKE ? OR LOWER(title) LIKE ?
+            ORDER BY score DESC LIMIT ?
+        """, (f"{query}%", f"{query}%", limit))
+        results = [{"url": r[0], "title": r[1], "domain": r[2]} for r in c.fetchall()]
+        conn.close()
+        return jsonify({"query": query, "results": results})
+    except:
+        return jsonify({"results": []})

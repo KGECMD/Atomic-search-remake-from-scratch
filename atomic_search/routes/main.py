@@ -495,3 +495,57 @@ def calculator():
     """Calculator tool."""
     return render_template("calculator.html")
 
+@bp.route("/time")
+def time_page():
+    """World Clock tool."""
+    from datetime import datetime
+    import pytz
+    
+    zones = [
+        ("New York", "America/New_York"),
+        ("London", "Europe/London"),
+        ("Tokyo", "Asia/Tokyo"),
+        ("Sydney", "Australia/Sydney"),
+        ("Dubai", "Asia/Dubai"),
+        ("Paris", "Europe/Paris"),
+    ]
+    
+    times = {}
+    for city, tz_name in zones:
+        try:
+            tz = pytz.timezone(tz_name)
+            times[city] = datetime.now(tz).strftime("%H:%M:%S")
+        except:
+            times[city] = "--:--:--"
+    
+    return render_template("time.html", zones=zones, times=times)
+
+@bp.route("/password")
+def password_page():
+    """Password Generator tool."""
+    return render_template("password.html")
+
+@bp.route("/uuid")
+def uuid_page():
+    """UUID Generator tool."""
+    import uuid
+    return render_template("uuid.html", generated_uuid=str(uuid.uuid4()))
+
+@bp.route("/discover")
+def discover():
+    """Discover random indexed pages."""
+    import os, sqlite3, random
+    
+    db_path = os.environ.get("DATABASE_PATH", "/workspace/project/Atomic-search-remake-from-scratch/data/supernova_index.db")
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("SELECT url, title, description, domain FROM pages ORDER BY RANDOM() LIMIT 24")
+        pages = [{"url": r[0], "title": r[1], "description": r[2] or "", "domain": r[3]} for r in c.fetchall()]
+        c.execute("SELECT COUNT(*) FROM pages")
+        total = c.fetchone()[0]
+        conn.close()
+        return render_template("discover.html", pages=pages, total=total)
+    except:
+        return render_template("discover.html", pages=[], total=0)
+

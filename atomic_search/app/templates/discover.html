@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Discover - SuperNova Search{% endblock %}
+
+{% block content %}
+<div class="discover-container">
+    <div class="hero">
+        <h1>🌟 Discover</h1>
+        <p>Explore {{ total }} indexed pages from across the web</p>
+    </div>
+    
+    <div class="stats-bar">
+        <span class="stat">📚 {{ total }} pages indexed</span>
+        <a href="/discover" class="refresh-btn">🔄 Refresh</a>
+    </div>
+    
+    <div class="grid">
+        {% for page in pages %}
+        <a href="{{ page.url }}" target="_blank" class="card">
+            <div class="card-header">
+                <span class="domain">{{ page.domain }}</span>
+            </div>
+            <h3>{{ page.title }}</h3>
+            <p>{{ page.description[:100] }}{% if page.description|length > 100 %}...{% endif %}</p>
+            <div class="card-footer">
+                <span class="url">{{ page.url[:40] }}{% if page.url|length > 40 %}...{% endif %}</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    
+    {% if not pages %}
+    <div class="empty">
+        <p>No pages indexed yet. Start crawling to populate the index!</p>
+        <a href="/crawl-page" class="btn">Start Crawling</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.discover-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.hero { text-align: center; margin-bottom: 2rem; }
+.hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.stats-bar { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; }
+.stat { color: var(--text-secondary); }
+.refresh-btn { background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-decoration: none; color: inherit; transition: all 0.2s; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-color: var(--primary); }
+.card h3 { margin: 0.5rem 0; font-size: 1rem; }
+.card p { color: var(--text-secondary); font-size: 0.875rem; margin: 0.5rem 0; }
+.domain { background: var(--primary); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; }
+.url { color: var(--text-tertiary); font-size: 0.75rem; }
+.card-footer { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.empty { text-align: center; padding: 4rem; }
+.btn { background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; }
+</style>
+{% endblock %}
