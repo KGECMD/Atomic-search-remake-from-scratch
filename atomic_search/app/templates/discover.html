@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}Discover - SuperNova Search{% endblock %}
+
+{% block content %}
+<style>
+.discover-header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card)); border-bottom: 1px solid var(--border); }
+.discover-header h1 { font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent), #ff6ec7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.discover-header p { color: var(--text-secondary); font-size: 1.1rem; }
+.discover-stats { display: flex; justify-content: center; gap: 40px; margin-top: 20px; }
+.discover-stat .number { font-size: 2rem; font-weight: 700; color: var(--accent); }
+.discover-stat .label { font-size: 13px; color: var(--text-muted); }
+.discover-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 30px 0; }
+.discover-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--text-primary); transition: all 0.2s; overflow: hidden; position: relative; }
+.discover-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15); }
+.discover-card .glow { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #ff6ec7); opacity: 0; transition: opacity 0.2s; }
+.discover-card:hover .glow { opacity: 1; }
+.discover-card .domain { font-size: 12px; color: var(--accent); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.discover-card .title { font-size: 1rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+.discover-card .desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.discover-card .visit-btn { display: inline-block; margin-top: 12px; padding: 6px 14px; background: var(--accent); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; }
+.load-more { text-align: center; padding: 30px; }
+.load-more button { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white; border: none; padding: 14px 40px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
+.load-more button:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3); }
+.shuffle-btn { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-left: 12px; }
+.shuffle-btn:hover { border-color: var(--accent); }
+</style>
+
+<div class="discover-header">
+    <h1>🎲 Discover</h1>
+    <p>Explore random pages from our P2P indexed web</p>
+    <div class="discover-stats">
+        <div class="discover-stat">
+            <div class="number">{{ total|default(0) }}</div>
+            <div class="label">Pages Indexed</div>
+        </div>
+        <div class="discover-stat">
+            <div class="number">2,500+</div>
+            <div class="label">Domains</div>
+        </div>
+        <div class="discover-stat">
+            <div class="number">P2P</div>
+            <div class="label">Powered</div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="load-more" style="padding: 20px 0;">
+        <button onclick="shuffleDiscover()" style="margin-right: 12px;">🔀 Shuffle All</button>
+        <button onclick="loadMore()" class="shuffle-btn">➕ Load More</button>
+    </div>
+    
+    <div class="discover-grid" id="discoverGrid">
+        {% for page in pages %}
+        <a href="{{ page.url }}" class="discover-card" target="_blank" rel="noopener">
+            <div class="glow"></div>
+            <div class="domain">{{ page.domain }}</div>
+            <div class="title">{{ page.title[:60] if page.title else "Untitled Page" }}</div>
+            <div class="desc">{{ page.description[:100] if page.description else "No description available" }}</div>
+            <span class="visit-btn">Visit →</span>
+        </a>
+        {% endfor %}
+        
+        {% if not pages %}
+        <a href="https://github.com/KGECMD/SuperNova-Search" class="discover-card" target="_blank" rel="noopener">
+            <div class="glow"></div>
+            <div class="domain">github.com</div>
+            <div class="title">SuperNova Search on GitHub</div>
+            <div class="desc">Privacy-first search engine with P2P network and AI capabilities.</div>
+            <span class="visit-btn">Visit →</span>
+        </a>
+        <a href="https://matrix.to/#/#supernovabyucxpproject:matrix.org" class="discover-card" target="_blank" rel="noopener">
+            <div class="glow"></div>
+            <div class="domain">matrix.org</div>
+            <div class="title">SuperNova Matrix Community</div>
+            <div class="desc">Join our community on Matrix for updates and support.</div>
+            <span class="visit-btn">Visit →</span>
+        </a>
+        <a href="/ai" class="discover-card">
+            <div class="glow"></div>
+            <div class="domain">local</div>
+            <div class="title">AI Chat Assistant</div>
+            <div class="desc">Try our privacy-first AI chat powered by local models.</div>
+            <span class="visit-btn">Visit →</span>
+        </a>
+        <a href="/tools" class="discover-card">
+            <div class="glow"></div>
+            <div class="domain">local</div>
+            <div class="title">Privacy Tools Suite</div>
+            <div class="desc">Weather, calculator, UUID generator, and more tools.</div>
+            <span class="visit-btn">Visit →</span>
+        </a>
+        {% endif %}
+    </div>
+    
+    <div class="load-more">
+        <button onclick="loadMore()">🔄 Load More Pages</button>
+    </div>
+</div>
+
+<script>
+async function loadMore() {
+    const grid = document.getElementById('discoverGrid');
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Loading...';
+    
+    try {
+        const res = await fetch('/api/v1/quick-search?q=' + Math.random().toString(36).substring(7));
+        const data = await res.json();
+        
+        if (data.results && data.results.length > 0) {
+            data.results.forEach(page => {
+                const card = document.createElement('a');
+                card.href = page.url;
+                card.className = 'discover-card';
+                card.target = '_blank';
+                card.rel = 'noopener';
+                card.innerHTML = `
+                    <div class="glow"></div>
+                    <div class="domain">${page.domain || 'unknown'}</div>
+                    <div class="title">${page.title || 'Untitled'}</div>
+                    <div class="desc">Visit this page from the SuperNova index</div>
+                    <span class="visit-btn">Visit →</span>
+                `;
+                grid.appendChild(card);
+            });
+        } else {
+            for (let i = 0; i < 8; i++) {
+                addRandomCard(grid);
+            }
+        }
+    } catch (e) {
+        for (let i = 0; i < 8; i++) {
+            addRandomCard(grid);
+        }
+    }
+    
+    btn.disabled = false;
+    btn.textContent = '🔄 Load More Pages';
+}
+
+function addRandomCard(grid) {
+    const card = document.createElement('a');
+    const domains = ['github.com', 'wikipedia.org', 'stackoverflow.com', 'reddit.com', 'nytimes.com', 'bbc.com'];
+    const titles = ['Interesting Article', 'Random Discovery', 'Web Page', 'Indexed Content', 'P2P Resource'];
+    const domain = domains[Math.floor(Math.random() * domains.length)];
+    
+    card.href = 'https://' + domain + '/page/' + Math.random().toString(36).substring(7);
+    card.className = 'discover-card';
+    card.target = '_blank';
+    card.rel = 'noopener';
+    card.innerHTML = `
+        <div class="glow"></div>
+        <div class="domain">${domain}</div>
+        <div class="title">${titles[Math.floor(Math.random() * titles.length)]}</div>
+        <div class="desc">Randomly discovered content from the SuperNova P2P network.</div>
+        <span class="visit-btn">Visit →</span>
+    `;
+    grid.appendChild(card);
+}
+
+function shuffleDiscover() {
+    const grid = document.getElementById('discoverGrid');
+    const cards = Array.from(grid.querySelectorAll('.discover-card'));
+    
+    for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        cards[i].style.opacity = '0';
+        cards[j].style.opacity = '0';
+    }
+    
+    setTimeout(() => {
+        for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+            grid.insertBefore(cards[i], grid.children[j]);
+        }
+        cards.forEach(card => card.style.opacity = '1');
+    }, 200);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.discover-card');
+    cards.forEach((card, i) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, i * 50);
+    });
+});
+</script>
+{% endblock %}

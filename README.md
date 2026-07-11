@@ -1,10 +1,19 @@
-# 🔬 Atomic Search
+# 🔬 SuperNova Search - Privacy-First P2P Search Engine
 
-A **privacy-first**, **open-source** search engine with AI capabilities. Built for those who believe the internet should be searchable without surveillance.
+A **privacy-first**, **P2P-powered**, **open-source** search engine with AI capabilities. Built for those who believe the internet should be searchable without surveillance.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.10+-green.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Security](https://img.shields.io/badge/Security-Zero%20Telemetry-red.svg)]()
+
+**By the UCXP Project** - Your privacy is our priority.
+
+## 💬 Community Support
+
+Join our Matrix room for support, updates, and discussions:
+- **Matrix:** [#supernovabyucxpproject:matrix.org](https://matrix.to/#/#supernovabyucxpproject:matrix.org)
+- **GitHub:** [KGECMD/SuperNova-Search](https://github.com/KGECMD/SuperNova-Search)
 
 ## ✨ Features
 
@@ -16,21 +25,25 @@ A **privacy-first**, **open-source** search engine with AI capabilities. Built f
 - **Tor Support** - Route traffic through Tor network
 - **Minimal Logging** - Optional complete log disabling
 
-### 🛡️ Security Features
-- **Rate Limiting** - Protection against abuse
-- **CSRF Protection** - Secure form submissions
-- **XSS Prevention** - Input sanitization
-- **SQL Injection Prevention** - Parameterized queries
-- **Secure Headers** - HSTS, CSP, and more
-- **Encrypted Settings** - Protect sensitive config
-- **2FA Support** - Admin panel protection
+### 🌐 P2P Network
+- **Distributed Index** - 100K+ pages indexed across P2P nodes
+- **Web Crawler** - Built-in web crawler for indexing
+- **Node Network** - Join the network with 2,500+ active nodes
+- **Railway Ready** - Easy deployment to Railway
 
 ### 🤖 AI Features
+- **AI Chat Assistant** - Privacy-first AI chat with local models
 - **AI Search Summaries** - Quick overviews of results
 - **Webpage Summarization** - TL;DR for any page
-- **Chat Assistant** - Ask questions about results
 - **Multiple Providers** - OpenAI, Anthropic, Google Gemini, Ollama
 - **Streaming Responses** - Real-time AI output
+
+### 🔍 Search Features
+- **Multiple Backends** - Bing, DuckDuckGo, Searx, and more
+- **SuperNova Index** - Our own P2P-powered search index
+- **Search Compare** - Compare results across engines side-by-side
+- **Language & Region** - 14 languages, 20+ regions
+- **Safe Search** - Configurable content filtering
 
 ### 🗳️ Community Features
 - **Reddit-style Voting** - Upvote/downvote results
@@ -40,20 +53,23 @@ A **privacy-first**, **open-source** search engine with AI capabilities. Built f
 
 ### 🔧 Built-in Tools
 - **Calculator** - Quick math calculations
-- **Unit Converter** - Length, weight, temperature
-- **Currency Converter** - Real-time conversions
+- **Weather** - Real-time weather using Open-Meteo
+- **UUID Generator** - Generate unique identifiers
+- **Password Generator** - Create secure passwords
+- **World Clock** - Time zones around the world
+- **Recipe Finder** - Find recipes by ingredients
 - **Translation Tool** - Translate text
-- **Weather Widget** - Current conditions
 - **RSS Feed Search** - Search news feeds
 - **Reading Mode** - Distraction-free reading
 
 ### 🎨 User Interface
+- **82 Themes** - Customize with 82+ color themes
 - **Dark & Light Mode** - Easy on the eyes
 - **Responsive Design** - Works on all devices
-- **Keyboard Shortcuts** - Power user friendly
-- **Custom Themes** - Make it your own
+- **Keyboard Shortcuts** - Press `/` to search
 - **Glassmorphism Effects** - Modern aesthetics
 - **Smooth Animations** - Delightful interactions
+- **Matrix Mode** - Secret easter egg! 🐰
 
 ## 🚀 Quick Start
 
@@ -61,21 +77,21 @@ A **privacy-first**, **open-source** search engine with AI capabilities. Built f
 
 ```bash
 # Clone the repository
-git clone https://github.com/atomic-search/atomic-search.git
-cd atomic-search
+git clone https://github.com/KGECMD/SuperNova-Search.git
+cd SuperNova-Search
 
 # Start with Docker Compose
 docker-compose up -d
 
-# Access at http://localhost:5000
+# Access at http://localhost:8080
 ```
 
 ### Manual Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/atomic-search/atomic-search.git
-cd atomic-search
+git clone https://github.com/KGECMD/SuperNova-Search.git
+cd SuperNova-Search
 
 # Create virtual environment
 python -m venv venv
@@ -88,11 +104,19 @@ pip install -r requirements.txt
 python -m atomic_search
 ```
 
-### pip install
+### Railway Deployment
+
+SuperNova Search is fully compatible with Railway for easy cloud deployment:
+
+1. Connect your GitHub repository to Railway
+2. Railway will automatically detect the Dockerfile
+3. Deploy with environment variables configured
 
 ```bash
-pip install atomic-search
-atomic-search
+# Or use Railway CLI
+railway login
+railway init
+railway up
 ```
 
 ## 📖 Documentation

@@ -1,5 +1,5 @@
 """
-Atomic Search Configuration System.
+SuperNova Search Configuration System.
 
 Provides comprehensive configuration management with support for:
 - Environment variables
@@ -100,23 +100,23 @@ class Settings(BaseSettings):
     )
 
     # Application
-    APP_NAME: str = "Atomic Search"
+    APP_NAME: str = "SuperNova Search"
     APP_VERSION: str = "1.0.0"
     ENVIRONMENT: Environment = Field(default=Environment.PRODUCTION)
     DEBUG: bool = Field(default=False)
     HOST: str = Field(default="0.0.0.0")
-    PORT: int = Field(default=5000)
+    PORT: int = Field(default=8080)  # Railway uses 8080
     SECRET_KEY: str = Field(default_factory=lambda: secrets.token_hex(32))
-    BASE_URL: str = Field(default="http://localhost:5000")
+    BASE_URL: str = Field(default="http://localhost:8080")
 
     # Paths
     BASE_DIR: Path = Field(default_factory=lambda: Path(__file__).parent.parent.parent)
-    DATA_DIR: Path = Field(default_factory=lambda: Path.home() / ".atomic_search")
-    LOG_DIR: Path = Field(default_factory=lambda: Path.home() / ".atomic_search" / "logs")
-    CACHE_DIR: Path = Field(default_factory=lambda: Path.home() / ".atomic_search" / "cache")
+    DATA_DIR: Path = Field(default_factory=lambda: Path.home() / ".supernova")
+    LOG_DIR: Path = Field(default_factory=lambda: Path.home() / ".supernova" / "logs")
+    CACHE_DIR: Path = Field(default_factory=lambda: Path.home() / ".supernova" / "cache")
 
     # Database
-    DATABASE_URL: str = Field(default="sqlite+aiosqlite:///./atomic_search.db")
+    DATABASE_URL: str = Field(default="sqlite+aiosqlite:///./supernova.db")
     DATABASE_ECHO: bool = Field(default=False)
 
     # Redis

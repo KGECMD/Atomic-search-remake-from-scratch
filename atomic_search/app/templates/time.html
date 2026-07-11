@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}World Clock - {{ config.APP_NAME }}{% endblock %}
+{% block content %}
+<style>
+.time-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+.time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
+.time-card { background: var(--bg-secondary); border-radius: 12px; padding: 24px; text-align: center; }
+.time-city { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.time-value { font-size: 36px; font-weight: 700; color: var(--accent); font-family: monospace; }
+</style>
+
+<div class="time-container">
+    <h1 style="text-align: center; margin-bottom: 8px;">⏰ World Clock</h1>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 32px;">Current time in major cities worldwide</p>
+    
+    <div class="time-grid">
+        {% for city, t in times.items() %}
+        <div class="time-card">
+            <div class="time-city">{{ city }}</div>
+            <div class="time-value">{{ t }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

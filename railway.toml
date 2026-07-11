@@ -1,16 +1,10 @@
 [railway]
-name = "atomic-search"
+name = "supernova-search"
 
 [build]
-builder = "RAILPACK"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
 healthcheckPath = "/health"
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10
-startCommand = "gunicorn 'atomic_search.main:app' --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120"
-
-[environment]
-FLASK_ENV = "production"
-FLASK_DEBUG = "false"
-
+healthcheckTimeout = 60

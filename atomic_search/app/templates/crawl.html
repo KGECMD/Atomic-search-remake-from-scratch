@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Crawler & Index - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; padding: 40px 20px;">
+    <h1 style="font-size: 2rem; font-weight: 600; margin-bottom: 8px;">
+        🔍 P2P Crawler & Index
+    </h1>
+    <p style="color: var(--text-secondary); margin-bottom: 32px;">
+        Decentralized web indexing powered by P2P nodes
+    </p>
+
+    <!-- Stats Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
+        <div class="card" style="text-align: center; padding: 24px;">
+            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
+            <div style="font-size: 28px; font-weight: 700; color: var(--accent);">{{ stats.pages_indexed | default(0)  }}</div>
+            <div style="color: var(--text-muted); font-size: 14px;">Pages Indexed</div>
+        </div>
+        <div class="card" style="text-align: center; padding: 24px;">
+            <div style="font-size: 32px; margin-bottom: 8px;">🖥️</div>
+            <div style="font-size: 28px; font-weight: 700; color: var(--accent);">{{ stats.nodes_active | default(0) }}</div>
+            <div style="color: var(--text-muted); font-size: 14px;">Active Nodes</div>
+        </div>
+        <div class="card" style="text-align: center; padding: 24px;">
+            <div style="font-size: 32px; margin-bottom: 8px;">⏱️</div>
+            <div style="font-size: 28px; font-weight: 700; color: var(--accent);">{{ stats.last_crawl | default("N/A") }}</div>
+            <div style="color: var(--text-muted); font-size: 14px;">Last Crawl</div>
+        </div>
+        <div class="card" style="text-align: center; padding: 24px;">
+            <div style="font-size: 32px; margin-bottom: 8px;">✅</div>
+            <div style="font-size: 28px; font-weight: 700; color: var(--success);">{{ stats.status | default("Active") }}</div>
+            <div style="color: var(--text-muted); font-size: 14px;">Status</div>
+        </div>
+    </div>
+
+    <!-- Crawl URL Form -->
+    <div class="card" style="padding: 24px;">
+        <h2 style="margin-bottom: 16px;">Start New Crawl</h2>
+        <form id="crawl-form">
+            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <input type="url" id="crawl-url" placeholder="https://example.com" 
+                    style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary);">
+                <input type="number" id="max-pages" value="50" min="1" max="1000"
+                    style="width: 100px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary);">
+                <button type="submit" class="btn btn-primary" style="padding: 12px 24px;">Start Crawl</button>
+            </div>
+        </form>
+        <div id="crawl-results" style="display: none; margin-top: 16px;">
+            <h3 style="margin-bottom: 8px;">Crawl Results:</h3>
+            <pre id="crawl-output" style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px;"></pre>
+        </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="card" style="padding: 24px; margin-top: 24px;">
+        <h2 style="margin-bottom: 16px;">How P2P Indexing Works</h2>
+        <div style="color: var(--text-secondary); line-height: 1.8;">
+            <p style="margin-bottom: 12px;">
+                <strong>1. Distributed Crawling:</strong> Each user node crawls web pages independently and shares the indexed data with the network.
+            </p>
+            <p style="margin-bottom: 12px;">
+                <strong>2. DHT Storage:</strong> Indexed pages are stored in a Distributed Hash Table, ensuring redundancy and fast retrieval.
+            </p>
+            <p style="margin-bottom: 12px;">
+                <strong>3. Privacy First:</strong> No central server tracks your searches. Your node only shares what you choose to contribute.
+            </p>
+            <p>
+                <strong>4. Incentive:</strong> Nodes that contribute more indexing get better search results and faster response times.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('crawl-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const url = document.getElementById('crawl-url').value;
+    const maxPages = document.getElementById('max-pages').value;
+    
+    document.getElementById('crawl-results').style.display = 'block';
+    document.getElementById('crawl-output').textContent = 'Crawling...';
+    
+    try {
+        const res = await fetch('/api/v1/crawl', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url, max_pages: parseInt(maxPages) })
+        });
+        const data = await res.json();
+        document.getElementById('crawl-output').textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+        document.getElementById('crawl-output').textContent = 'Error: ' + err.message;
+    }
+});
+</script>
+
+<style>
+.number-format { font-variant-numeric: tabular-nums; }
+</style>
+{% endblock %}

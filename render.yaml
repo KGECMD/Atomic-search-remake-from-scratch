@@ -1,22 +1,16 @@
+# Render.com deployment - Docker
 services:
   - type: web
     name: atomic-search
-    runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn atomic_search.app:app --bind 0.0.0.0:$PORT --workers 2
+    env: Docker
+    dockerfilePath: ./Dockerfile
+    region: oregon
+    plan: free
+    healthCheckPath: /health
     envVars:
+      - key: PORT
+        value: 8080
+      - key: PYTHONUNBUFFERED
+        value: "1"
       - key: FLASK_ENV
         value: production
-      - key: PORT
-        value: "10000"
-    autoDeploy:
-      enabled: true
-    disk:
-      name: search-index
-      mountPath: /data
-      sizeGB: 1
-
-disks:
-  - name: search-index
-    mountPath: /data
-    sizeGB: 1

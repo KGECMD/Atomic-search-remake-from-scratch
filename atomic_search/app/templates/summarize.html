@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}AI Summarizer - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+    <h1 style="font-size: 28px; font-weight: 400; margin-bottom: 8px;">📝 AI Summarizer</h1>
+    <p style="color: var(--text2); margin-bottom: 32px;">Summarize any webpage or text instantly with AI</p>
+    
+    <form method="POST" style="margin-bottom: 32px;">
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500;">URL or Text</label>
+            <textarea name="content" class="settings-textarea" style="min-height: 150px;" placeholder="Paste a URL or enter text to summarize...">{{ request.form.content if request.method == 'POST' else '' }}</textarea>
+        </div>
+        
+        <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Summary Length</label>
+                <select name="length" class="settings-select" style="width: 100%;">
+                    <option value="short">Short (1-2 sentences)</option>
+                    <option value="medium" selected>Medium (paragraph)</option>
+                    <option value="long">Long (detailed)</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Format</label>
+                <select name="format" class="settings-select" style="width: 100%;">
+                    <option value="bullet">Bullet Points</option>
+                    <option value="paragraph" selected>Paragraph</option>
+                    <option value="tldr">TL;DR</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="padding: 12px 24px;">
+            🔮 Summarize with AI
+        </button>
+    </form>
+    
+    {% if summary %}
+    <div class="card" style="margin-top: 24px;">
+        <h3 style="margin-bottom: 16px;">📋 Summary</h3>
+        <div style="line-height: 1.7; white-space: pre-wrap;">{{ summary }}</div>
+        
+        {% if keywords %}
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <strong>Keywords:</strong>
+            {% for keyword in keywords %}
+            <span style="display: inline-block; background: var(--bg3); padding: 4px 8px; border-radius: 4px; margin: 4px 4px 4px 0; font-size: 13px;">{{ keyword }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div style="margin-top: 48px; padding: 24px; background: var(--bg2); border-radius: 8px; border: 1px solid var(--border);">
+        <h3 style="margin-bottom: 16px;">🤖 How it works</h3>
+        <p style="color: var(--text2); line-height: 1.7;">
+            Our AI summarizer uses a lightweight 180MB model specifically trained for text summarization. 
+            It can understand context, extract key points, and condense long content into digestible summaries.
+            Perfect for quick research, news articles, research papers, or any long-form content.
+        </p>
+    </div>
+</div>
+{% endblock %}

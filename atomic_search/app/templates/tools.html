@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Tools - {{ config.APP_NAME }}{% endblock %}
+
+{% block content %}
+<style>
+.tools-hero { text-align: center; padding: 40px; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary)); border-radius: 16px; margin-bottom: 32px; }
+.tools-hero h1 { font-size: 2.5rem; margin-bottom: 8px; }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.tool-card { display: block; padding: 20px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; transition: all 0.2s; text-decoration: none !important; }
+.tool-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2); }
+.tool-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.tool-name { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.tool-desc { font-size: 0.8rem; color: var(--text-muted); }
+.unique { border: 1px solid var(--accent); }
+.unique::after { content: "⭐ EXCLUSIVE"; display: block; font-size: 9px; color: var(--accent); margin-top: 8px; }
+</style>
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <div class="tools-hero">
+        <h1>🛠️ {{ config.APP_NAME }} Tools</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem;">45+ built-in tools - many exclusive to {{ config.APP_NAME }}!</p>
+    </div>
+    
+    <h2 style="margin-bottom: 16px;">⭐ SuperNova Exclusives</h2>
+    <div class="tools-grid" style="margin-bottom: 32px;">
+        <a href="/compare" class="tool-card unique"><div class="tool-icon">⚖️</div><div class="tool-name">Search Compare</div><div class="tool-desc">Compare search engines</div></a>
+        <a href="/ai" class="tool-card unique"><div class="tool-icon">🤖</div><div class="tool-name">AI Chat</div><div class="tool-desc">Chat with AI</div></a>
+        <a href="/hack" class="tool-card unique"><div class="tool-icon">💻</div><div class="tool-name">Hack Mode</div><div class="tool-desc">Enter the matrix</div></a>
+        <a href="/summarize" class="tool-card unique"><div class="tool-icon">📝</div><div class="tool-name">AI Summarizer</div><div class="tool-desc">Summarize any URL</div></a>
+    </div>
+    
+    <h2 style="margin-bottom: 16px;">🌤️ Weather & Time</h2>
+    <div class="tools-grid" style="margin-bottom: 32px;">
+        <a href="/weather" class="tool-card"><div class="tool-icon">🌤️</div><div class="tool-name">Weather</div><div class="tool-desc">Real-time weather via Open-Meteo</div></a>
+        <a href="/time" class="tool-card"><div class="tool-icon">⏰</div><div class="tool-name">World Clock</div><div class="tool-desc">Time zones worldwide</div></a>
+    </div>
+    
+    <h2 style="margin-bottom: 16px;">🔢 Utilities</h2>
+    <div class="tools-grid" style="margin-bottom: 32px;">
+        <a href="/calculator" class="tool-card"><div class="tool-icon">🔢</div><div class="tool-name">Calculator</div><div class="tool-desc">Math expressions</div></a>
+        <a href="/discover" class="tool-card unique"><div class="tool-icon">✨</div><div class="tool-name">Discover</div><div class="tool-desc">Explore indexed pages</div></a>
+        <a href="/unit" class="tool-card"><div class="tool-icon">📐</div><div class="tool-name">Unit Converter</div><div class="tool-desc">Length, weight, temp</div></a>
+        <a href="/password" class="tool-card"><div class="tool-icon">🔐</div><div class="tool-name">Password Gen</div><div class="tool-desc">Secure passwords</div></a>
+        <a href="/qrcode" class="tool-card"><div class="tool-icon">📱</div><div class="tool-name">QR Code</div><div class="tool-desc">Generate QR codes</div></a>
+        <a href="/uuid" class="tool-card"><div class="tool-icon">🆔</div><div class="tool-name">UUID</div><div class="tool-desc">Unique identifiers</div></a>
+    </div>
+    
+    <h2 style="margin-bottom: 16px;">🍳 Lifestyle</h2>
+    <div class="tools-grid" style="margin-bottom: 32px;">
+        <a href="/recipe" class="tool-card"><div class="tool-icon">🍳</div><div class="tool-name">Recipe Finder</div><div class="tool-desc">Find recipes</div></a>
+        <a href="/bmi" class="tool-card"><div class="tool-icon">🏃</div><div class="tool-name">BMI Calculator</div><div class="tool-desc">Health metrics</div></a>
+    </div>
+    
+    <h2 style="margin-bottom: 16px;">💻 Development</h2>
+    <div class="tools-grid" style="margin-bottom: 32px;">
+        <a href="/color" class="tool-card"><div class="tool-icon">🎨</div><div class="tool-name">Color Picker</div><div class="tool-desc">HEX, RGB, HSL</div></a>
+        <a href="/json" class="tool-card"><div class="tool-icon">{ }</div><div class="tool-name">JSON Formatter</div><div class="tool-desc">Format & validate JSON</div></a>
+        <a href="/binary" class="tool-card"><div class="tool-icon">0️⃣</div><div class="tool-name">Binary Encoder</div><div class="tool-desc">Text to binary</div></a>
+    </div>
+    
+    <h2 style="margin-bottom: 16px;">🎵 Entertainment</h2>
+    <div class="tools-grid">
+        <a href="/emoji" class="tool-card"><div class="tool-icon">😀</div><div class="tool-name">Emoji</div><div class="tool-desc">Find emojis</div></a>
+        <a href="/ascii" class="tool-card"><div class="tool-icon">🔤</div><div class="tool-name">ASCII Art</div><div class="tool-desc">Text to ASCII</div></a>
+        <a href="/news" class="tool-card"><div class="tool-icon">📰</div><div class="tool-name">News</div><div class="tool-desc">Latest headlines</div></a>
+        <a href="/stock" class="tool-card"><div class="tool-icon">📈</div><div class="tool-name">Stock Quote</div><div class="tool-desc">Stock prices</div></a>
+    </div>
+</div>
+{% endblock %}

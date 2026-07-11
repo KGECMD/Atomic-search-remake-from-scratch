@@ -1,21 +1,16 @@
 """
-Atomic Search Flask Application.
+SuperNova Search Flask Application.
 
 Main application factory and configuration.
 """
 
-import asyncio
 import os
 from datetime import timedelta
-from functools import wraps
-from typing import Callable, Optional
+from typing import Optional
 
-from flask import Flask, g, jsonify, request, session
+from flask import Flask, jsonify
 from flask_caching import Cache
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 
 from atomic_search.config import config
@@ -42,15 +37,12 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     if config_override:
         app.config.update(config_override)
 
-    # Initialize extensions
+    # Initialize CORS
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-    if config.CSRF_ENABLED:
-        csrf = CSRFProtect()
-        csrf.init_app(app)
-        # Exempt API routes from CSRF protection
-        from atomic_search.routes.api import bp as api_bp
-        csrf.exempt(api_bp)
+    # Initialize CSRF protection
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     # Setup caching
     if config.CACHE_TYPE == "redis" and config.REDIS_ENABLED:
@@ -62,27 +54,19 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     app.config["CACHE_DEFAULT_TIMEOUT"] = config.CACHE_DEFAULT_TIMEOUT
     app.config["CACHE_THRESHOLD"] = config.CACHE_THRESHOLD
 
-    cache = Cache(app)
-
-    # Setup rate limiting
-    if config.RATE_LIMIT_ENABLED and config.REDIS_ENABLED:
-        limiter = Limiter(
-            key_func=get_remote_address,
-            app=app,
-            default_limits=[f"{config.RATE_LIMIT_PER_MINUTE} per minute"],
-            storage_uri=config.REDIS_URL,
-        )
-    else:
-        limiter = None
+    Cache(app)
 
     # Apply security headers
     @app.after_request
     def add_security_headers(response):
         if config.SECURE_HEADERS:
-            from atomic_search.utils.security import get_security_headers
-            headers = get_security_headers()
-            for key, value in headers.items():
-                response.headers[key] = value
+            try:
+                from atomic_search.utils.security import get_security_headers
+                headers = get_security_headers()
+                for key, value in headers.items():
+                    response.headers[key] = value
+            except Exception:
+                pass
         return response
 
     # Health check endpoint
@@ -90,9 +74,14 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     def health_check():
         return jsonify({
             "status": "healthy",
-            "service": "atomic-search",
+            "service": "supernova-search",
             "version": "1.0.0"
         })
+
+    # Also support /health/ for consistency
+    @app.route("/health/")
+    def health_check_trailing():
+        return health_check()
 
     # Register blueprints
     from atomic_search.routes.main import bp as main_bp
@@ -100,25 +89,43 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
     from atomic_search.routes.admin import bp as admin_bp
     from atomic_search.routes.ai import bp as ai_bp
     from atomic_search.routes.static import bp as static_bp
+    from atomic_search.routes.tools import bp as tools_bp
+    from atomic_search.routes.search_enhancements import bp as search_enhance_bp
+    from atomic_search.routes.user_features import bp as user_features_bp
     
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(ai_bp)
     app.register_blueprint(static_bp)
+    app.register_blueprint(tools_bp)
+    app.register_blueprint(search_enhance_bp)
+    app.register_blueprint(user_features_bp)
+    
+    # Exempt API and tools from CSRF
+    csrf.exempt(main_bp)
+    csrf.exempt(api_bp)
+    csrf.exempt(tools_bp)
+    csrf.exempt(search_enhance_bp)
+    csrf.exempt(user_features_bp)
+    csrf.exempt(admin_bp)
 
     # Error handlers
     @app.errorhandler(404)
     def not_found(error):
-        return jsonify({"error": "Not found"}), 404
+        return jsonify({"error": "Not found", "message": "The requested resource was not found"}), 404
 
     @app.errorhandler(500)
     def internal_error(error):
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": "Internal server error", "message": "An unexpected error occurred"}), 500
 
     @app.errorhandler(429)
     def ratelimit_handler(error):
-        return jsonify({"error": "Rate limit exceeded", "message": str(error)}), 429
+        return jsonify({"error": "Rate limit exceeded", "message": str(error.description)}), 429
+
+    @app.errorhandler(403)
+    def forbidden(error):
+        return jsonify({"error": "Forbidden", "message": "Access denied"}), 403
 
     # Add context processors
     @app.context_processor
