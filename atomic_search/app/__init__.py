@@ -155,3 +155,7 @@ def create_app(config_override: Optional[dict] = None) -> Flask:
         }
 
     return app
+
+
+# Create the application instance for gunicorn
+app = create_app()
