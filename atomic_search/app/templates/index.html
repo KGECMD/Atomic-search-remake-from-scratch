@@ -7,12 +7,38 @@
 .stats-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 13px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
 .stats-bar .dot { color: #22c55e; }
 .stats-bar .stat { margin-left: auto; font-weight: 500; }
-.hero { text-align: center; padding: 80px 20px; max-width: 700px; margin: 0 auto; }
+.hero { text-align: center; padding: 60px 20px 40px; max-width: 800px; margin: 0 auto; }
 .hero h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent), #ff6ec7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .hero p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 40px; }
 .badges { display: flex; gap: 20px; justify-content: center; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
 .badges span { display: flex; align-items: center; gap: 6px; }
 .kbd { background: var(--bg-card); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); font-family: monospace; font-size: 12px; }
+
+/* Quick Links Section */
+.quick-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 30px 0; }
+.quick-link { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; text-decoration: none; color: var(--text-primary); transition: all 0.2s; }
+.quick-link:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2); }
+.quick-link .icon { font-size: 1.8em; margin-bottom: 8px; }
+.quick-link .label { font-size: 13px; font-weight: 500; }
+
+/* Featured Section */
+.featured-section { margin: 40px 0; }
+.section-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 16px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+.featured-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.featured-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--text-primary); transition: all 0.2s; }
+.featured-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.featured-card h3 { font-size: 1rem; margin-bottom: 8px; color: var(--accent); }
+.featured-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+/* News Ticker */
+.news-ticker { background: linear-gradient(90deg, var(--bg-secondary), var(--bg-card)); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin: 20px 0; overflow: hidden; }
+.news-ticker-content { display: flex; gap: 40px; animation: ticker 30s linear infinite; white-space: nowrap; }
+.news-item { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.news-item .tag { background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* Keyboard Shortcut Hint */
+.shortcut-hint { text-align: center; margin-top: 24px; font-size: 13px; color: var(--text-muted); }
 </style>
 
 <div class="stats-bar">
@@ -20,6 +46,19 @@
     <span id="nodes">🖥️ 2,500+ nodes</span>
     <span id="indexed">📚 125,000+ pages indexed</span>
     <span class="stat" id="searches">🔍 0 searches today</span>
+</div>
+
+<div class="news-ticker">
+    <div class="news-ticker-content" id="newsTicker">
+        <span class="news-item"><span class="tag">NEW</span> SuperNova v2.0 - Complete Redesign</span>
+        <span class="news-item"><span class="tag">HOT</span> 100K+ pages now indexed</span>
+        <span class="news-item"><span class="tag">P2P</span> Network now fully decentralized</span>
+        <span class="news-item"><span class="tag">AI</span> Enhanced AI chat assistant</span>
+        <span class="news-item"><span class="tag">NEW</span> SuperNova v2.0 - Complete Redesign</span>
+        <span class="news-item"><span class="tag">HOT</span> 100K+ pages now indexed</span>
+        <span class="news-item"><span class="tag">P2P</span> Network now fully decentralized</span>
+        <span class="news-item"><span class="tag">AI</span> Enhanced AI chat assistant</span>
+    </div>
 </div>
 
 <div class="hero">
@@ -32,10 +71,59 @@
         <span>🍪 No cookies</span>
         <span>🌐 P2P Network</span>
     </div>
-    
-    <p style="margin-top: 24px; font-size: 13px; color: var(--text-muted);">
-        Press <kbd class="kbd">/</kbd> to focus search
-    </p>
+</div>
+
+<div class="quick-links">
+    <a href="/ai" class="quick-link">
+        <div class="icon">🤖</div>
+        <div class="label">AI Chat</div>
+    </a>
+    <a href="/weather?q=London" class="quick-link">
+        <div class="icon">🌤️</div>
+        <div class="label">Weather</div>
+    </a>
+    <a href="/tools" class="quick-link">
+        <div class="icon">🛠️</div>
+        <div class="label">Tools</div>
+    </a>
+    <a href="/discover" class="quick-link">
+        <div class="icon">🎲</div>
+        <div class="label">Discover</div>
+    </a>
+    <a href="/compare" class="quick-link">
+        <div class="icon">⚖️</div>
+        <div class="label">Compare</div>
+    </a>
+    <a href="/crawl-page" class="quick-link">
+        <div class="icon">🕷️</div>
+        <div class="label">Crawler</div>
+    </a>
+</div>
+
+<div class="shortcut-hint">
+    Press <kbd class="kbd">/</kbd> to focus search
+</div>
+
+<div class="featured-section">
+    <h2 class="section-title">🔥 Featured Features</h2>
+    <div class="featured-grid">
+        <a href="/ai" class="featured-card">
+            <h3>🤖 AI Assistant</h3>
+            <p>Chat with AI powered by local models. Privacy-first, no data sent to external servers.</p>
+        </a>
+        <a href="/discover" class="featured-card">
+            <h3>🎲 Random Discover</h3>
+            <p>Explore random pages from our P2P indexed web. Discover something new!</p>
+        </a>
+        <a href="/compare" class="featured-card">
+            <h3>⚖️ Search Compare</h3>
+            <p>Compare search results across multiple engines side by side.</p>
+        </a>
+        <a href="/hack" class="featured-card">
+            <h3>💚 Matrix Mode</h3>
+            <p>Secret easter egg! Experience the web Matrix-style.</p>
+        </a>
+    </div>
 </div>
 
 <script>
@@ -48,6 +136,15 @@ async function updateStats() {
         document.getElementById("searches").textContent = "🔍 " + data.searches_today.toLocaleString() + " today";
     } catch (e) {}
 }
+
+// Keyboard shortcut for search focus
+document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        document.querySelector('.search-input').focus();
+    }
+});
+
 updateStats();
 setInterval(updateStats, 30000);
 </script>
