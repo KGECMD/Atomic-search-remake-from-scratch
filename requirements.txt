@@ -40,7 +40,7 @@ cryptography>=49.0.0
 bleach>=6.1.0
 bleach-allowlist>=1.0.0
 passlib>=1.7.4
-bcrypt>=4.1.0
+bcrypt>=5.0.0
 
 # Utilities
 python-dateutil>=2.8.2
